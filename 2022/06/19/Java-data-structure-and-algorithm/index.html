@@ -3,19 +3,185 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Page 1 | Hexo</title>
+  <title>Java Data Structure and Algorithm | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
+  <meta name="keywords" content="Date StructureAlgorithmJava" />
   
   
   
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/index.html">
+  
+  <meta name="description" content="Java 数据结构与算法大 O 表示法：比较的是操作数，指出算法运行时间的增速。 如何选择数组和链表：  增删情况较多的需求下选择链表。 改查情况较多的情况下选择数组。  选择排序 每次循环找当前查询数组中最小或者最大元素的索引 得到索引之后，将索引位置的值与顺序放置位置交换 直至循环结束  🗝特点：找到最小或者最大元素的索引，通过索引进行元素交换。 1234567891011121314151">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java Data Structure and Algorithm">
+<meta property="og:url" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Java 数据结构与算法大 O 表示法：比较的是操作数，指出算法运行时间的增速。 如何选择数组和链表：  增删情况较多的需求下选择链表。 改查情况较多的情况下选择数组。  选择排序 每次循环找当前查询数组中最小或者最大元素的索引 得到索引之后，将索引位置的值与顺序放置位置交换 直至循环结束  🗝特点：找到最小或者最大元素的索引，通过索引进行元素交换。 1234567891011121314151">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220508152255000.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220508152413067.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220508152700428.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220508154423091.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220508154848365.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220508170641553.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220509170128463.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220510161240835.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220510160759299.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220510171343186.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220510172920319.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220510172850489.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220511161149526.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220511161521637.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220511161800556.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220511162125562.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220511162851488.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220511173449870.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220512152215464.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220512160136319.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220512160205984.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220512160406947.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220519152508543.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220519152607302.png">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-c3595fcca57f03f8331dc1c1147b613c_720w.jpg">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=x">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-4cf353f58f8e92cadcd291d47fcb4772_720w.jpg">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220521155812842.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220521155834458.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220526162254229.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220526162928419.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220526174516769.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220526175150936.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220528173816616.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220528175230475.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220528175250353.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220529152439693.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220531162848799.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220531170146803.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220531170341217.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220531170449398.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220531172217774.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220601161728374.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220601171650774.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220601171959975.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220601182514443.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220602160719696.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220602162546429.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220602165756614.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220602165925195.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220602170459347.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220602183713764.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220607104434752.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220607104525537.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220607104741414.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220608092735793.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220608092837206.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220608093210215.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220608093548874.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220608101423388.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220608102215822.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220608102344617.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220608102731486.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220608104018106.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220608102957760.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220608103805911.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220608104350634.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220608104731606.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220608145331875.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220608160908156.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220608161041032.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220608165024925.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220608181611936.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220608181657703.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220608181727981.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220608183040752.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220608183119364.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220608183244812.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220608183356277.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220609180910991.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220609181740881.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220609181845720.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220609182058854.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220609185708898.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220609190011509.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220609190230646.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220609190425633.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220609190559439.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220609191159767.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220609191224582.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220609191314768.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220609191456070.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220609191914637.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220610103334823.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220610103420692.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220610103452889.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220610103537630.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220610103944856.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220610104250618.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220610104447862.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220610111100520.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220610113037865.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220611110512944.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220613102046260.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220613104433193.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220613104532386.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220613104613106.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220613104746292.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220613105214196.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220613111815085.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220613112007063.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220613112228711.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220613155136032.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220613155200655.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220613174921556.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220613174950570.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220613180222996.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220613180920208.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220613181125416.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220613183531982.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220613183624588.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220613183715452.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220613183757163.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220613183926356.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220613184046487.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220613184618716.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220614094607810.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220614094938221.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220614095001484.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220614112450398.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220614113137035.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220614113546125.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220614113722867.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220614115436066.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220614165930389.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220614170021021.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220614170401882.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220614170446164.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220614170532319.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220614170633055.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220614171231852.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220614171252716.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220614184958134.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220614185611492.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220614185637650.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220614190332529.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220614190702568.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220615095211339.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220615095642386.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220615100156007.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220615100450573.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220615103403481.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220615125612961.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220615125910165.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220615131209731.png">
+<meta property="og:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220615150328050.png">
+<meta property="article:published_time" content="2022-06-19T10:45:00.000Z">
+<meta property="article:modified_time" content="2022-06-19T11:43:22.597Z">
 <meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Date Structure">
+<meta property="article:tag" content="Algorithm">
+<meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/06/19/Java-data-structure-and-algorithm/20220508152255000.png">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -52,7 +218,7 @@
 
 
 
-  <body>
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
 
 
   
@@ -102,17 +268,15 @@
             
       <div id="content" class="outer">
         
-          <section id="main">
-  
-    <article id="post-Java-data-structure-and-algorithm"  class="article article-type-post" itemscope itemprop="blogPost" >
+          <section id="main" style="float:none;"><article id="post-Java-data-structure-and-algorithm" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
       <header class="article-header">
         
   
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/06/19/Java-data-structure-and-algorithm/">Java Data Structure and Algorithm</a>
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Java Data Structure and Algorithm
     </h1>
   
 
@@ -129,6 +293,10 @@
     <a class="article-category-link" href="/categories/Date-Structure/">Date Structure</a>, <a class="article-category-link" href="/categories/Date-Structure/Algorithm/">Algorithm</a>, <a class="article-category-link" href="/categories/Date-Structure/Algorithm/Java/">Java</a>
  
       
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
     </div>
     <div class="article-entry" itemprop="articleBody">
       
@@ -623,240 +791,60 @@
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Algorithm/" rel="tag">Algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Date-Structure/" rel="tag">Date Structure</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/" rel="tag">Java</a></li></ul>
 
       
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-hello-world"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
         
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/06/17/hello-world/">Hello World</a>
-    </h1>
-  
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
 
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2022/06/17/hello-world/" class="article-date">
-	  <time datetime="2022-06-17T14:04:34.327Z" itemprop="datePublished">June 17, 2022</time>
-	</a>
+		       if (typeof LivereTower === 'function') { return; }
 
-       
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-      
       
     </footer>
     <hr class="entry-footer-hr">
   </div>
   
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/06/17/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hello World</div>
+    </a>
+  
+</nav>
+
+  
 </article>
 
 <!-- Table of Contents -->
 
-  
-
-
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">Java 数据结构与算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F"><span class="nav-number">1.1.</span> <span class="nav-text">选择排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%92%E5%BD%92"><span class="nav-number">1.2.</span> <span class="nav-text">递归</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%93%BE%E8%A1%A8-%E9%98%9F%E5%88%97"><span class="nav-number">1.3.</span> <span class="nav-text">链表 队列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8"><span class="nav-number">1.3.1.</span> <span class="nav-text">双向链表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E5%90%91%E7%8E%AF%E5%BD%A2%E9%93%BE%E8%A1%A8-%E7%BA%A6%E7%91%9F%E5%A4%AB%E9%97%AE%E9%A2%98"><span class="nav-number">1.3.2.</span> <span class="nav-text">单向环形链表 约瑟夫问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%88"><span class="nav-number">1.4.</span> <span class="nav-text">栈</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%88%E5%AE%9E%E7%8E%B0%E7%BB%BC%E5%90%88%E8%AE%A1%E7%AE%97%E5%99%A8"><span class="nav-number">1.4.1.</span> <span class="nav-text">栈实现综合计算器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%AD%E7%BC%80%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%BD%AC%E5%90%8E%E7%BC%80%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">1.4.2.</span> <span class="nav-text">中缀表达式转后缀表达式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%92%E5%BD%92-1"><span class="nav-number">1.5.</span> <span class="nav-text">递归</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%B7%E5%AE%AB%E9%97%AE%E9%A2%98%EF%BC%9A"><span class="nav-number">1.5.1.</span> <span class="nav-text">迷宫问题：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AB%E7%9A%87%E5%90%8E%E9%97%AE%E9%A2%98"><span class="nav-number">1.5.2.</span> <span class="nav-text">八皇后问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95"><span class="nav-number">1.6.</span> <span class="nav-text">排序算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F"><span class="nav-number">1.6.1.</span> <span class="nav-text">冒泡排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F-1"><span class="nav-number">1.6.2.</span> <span class="nav-text">选择排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F"><span class="nav-number">1.6.3.</span> <span class="nav-text">插入排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F"><span class="nav-number">1.6.4.</span> <span class="nav-text">希尔排序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%A4%E6%8D%A2%E5%BC%8F%EF%BC%9A"><span class="nav-number">1.6.4.1.</span> <span class="nav-text">交换式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E6%B3%95"><span class="nav-number">1.6.4.2.</span> <span class="nav-text">移动法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F"><span class="nav-number">1.6.5.</span> <span class="nav-text">快速排序</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%80%9D%E8%B7%AF%EF%BC%9A"><span class="nav-number">1.6.5.0.1.</span> <span class="nav-text">编写思路：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F"><span class="nav-number">1.6.6.</span> <span class="nav-text">归并排序</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%80%9D%E8%B7%AF"><span class="nav-number">1.6.6.0.1.</span> <span class="nav-text">编写思路</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F"><span class="nav-number">1.6.7.</span> <span class="nav-text">基数排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E5%AF%B9%E6%AF%94"><span class="nav-number">1.6.8.</span> <span class="nav-text">排序对比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95"><span class="nav-number">1.7.</span> <span class="nav-text">查找算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE"><span class="nav-number">1.7.1.</span> <span class="nav-text">二分查找</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E5%80%BC%E6%9F%A5%E6%89%BE"><span class="nav-number">1.7.2.</span> <span class="nav-text">插值查找</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%90%E6%B3%A2%E6%8B%89%E5%A5%91%E6%9F%A5%E6%89%BE"><span class="nav-number">1.7.3.</span> <span class="nav-text">斐波拉契查找</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%93%88%E5%B8%8C%E8%A1%A8"><span class="nav-number">1.8.</span> <span class="nav-text">哈希表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tree"><span class="nav-number">1.9.</span> <span class="nav-text">Tree</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E4%B8%AD%E5%90%8E%E5%BA%8F%E6%9F%A5%E6%89%BE"><span class="nav-number">1.9.1.</span> <span class="nav-text">前中后序查找</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9"><span class="nav-number">1.9.2.</span> <span class="nav-text">删除节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="nav-number">1.9.3.</span> <span class="nav-text">顺序存储二叉树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%B4%A2%E5%8C%96%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="nav-number">1.9.4.</span> <span class="nav-text">线索化二叉树</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA"><span class="nav-number">1.9.4.1.</span> <span class="nav-text">构建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%81%8D%E5%8E%86"><span class="nav-number">1.9.4.2.</span> <span class="nav-text">遍历</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A0%86%E6%8E%92%E5%BA%8F"><span class="nav-number">1.9.5.</span> <span class="nav-text">堆排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B5%AB%E5%A4%AB%E6%9B%BC%E6%A0%91"><span class="nav-number">1.9.6.</span> <span class="nav-text">赫夫曼树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B5%AB%E5%A4%AB%E6%9B%BC%E7%BC%96%E7%A0%81"><span class="nav-number">1.9.7.</span> <span class="nav-text">赫夫曼编码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%8E%8B%E7%BC%A9"><span class="nav-number">1.9.7.1.</span> <span class="nav-text">数据压缩</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%8F%E8%8A%82%EF%BC%88%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">1.9.7.2.</span> <span class="nav-text">小节（注意事项)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%8E%92%E5%BA%8F%E6%A0%91"><span class="nav-number">1.9.8.</span> <span class="nav-text">二叉排序树</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9-1"><span class="nav-number">1.9.8.1.</span> <span class="nav-text">删除节点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91-AVL-%E6%A0%91"><span class="nav-number">1.9.9.</span> <span class="nav-text">平衡二叉树 AVL 树</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B7%A6%E6%97%8B%E8%BD%AC"><span class="nav-number">1.9.9.1.</span> <span class="nav-text">左旋转</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%B3%E6%97%8B%E8%BD%AC"><span class="nav-number">1.9.9.2.</span> <span class="nav-text">右旋转</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8C%E6%97%8B%E8%BD%AC"><span class="nav-number">1.9.9.3.</span> <span class="nav-text">双旋转</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E8%B7%AF%E6%9F%A5%E6%89%BE%E6%A0%91"><span class="nav-number">1.9.10.</span> <span class="nav-text">多路查找树</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE"><span class="nav-number">1.10.</span> <span class="nav-text">图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86-DFS"><span class="nav-number">1.10.1.</span> <span class="nav-text">深度优先遍历 DFS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2-BFS"><span class="nav-number">1.10.2.</span> <span class="nav-text">广度优先搜索 BFS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%81%E4%B8%AA%E5%B8%B8%E7%94%A8%E7%AE%97%E6%B3%95"><span class="nav-number">1.11.</span> <span class="nav-text">十个常用算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%EF%BC%88%E9%9D%9E%E9%80%92%E5%BD%92%EF%BC%89"><span class="nav-number">1.11.1.</span> <span class="nav-text">二分查找（非递归）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95"><span class="nav-number">1.11.2.</span> <span class="nav-text">分治算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B1%89%E8%AF%BA%E5%A1%94"><span class="nav-number">1.11.2.1.</span> <span class="nav-text">汉诺塔</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95"><span class="nav-number">1.11.3.</span> <span class="nav-text">动态规划算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#KMP-%E7%AE%97%E6%B3%95"><span class="nav-number">1.11.4.</span> <span class="nav-text">KMP 算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9A%B4%E5%8A%9B%E5%8C%B9%E9%85%8D"><span class="nav-number">1.11.4.1.</span> <span class="nav-text">暴力匹配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#KMP"><span class="nav-number">1.11.4.2.</span> <span class="nav-text">KMP</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95"><span class="nav-number">1.11.5.</span> <span class="nav-text">贪心算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%99%AE%E5%88%A9%E5%A7%86%E7%AE%97%E6%B3%95-Prim"><span class="nav-number">1.11.6.</span> <span class="nav-text">普利姆算法 Prim</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%8B%E9%B2%81%E6%96%AF%E5%8D%A1%E5%B0%94%E7%AE%97%E6%B3%95-Kruskal"><span class="nav-number">1.11.7.</span> <span class="nav-text">克鲁斯卡尔算法 Kruskal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%AA%E6%9D%B0%E6%96%AF%E7%89%B9%E6%8B%89%E7%AE%97%E6%B3%95-Dijkstra"><span class="nav-number">1.11.8.</span> <span class="nav-text">迪杰斯特拉算法 Dijkstra</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%97%E6%B4%9B%E4%BC%8A%E5%BE%B7%E7%AE%97%E6%B3%95%EF%BC%88Floyd%EF%BC%89"><span class="nav-number">1.11.9.</span> <span class="nav-text">弗洛伊德算法（Floyd）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AA%91%E5%A3%AB%E5%91%A8%E6%B8%B8"><span class="nav-number">1.11.10.</span> <span class="nav-text">骑士周游</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E4%BC%98%E5%8C%96"><span class="nav-number">1.11.10.1.</span> <span class="nav-text">贪心算法优化</span></a></li></ol></li></ol></li></ol></li></ol>
+    
+    </div>
+  </aside>
 </section>
-          <aside id="sidebar">
-  
-    <div style="margin: 20px 0;">
-	<div id="search-form-wrap">
-
-    <form class="search-form">
-        <label style="width: 72%;">
-            <span class="screen-reader-text">Search for:</span>
-            <input type="search" class="search-field" style="height: 36px; width: 100%;" placeholder=" Search…" value="" name="s" title="Search for:">
-        </label>
-        <input type="submit" class="search-form-submit" value="Search">
-    </form>
-    <div class="ins-search">
-    <div class="ins-search-mask"></div>
-    <div class="ins-search-container">
-        <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="Type something..."/>
-            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
-        </div>
-        <div class="ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
-</div>
-<script>
-(function (window) {
-    var INSIGHT_CONFIG = {
-        TRANSLATION: {
-            POSTS: 'Posts',
-            PAGES: 'Pages',
-            CATEGORIES: 'Categories',
-            TAGS: 'Tags',
-            UNTITLED: '(Untitled)',
-        },
-        ROOT_URL: '/',
-        CONTENT_URL: '/content.json',
-    };
-    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-})(window);
-</script>
-
-<script src="/js/insight.js"></script>
-
-
-</div>
-</div>
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Connect With Us</h3>
-    <div class="widget widget_athemes_social_icons">
-
-    	<ul class="clearfix widget-social-icons">   
-    	
-   			<li><a target="_blank" rel="noopener" href="https://github.com/ZhuoyueAlbert" title="Github"><i class="fa fa-github" aria-hidden="true"></i></a></li> 
-
-   		
-   			<li><a href="" title="Weibo"><i class="fa fa-weibo" aria-hidden="true"></i></a></li> 
-
-   		
-   			<li><a href="" title="Twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a></li> 
-
-   		
-   			<li><a href="" title="Facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a></li> 
-
-   		
-   			<li><a href="" title="Google-plus"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li> 
-
-   		
-   			<li><a href="" title="Instagram"><i class="fa fa-instagram" aria-hidden="true"></i></a></li> 
-
-   		
-   		</ul>
-
-
-   		<!--
-   		<ul class="clearfix widget-social-icons">   		
-   		<li class="widget-si-twitter"><a target="_blank" rel="noopener" href="http://twitter.com" title="Twitter"><i class="ico-twitter"></i></a></li> 
-		<li class="widget-si-facebook"><a target="_blank" rel="noopener" href="http://facebook.com" title="Facebook"><i class="ico-facebook"></i></a></li>
-			<li class="widget-si-gplus"><a target="_blank" rel="noopener" href="http://plus.google.com" title="Google+"><i class="ico-gplus"></i></a></li>
-			<li class="widget-si-pinterest"><a target="_blank" rel="noopener" href="http://pinterest.com" title="Pinterest"><i class="ico-pinterest"></i></a></li>
-			<li class="widget-si-flickr"><a target="_blank" rel="noopener" href="http://flickr.com" title="Flickr"><i class="ico-flickr"></i></a></li>
-			<li class="widget-si-instagram"><a target="_blank" rel="noopener" href="http://instagram.com" title="Instagram"><i class="ico-instagram"></i></a></li>
-		</ul> -->
-
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget_athemes_tabs">
-    <ul id="widget-tab" class="clearfix widget-tab-nav">
-      <li class="active"><a>Recent Posts</a></li>
-    </ul>
-    <div class="widget">
-      <ul>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2022/06/19/Java-data-structure-and-algorithm/">Java Data Structure and Algorithm</a></h6>
-              <span>June 19, 2022</span>
-            </div>
-
-          </li>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2022/06/17/hello-world/">Hello World</a></h6>
-              <span>June 17, 2022</span>
-            </div>
-
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Date-Structure/">Date Structure</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Date-Structure/Algorithm/">Algorithm</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Date-Structure/Algorithm/Java/">Java</a><span class="category-list-count">1</span></li></ul></li></ul></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/" rel="tag">Algorithm</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Date-Structure/" rel="tag">Date Structure</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">1</span></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/Algorithm/" style="font-size: 10px;">Algorithm</a> <a href="/tags/Date-Structure/" style="font-size: 10px;">Date Structure</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">2</span></li></ul>
-    </div>
-  </div>
-
-
-  
-</aside>
         
       </div>
 
