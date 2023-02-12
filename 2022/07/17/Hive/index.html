@@ -1,0 +1,1613 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Zhao Zhuoyue">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="HiveHive 概述Hive由 Facebook 开源用于解决海量结构化日志的数据统计工具。    是基于 Hadoop 的一个数据仓库工具，可以将结构化的数据文件映射为一张表，并提供类 SQL 查询功能。   Hive 本质：将 HQL 转化成 MapReduce 程序     Hive 处理的数据存储在 HDFS 上 Hive 分析数据底层的实现是 MapReduce 执行程序运行在 Yar">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MapReduce">
+<meta property="og:url" content="http://example.com/2022/07/17/Hive/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="HiveHive 概述Hive由 Facebook 开源用于解决海量结构化日志的数据统计工具。    是基于 Hadoop 的一个数据仓库工具，可以将结构化的数据文件映射为一张表，并提供类 SQL 查询功能。   Hive 本质：将 HQL 转化成 MapReduce 程序     Hive 处理的数据存储在 HDFS 上 Hive 分析数据底层的实现是 MapReduce 执行程序运行在 Yar">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/07/17/Hive/image-20220724091001449.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Hive/image-20220724093129469.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Hive/image-20220724101514813.png">
+<meta property="article:published_time" content="2022-07-17T08:32:00.000Z">
+<meta property="article:modified_time" content="2023-02-12T16:50:17.261Z">
+<meta property="article:author" content="Zhao Zhuoyue">
+<meta property="article:tag" content="Hive">
+<meta property="article:tag" content="HSQL">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2022/07/17/Hive/image-20220724091001449.png">
+  
+  
+  
+  <title>MapReduce - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="MapReduce"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-07-17 16:32" pubdate>
+          2022年7月17日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          21k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          178 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">MapReduce</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Hive"><a href="#Hive" class="headerlink" title="Hive"></a>Hive</h1><h2 id="Hive-概述"><a href="#Hive-概述" class="headerlink" title="Hive 概述"></a>Hive 概述</h2><h3 id="Hive-1"><a href="#Hive-1" class="headerlink" title="Hive"></a>Hive</h3><p>由 Facebook 开源用于解决海量<strong>结构化</strong>日志的数据统计工具。   </p>
+<p>是基于 Hadoop 的一个<strong>数据仓库工具</strong>，可以将<strong>结构化的数据文件映射为一张表</strong>，并提供<strong>类 SQL</strong> 查询功能。  </p>
+<p><strong>Hive 本质</strong>：将 HQL 转化成 MapReduce 程序  </p>
+<blockquote>
+<ol>
+<li>Hive 处理的数据存储在 HDFS 上</li>
+<li>Hive 分析数据底层的实现是 MapReduce</li>
+<li>执行程序运行在 Yarn 上</li>
+</ol>
+</blockquote>
+<img src="/2022/07/17/Hive/image-20220724091001449.png" srcset="/img/loading.gif" lazyload alt="SQL-MapReduce" style="zoom: 33%;">
+
+<h3 id="Hive-优缺点"><a href="#Hive-优缺点" class="headerlink" title="Hive 优缺点"></a>Hive 优缺点</h3><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ol>
+<li>操作接口采用类 SQL 语法，提供快速开发的能力（简单、容易上手） 。  </li>
+<li>避免了去写 MapReduce，减少开发人员的学习成本。  </li>
+<li>Hive 的执行延迟比较高，因此 Hive 常用于数据分析，对实时性要求不高的场合。  </li>
+<li>Hive 优势在于处理大数据，对于处理小数据没有优势，因为 Hive 的执行延迟比较<br>高  </li>
+<li>Hive 支持用户自定义函数，用户可以根据自己的需求来实现自己的函数。</li>
+</ol>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ol>
+<li><p>Hive 的 HQL 表达能力有限  </p>
+<blockquote>
+<ol>
+<li>迭代式算法无法表达  </li>
+<li><strong>数据挖掘方面不擅长</strong>， 由于 MapReduce 数据处理流程的限制，效率更高的算法却无法实现。</li>
+</ol>
+</blockquote>
+</li>
+<li><p>Hive 的效率比较低  </p>
+<blockquote>
+<ol>
+<li>Hive 自动生成的 MapReduce 作业，通常情况下不够智能化  </li>
+<li>Hive 调优比较困难，粒度较粗</li>
+</ol>
+</blockquote>
+</li>
+</ol>
+<h3 id="Hive-架构原理"><a href="#Hive-架构原理" class="headerlink" title="Hive 架构原理"></a>Hive 架构原理</h3><img src="/2022/07/17/Hive/image-20220724093129469.png" srcset="/img/loading.gif" lazyload alt="Hive Architecture" style="zoom:50%;">
+
+<ol>
+<li><p><strong>用户接口：Client</strong></p>
+<blockquote>
+<p>CLI（command-line interface）  </p>
+<p>JDBC&#x2F;ODBC(jdbc 访问 hive)  </p>
+<p>WEBUI（浏览器访问 hive）  </p>
+</blockquote>
+</li>
+<li><p><strong>元数据： Metastore</strong>  </p>
+<blockquote>
+<p><strong>元数据包括</strong> ：表名、表所属的数据库（默认是 default）、表的拥有者、列&#x2F;分区字段、<br>表的类型（是否是外部表）、表的数据所在目录等；  </p>
+<p>默认存储在自带的 derby 数据库中，<strong>推荐使用 MySQL 存储 Metastore</strong>  </p>
+</blockquote>
+</li>
+<li><p><strong>Hadoop</strong>  </p>
+<blockquote>
+<p>使用 HDFS 进行存储，使用 MapReduce 进行计算。  </p>
+</blockquote>
+</li>
+<li><p><strong>驱动器： Driver</strong>  </p>
+<blockquote>
+<ol>
+<li><strong>解析器（SQL Parser）</strong>：将 SQL 字符串转换成抽象语法树 AST，这一步一般都用第三方工具库完成，比如 antlr；对 AST 进行语法分析，比如表是否存在、字段是否存在、 SQL语义是否有误。 </li>
+<li><strong>编译器（Physical Plan）</strong>：将 AST 编译生成逻辑执行计划。  </li>
+<li><strong>优化器（Query Optimizer）：</strong>对逻辑执行计划进行优化。  </li>
+<li><strong>执行器（Execution）</strong>：把逻辑执行计划转换成可以运行的物理计划。对于 Hive 来说， 就是 MR&#x2F;Spark。</li>
+</ol>
+</blockquote>
+</li>
+</ol>
+<p><img src="/2022/07/17/Hive/image-20220724101514813.png" srcset="/img/loading.gif" lazyload alt="Hive Working Mechanism"></p>
+<p>Hive 通过给用户提供的一系列交互接口，接收到用户的指令(SQL)，使用自己的 Driver，结合元数据(MetaStore)，将这些指令翻译成 MapReduce，提交到 Hadoop 中执行，最后，将执行返回的结果输出到用户交互接口。  </p>
+<h4 id="数据更新"><a href="#数据更新" class="headerlink" title="数据更新"></a>数据更新</h4><p>由于 Hive 是针对数据仓库应用设计的，而<strong>数据仓库的内容是读多写少的</strong>。 因此， <strong>Hive 中不建议对数据的改写，所有的数据都是在加载的时候确定好的</strong>。 而数据库中的数据通常是需要经常进行修改的，因此可以使用 INSERT INTO … VALUES 添加数据，使用 UPDATE … SET 修改数据。  </p>
+<h4 id="执行延迟"><a href="#执行延迟" class="headerlink" title="执行延迟"></a>执行延迟</h4><ol>
+<li>Hive 在查询数据的时候，由于没有索引，需要扫描整个表，因此延迟较高。 </li>
+<li>另外一个导致 Hive 执行延迟高的因素是 MapReduce 框架。由于 MapReduce 本身具有较高的延迟，因此在利用 MapReduce 执行 Hive 查询时，也会有较高的延迟。</li>
+</ol>
+<h2 id="Hive-数据类型"><a href="#Hive-数据类型" class="headerlink" title="Hive 数据类型"></a>Hive 数据类型</h2><h3 id="基本数据类型"><a href="#基本数据类型" class="headerlink" title="基本数据类型"></a>基本数据类型</h3><table>
+<thead>
+<tr>
+<th>Hive 数据类型</th>
+<th>Java 数据类型</th>
+<th>长度</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TINYINT</td>
+<td>byte</td>
+<td>1byte 有符号整数</td>
+<td>20</td>
+</tr>
+<tr>
+<td>SMALINT</td>
+<td>short</td>
+<td>2byte 有符号整数</td>
+<td>20</td>
+</tr>
+<tr>
+<td>INT</td>
+<td>int</td>
+<td>4byte 有符号整数</td>
+<td>20</td>
+</tr>
+<tr>
+<td>BIGINT</td>
+<td>long</td>
+<td>8byte 有符号整数</td>
+<td>20</td>
+</tr>
+<tr>
+<td>BOOLEAN</td>
+<td>boolean</td>
+<td>布尔类型， true 或者 false</td>
+<td>TRUE FALSE</td>
+</tr>
+<tr>
+<td>FLOAT</td>
+<td>float</td>
+<td>单精度浮点数</td>
+<td>3.14159</td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>double</td>
+<td>双精度浮点数</td>
+<td>3.14159</td>
+</tr>
+<tr>
+<td>STRING</td>
+<td>string</td>
+<td>字符系列。可以指定字 符集。可以使用单引号或者双 引号。</td>
+<td>‘ now is the time ’ “for all good men”</td>
+</tr>
+<tr>
+<td>TIMESTAMP</td>
+<td></td>
+<td>时间类型</td>
+<td></td>
+</tr>
+<tr>
+<td>BINARY</td>
+<td></td>
+<td>字节数</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>对于 Hive 的 String 类型相当于数据库的 varchar 类型，该类型是一个可变的字符串，不过它不能声明其中最多能存储多少个字符，理论上它可以存储 2GB 的字符数。  </p>
+<h3 id="集合数据类型"><a href="#集合数据类型" class="headerlink" title="集合数据类型"></a>集合数据类型</h3><table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>描述</th>
+<th>语法示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>STRUCT</td>
+<td>和 c 语言中的 struct 类似，都可以通过“点”符号访 问元素内容。例如，如果某个列的数据类型是 STRUCT{first STRING, last STRING},那么<strong>第 1 个元素可以通过字段.first 来引用</strong>。</td>
+<td>struct() 例 如 struct&lt;street:string, city:string&gt;</td>
+</tr>
+<tr>
+<td>MAP</td>
+<td>MAP 是一组键-值对元组集合，使用数组表示法可以访问数据。例如，如果某个列的数据类型是 MAP，其中键 -&gt;值对是’ first’ -&gt;’ John’和’ last’ -&gt;’ Doe’，那么可以通过字段名[‘last’ ]获取最后一个元素</td>
+<td>map() 例如 map&lt;string, int&gt;</td>
+</tr>
+<tr>
+<td>ARRAY</td>
+<td>数组是一组具有相同类型和名称的变量的集合。这些 变量称为数组的元素，每个数组元素都有一个编号，编号从零开始。例如，数组值为[‘John’ , ‘Doe’ ]，那么第 2 个 元素可以通过数组名[1]进行引用。</td>
+<td>Array() 例如 array<string></string></td>
+</tr>
+</tbody></table>
+<p>Hive 有三种复杂数据类型 ARRAY、 MAP 和 STRUCT。 ARRAY 和 MAP 与 Java 中的 Array 和 Map 类似，而 STRUCT 与 C 语言中的 Struct 类似，它封装了一个命名字段集合，复杂数据类型允许任意层次的嵌套。  </p>
+<p><strong>案例实操</strong>  </p>
+<ol>
+<li><p>假设某表有如下一行， 我们用 JSON 格式来表示其数据结构。在 Hive 下访问的格<br>式为  </p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;songsong&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;friends&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;bingbing&quot;</span> <span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;lili&quot;</span><span class="hljs-punctuation">]</span> <span class="hljs-punctuation">,</span> <span class="hljs-comment">//列表 Array,</span><br>    <span class="hljs-attr">&quot;children&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span> <span class="hljs-comment">//键值 Map,</span><br>        <span class="hljs-attr">&quot;xiao song&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">18</span> <span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;xiaoxiao song&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">19</span><br>    <span class="hljs-punctuation">&#125;</span><br>    <span class="hljs-attr">&quot;address&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span> <span class="hljs-comment">//结构 Struct,</span><br>        <span class="hljs-attr">&quot;street&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;hui long guan&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;city&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;beijing&quot;</span><br>    <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>基于上述数据结构， 我们在 Hive 里创建对应的表， 并导入数据。  </p>
+<p>创建本地测试文件 test.txt  </p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">songsong</span>,bingbing_lili,xiao song:<span class="hljs-number">18</span>_xiaoxiao song:<span class="hljs-number">19</span>,hui long<br><span class="hljs-attribute">guan_beijing</span><br><span class="hljs-attribute">yangyang</span>,caicai_susu,xiao yang:<span class="hljs-number">18</span>_xiaoxiao yang:<span class="hljs-number">19</span>,chao yang_beijing<br></code></pre></td></tr></table></figure>
+
+<p>注意： MAP， STRUCT 和 ARRAY 里的<strong>元素间关系都可以用同一个字符表示</strong>， <strong>这里用“_”</strong>。  </p>
+</li>
+<li><p>Hive 上创建测试表 test  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">create</span> <span class="hljs-keyword">table</span> test(<br>name string,<br>friends <span class="hljs-keyword">array</span><span class="hljs-operator">&lt;</span>string<span class="hljs-operator">&gt;</span>,<br>children map<span class="hljs-operator">&lt;</span>string, <span class="hljs-type">int</span><span class="hljs-operator">&gt;</span>,<br>address struct<span class="hljs-operator">&lt;</span>street:string, city:string<span class="hljs-operator">&gt;</span><br>)<br><span class="hljs-type">row</span> format delimited fields terminated <span class="hljs-keyword">by</span> <span class="hljs-string">&#x27;,&#x27;</span><br>collection items terminated <span class="hljs-keyword">by</span> <span class="hljs-string">&#x27;_&#x27;</span><br>map keys terminated <span class="hljs-keyword">by</span> <span class="hljs-string">&#x27;:&#x27;</span><br>lines terminated <span class="hljs-keyword">by</span> <span class="hljs-string">&#x27;\n&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>字段解释：  </p>
+<p>row format delimited fields terminated by ‘,’ 			– 列分隔符  </p>
+<p>collection items terminated by ‘_’ 			–MAP STRUCT 和 ARRAY 的分隔符(数据分割符号)  </p>
+<p>map keys terminated by ‘:’			– MAP 中的 key 与 value 的分隔符</p>
+<p>lines terminated by ‘\n’;			– 行分隔符</p>
+</blockquote>
+</li>
+<li><p>导入文本数据到测试表</p>
+<blockquote>
+<p>load data local inpath ‘&#x2F;opt&#x2F;module&#x2F;hive&#x2F;datas&#x2F;test.txt’ into table test;  </p>
+</blockquote>
+</li>
+<li><p>访问三种集合列里的数据，以下分别是 ARRAY， MAP， STRUCT 的访问方式  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">select</span> friends[<span class="hljs-number">1</span>],children[<span class="hljs-string">&#x27;xiao song&#x27;</span>],address.city <span class="hljs-keyword">from</span> test<br><span class="hljs-keyword">where</span> <span class="hljs-type">name</span>=&quot;songsong&quot;;<br>OK<br>_c0 _c1 city<br>lili <span class="hljs-number">18</span> beijing<br><span class="hljs-type">Time</span> taken: <span class="hljs-number">0.076</span> seconds, Fetched: <span class="hljs-number">1</span> <span class="hljs-keyword">row</span>(s)<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="类型转化"><a href="#类型转化" class="headerlink" title="类型转化"></a>类型转化</h3><ol>
+<li><p>隐式类型转换规则如下:</p>
+<blockquote>
+<ol>
+<li>任何整数类型都可以隐式地转换为一个范围更广的类型，如 TINYINT 可以转换成 INT， INT 可以转换成 BIGINT。  </li>
+<li>所有整数类型、 FLOAT 和 <strong>STRING 类型</strong>都可以隐式地转换成 DOUBLE。  </li>
+<li>TINYINT、 SMALLINT、 INT 都可以转换为 FLOAT。  </li>
+<li>BOOLEAN 类型不可以转换为任何其它的类型。</li>
+</ol>
+</blockquote>
+</li>
+<li><p>可以使用 <strong>CAST</strong> 操作<strong>显示</strong>进行<strong>数据类型转换</strong>  </p>
+<blockquote>
+<p>例如 CAST(‘1’ AS INT)将把字符串’1’ 转换成整数 1；如果强制类型转换失败，如执行 CAST(‘X’ AS INT)，表达式返回空值 NULL。</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="DDL-数据定义"><a href="#DDL-数据定义" class="headerlink" title="DDL 数据定义"></a>DDL 数据定义</h2><h3 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> DATABASE [IF <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">EXISTS</span>] database_name<br>[COMMENT database_comment]<br>[LOCATION hdfs_path]<br>[<span class="hljs-keyword">WITH</span> DBPROPERTIES (property_name<span class="hljs-operator">=</span>property_value, ...)];<br></code></pre></td></tr></table></figure>
+
+<ol>
+<li><p>创建一个数据库，数据库在 HDFS 上的默认存储路径是&#x2F;user&#x2F;hive&#x2F;warehouse&#x2F;*.db。  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">create</span> <span class="hljs-keyword">database</span> db_hive;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>避免要创建的数据库已经存在错误，增加 if not exists 判断。（标准写法）  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">create</span> <span class="hljs-keyword">database</span> db_hive;<br>FAILED: Execution Error, <span class="hljs-keyword">return</span> code <span class="hljs-number">1</span> <span class="hljs-keyword">from</span><br>org.apache.hadoop.hive.ql.exec.DDLTask. <span class="hljs-keyword">Database</span> db_hive already <span class="hljs-keyword">exists</span><br>hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">create</span> <span class="hljs-keyword">database</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">exists</span> db_hive;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>创建一个数据库，指定数据库在 HDFS 上存放的位置  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">create</span> <span class="hljs-keyword">database</span> db_hive2 <span class="hljs-keyword">location</span> <span class="hljs-string">&#x27;/db_hive2.db&#x27;</span>;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="查询数据库"><a href="#查询数据库" class="headerlink" title="查询数据库"></a>查询数据库</h3><p><strong>显示数据库</strong>  </p>
+<ol>
+<li><p>显示数据库  </p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf">hive&gt; show databases<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>过滤显示查询的数据库  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql">hive<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">show</span> databases <span class="hljs-keyword">like</span> <span class="hljs-string">&#x27;db_hive*&#x27;</span>;<br>OK<br>db_hive<br>db_hive_1<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>查看数据库详情</strong>  </p>
+<ol>
+<li><p>显示数据库信息  </p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk">hive&gt; desc database db_hive;<br>OK<br>db_hive hdfs:<span class="hljs-regexp">//</span>hadoop102:<span class="hljs-number">9820</span><span class="hljs-regexp">/user/</span>hive<span class="hljs-regexp">/warehouse/</span>db_hive.db<br>	albertUSER<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>显示数据库详细信息， extended  </p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk">hive&gt; desc database extended db_hive;<br>OK<br>db_hive hdfs:<span class="hljs-regexp">//</span>hadoop102:<span class="hljs-number">9820</span><span class="hljs-regexp">/user/</span>hive<span class="hljs-regexp">/warehouse/</span>db_hive.db<br>	albertUSER<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>切换当前数据库</strong>  </p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs actionscript">hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">use</span> db_hive;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="修改数据库"><a href="#修改数据库" class="headerlink" title="修改数据库"></a>修改数据库</h3><p>用户可以使用 ALTER DATABASE 命令为某个数据库的 DBPROPERTIES 设置键-值对属性值，来描述这个数据库的属性信息。  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">alter</span> <span class="hljs-keyword">database</span> db_hive<br><span class="hljs-keyword">set</span> dbproperties(<span class="hljs-string">&#x27;createtime&#x27;</span>=<span class="hljs-string">&#x27;20170830&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>在 hive 中查看修改结果  </p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk">hive&gt; desc database extended db_hive;<br>db_name comment location owner_name owner_type parameters<br>db_hive hdfs:<span class="hljs-regexp">//</span>hadoop102:<span class="hljs-number">9820</span><span class="hljs-regexp">/user/</span>hive<span class="hljs-regexp">/warehouse/</span>db_hive.db<br>albert USER &#123;createtime=<span class="hljs-number">20170830</span>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="删除数据库"><a href="#删除数据库" class="headerlink" title="删除数据库"></a>删除数据库</h3><ol>
+<li><p>删除空数据库  </p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs n1ql">hive&gt; <span class="hljs-keyword">drop</span> <span class="hljs-keyword">database</span> db_hive2;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>如果删除的数据库不存在， 最好采用 if exists 判断数据库是否存在  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive&gt; <span class="hljs-keyword">drop</span> <span class="hljs-keyword">database</span> db_hive;<br>FAILED: SemanticException [Error <span class="hljs-number">10072</span>]: <span class="hljs-keyword">Database</span> does <span class="hljs-keyword">not</span> exist: db_hive<br>hive&gt; <span class="hljs-keyword">drop</span> <span class="hljs-keyword">database</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">exists</span> db_hive;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>如果数据库不为空，可以采用 cascade 命令，强制删除  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive&gt; <span class="hljs-keyword">drop</span> <span class="hljs-keyword">database</span> db_hive;<br>FAILED: Execution Error, <span class="hljs-keyword">return</span> code <span class="hljs-number">1</span> <span class="hljs-keyword">from</span><br>org.apache.hadoop.hive.ql.exec.DDLTask.<br>InvalidOperationException(message:<span class="hljs-keyword">Database</span> db_hive <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> empty. One <span class="hljs-keyword">or</span><br>more <span class="hljs-keyword">tables</span> exist.)<br>hive&gt; <span class="hljs-keyword">drop</span> <span class="hljs-keyword">database</span> db_hive <span class="hljs-keyword">cascade</span>;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h3><ol>
+<li><p>建表语法</p>
+<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs inform7">CREATE <span class="hljs-comment">[EXTERNAL]</span> TABLE <span class="hljs-comment">[IF NOT EXISTS]</span> table_name<br><span class="hljs-comment">[(col_name data_type <span class="hljs-comment">[COMMENT col_comment]</span>, ...)]</span><br><span class="hljs-comment">[COMMENT table_comment]</span><br><span class="hljs-comment">[PARTITIONED BY (col_name data_type <span class="hljs-comment">[COMMENT col_comment]</span>, ...)]</span><br><span class="hljs-comment">[CLUSTERED BY (col_name, col_name, ...)</span><br><span class="hljs-comment"><span class="hljs-comment">[SORTED BY (col_name <span class="hljs-comment">[ASC|DESC]</span>, ...)]</span> INTO num_buckets BUCKETS]</span><br><span class="hljs-comment">[ROW FORMAT row_format]</span><br><span class="hljs-comment">[STORED AS file_format]</span><br><span class="hljs-comment">[LOCATION hdfs_path]</span><br><span class="hljs-comment">[TBLPROPERTIES (property_name=property_value, ...)]</span><br><span class="hljs-comment">[AS select_statement]</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>字段解释说明  </p>
+<blockquote>
+<ol>
+<li><p>CREATE TABLE 创建一个指定名字的表。如果相同名字的表已经存在， 则抛出异常；用户可以用 IF NOT EXISTS 选项来忽略这个异常。  </p>
+</li>
+<li><p><strong>EXTERNAL 关键字</strong>可以让用户创建一个<strong>外部表</strong>，在建表的同时可以指定一个指向实际数据的路径（LOCATION） ， 在<strong>删除表的时候</strong>，<strong>内部表的元数据和数据会被一起删除，而外部表只删除元数据，不删除数据。</strong>  </p>
+</li>
+<li><p>COMMENT：为表和列添加注释。  </p>
+</li>
+<li><p>PARTITIONED BY 创建分区表  </p>
+</li>
+<li><p>CLUSTERED BY 创建分桶表  </p>
+</li>
+<li><p>SORTED BY 不常用， 对桶中的一个或多个列另外排序  </p>
+</li>
+<li><p>ROW FORMAT  </p>
+<figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs vbnet">DELIMITED [FIELDS TERMINATED <span class="hljs-keyword">BY</span> <span class="hljs-type">char</span>] [COLLECTION ITEMS TERMINATED <span class="hljs-keyword">BY</span> <span class="hljs-type">char</span>]<br>[MAP KEYS TERMINATED <span class="hljs-keyword">BY</span> <span class="hljs-type">char</span>] [LINES TERMINATED <span class="hljs-keyword">BY</span> <span class="hljs-type">char</span>]<br>| SERDE serde_name [<span class="hljs-keyword">WITH</span> SERDEPROPERTIES (property_name=property_value,<br>property_name=property_value, ...)]<br></code></pre></td></tr></table></figure>
+
+<p>用户在建表的时候可以自定义 SerDe 或者使用自带的 SerDe。如果没有指定 ROW FORMAT 或者 ROW FORMAT DELIMITED，将会使用自带的 SerDe。在建表的时候，用户还需要为表指定列，用户在指定表的列的同时也会指定自定义的 SerDe， <strong>Hive 通过 SerDe 确定表的具体的列的数据</strong>。  </p>
+<p>SerDe 是 Serialize&#x2F;Deserilize 的简称， hive 使用 Serde 进行行对象的序列与反序列化。  </p>
+</li>
+<li><p>STORED AS 指定存储文件类型  </p>
+<p>常用的存储文件类型： SEQUENCEFILE（二进制序列文件）、 TEXTFILE（文本）、 RCFILE（列式存储格式文件）<br>如果文件数据是纯文本，可以使用STORED AS TEXTFILE。如果数据需要压缩，使用 STORED AS SEQUENCEFILE。  </p>
+</li>
+<li><p>LOCATION ：指定表在 HDFS 上的存储位置。  </p>
+</li>
+<li><p>AS：后跟查询语句， 根据查询结果创建表。  </p>
+</li>
+<li><p>LIKE 允许用户复制现有的表结构，但是不复制数据。</p>
+</li>
+</ol>
+</blockquote>
+</li>
+</ol>
+<h3 id="管理表-内部表"><a href="#管理表-内部表" class="headerlink" title="管理表 ( 内部表 )"></a>管理表 ( 内部表 )</h3><ol>
+<li><p>理论</p>
+<blockquote>
+<p>默认创建的表都是所谓的管理表，有时也被称为内部表。因为这种表， Hive 会（或多或少地）控制着数据的生命周期。 Hive 默认情况下会将这些表的数据存储在由配置项 hive.metastore.warehouse.dir(例如， &#x2F;user&#x2F;hive&#x2F;warehouse)所定义的目录的子目录下。    </p>
+<p>当我们删除一个管理表时， Hive 也会删除这个表中数据。 管理表不适合和其他工具共享<br>数据。  </p>
+</blockquote>
+</li>
+<li><p>案例实操  </p>
+<ol>
+<li><p>原始数据</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-number">1001	</span><span class="hljs-string">ss1</span><br><span class="hljs-number">1002	</span><span class="hljs-string">ss2</span><br><span class="hljs-number">1003	</span><span class="hljs-string">ss3</span><br><span class="hljs-number">1004	</span><span class="hljs-string">ss4</span><br><span class="hljs-number">1005	</span><span class="hljs-string">ss5</span><br><span class="hljs-number">1006	</span><span class="hljs-string">ss6</span><br><span class="hljs-number">1007	</span><span class="hljs-string">ss7</span><br><span class="hljs-number">1008	</span><span class="hljs-string">ss8</span><br><span class="hljs-number">1009	</span><span class="hljs-string">ss9</span><br><span class="hljs-number">1010	</span><span class="hljs-string">ss10</span><br><span class="hljs-number">1011	</span><span class="hljs-string">ss11</span><br><span class="hljs-number">1012	</span><span class="hljs-string">ss12</span><br><span class="hljs-number">1013	</span><span class="hljs-string">ss13</span><br><span class="hljs-number">1014	</span><span class="hljs-string">ss14</span><br><span class="hljs-number">1015	</span><span class="hljs-string">ss15</span><br><span class="hljs-number">1016	</span><span class="hljs-string">ss16</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>普通创建表  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">create</span> <span class="hljs-keyword">table</span> if <span class="hljs-keyword">exists</span> student(<br>id <span class="hljs-type">int</span>, name string<br>)<br><span class="hljs-type">row</span> format delimited fields terminated <span class="hljs-keyword">by</span> <span class="hljs-string">&#x27;\t&#x27;</span><br>stored <span class="hljs-keyword">as</span> textfile<br>location <span class="hljs-string">&#x27;/user/hive/warehouse/student&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>根据查询结果创建表（查询的结果会添加到新创建的表中）  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">create</span> <span class="hljs-keyword">table</span> if <span class="hljs-keyword">not</span> <span class="hljs-keyword">exists</span> student2 <span class="hljs-keyword">as</span> <span class="hljs-keyword">select</span> id, name <span class="hljs-keyword">from</span> student;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>根据已经存在的表结构创建表  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">create</span> <span class="hljs-keyword">table</span> if <span class="hljs-keyword">not</span> <span class="hljs-keyword">exists</span> student3 <span class="hljs-keyword">like</span> student;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>查询类型</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">desc</span> formatted student2;<br><span class="hljs-keyword">Table</span> <span class="hljs-keyword">Type</span>: MANAGED_TABLE<br></code></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+<h3 id="外部表"><a href="#外部表" class="headerlink" title="外部表"></a>外部表</h3><ol>
+<li><p>理论</p>
+<blockquote>
+<p>因为表是外部表， 所以 Hive 并非认为其完全拥有这份数据。删除该表并不会删除掉这份数据，不过描述表的元数据信息会被删除掉。  </p>
+</blockquote>
+</li>
+<li><p>管理表和外部表的使用场景  </p>
+<blockquote>
+<p>每天将收集到的网站日志定期流入 HDFS 文本文件。在外部表（原始日志表）的基础上做大量的统计分析，用到的中间表、结果表使用内部表存储，数据通过 SELECT+INSERT 进入内部表。</p>
+</blockquote>
+</li>
+</ol>
+<p><strong>案例实操</strong>  </p>
+<p>分别创建部门和员工外部表，并向表中导入数据。  </p>
+<ol start="0">
+<li><p>原始数据  </p>
+<p>dept：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">10</span>	ACCOUNTING	<span class="hljs-number">1700</span><br><span class="hljs-attribute">20</span>	RESEARCH	<span class="hljs-number">1800</span><br><span class="hljs-attribute">30</span>	SALES	<span class="hljs-number">1900</span><br><span class="hljs-attribute">40</span>	OPERATIONS	<span class="hljs-number">1700</span><br></code></pre></td></tr></table></figure>
+
+<p>emp:</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">7369</span>	SMITH	CLERK	<span class="hljs-number">7902</span>	<span class="hljs-number">1980</span>-<span class="hljs-number">12</span>-<span class="hljs-number">17</span>	<span class="hljs-number">800</span>.<span class="hljs-number">00</span>	<span class="hljs-number">20</span><br><span class="hljs-attribute">7499</span>	ALLEN	SALESMAN	<span class="hljs-number">7698</span>	<span class="hljs-number">1981</span>-<span class="hljs-number">2</span>-<span class="hljs-number">20</span>	<span class="hljs-number">1600</span>.<span class="hljs-number">00</span>	<span class="hljs-number">300</span>.<span class="hljs-number">00</span>	<span class="hljs-number">30</span><br><span class="hljs-attribute">7521</span>	WARD	SALESMAN	<span class="hljs-number">7698</span>	<span class="hljs-number">1981</span>-<span class="hljs-number">2</span>-<span class="hljs-number">22</span>	<span class="hljs-number">1250</span>.<span class="hljs-number">00</span>	<span class="hljs-number">500</span>.<span class="hljs-number">00</span>	<span class="hljs-number">30</span><br><span class="hljs-attribute">7566</span>	JONES	MANAGER	<span class="hljs-number">7839</span>	<span class="hljs-number">1981</span>-<span class="hljs-number">4</span>-<span class="hljs-number">2</span>	<span class="hljs-number">2975</span>.<span class="hljs-number">00</span>	<span class="hljs-number">20</span><br><span class="hljs-attribute">7654</span>	MARTIN	SALESMAN	<span class="hljs-number">7698</span>	<span class="hljs-number">1981</span>-<span class="hljs-number">9</span>-<span class="hljs-number">28</span>	<span class="hljs-number">1250</span>.<span class="hljs-number">00</span>	<span class="hljs-number">1400</span>.<span class="hljs-number">00</span>	<span class="hljs-number">30</span><br><span class="hljs-attribute">7698</span>	BLAKE	MANAGER	<span class="hljs-number">7839</span>	<span class="hljs-number">1981</span>-<span class="hljs-number">5</span>-<span class="hljs-number">1</span>	<span class="hljs-number">2850</span>.<span class="hljs-number">00</span>	<span class="hljs-number">30</span><br><span class="hljs-attribute">7782</span>	CLARK	MANAGER	<span class="hljs-number">7839</span>	<span class="hljs-number">1981</span>-<span class="hljs-number">6</span>-<span class="hljs-number">9</span>	<span class="hljs-number">2450</span>.<span class="hljs-number">00</span>	<span class="hljs-number">10</span><br><span class="hljs-attribute">7788</span>	SCOTT	ANALYST	<span class="hljs-number">7566</span>	<span class="hljs-number">1987</span>-<span class="hljs-number">4</span>-<span class="hljs-number">19</span>	<span class="hljs-number">3000</span>.<span class="hljs-number">00</span>	<span class="hljs-number">20</span><br><span class="hljs-attribute">7839</span>	KING	PRESIDENT	<span class="hljs-number">1981</span>-<span class="hljs-number">11</span>-<span class="hljs-number">17</span>	<span class="hljs-number">5000</span>.<span class="hljs-number">00</span>	<span class="hljs-number">10</span><br><span class="hljs-attribute">7844</span>	TURNER	SALESMAN	<span class="hljs-number">7698</span>	<span class="hljs-number">1981</span>-<span class="hljs-number">9</span>-<span class="hljs-number">8</span>	<span class="hljs-number">1500</span>.<span class="hljs-number">00</span>	<span class="hljs-number">0</span>.<span class="hljs-number">00</span>	<span class="hljs-number">30</span><br><span class="hljs-attribute">7876</span>	ADAMS	CLERK	<span class="hljs-number">7788</span>	<span class="hljs-number">1987</span>-<span class="hljs-number">5</span>-<span class="hljs-number">23</span>	<span class="hljs-number">1100</span>.<span class="hljs-number">00</span>	<span class="hljs-number">20</span><br><span class="hljs-attribute">7900</span>	JAMES	CLERK	<span class="hljs-number">7698</span>	<span class="hljs-number">1981</span>-<span class="hljs-number">12</span>-<span class="hljs-number">3</span>	<span class="hljs-number">950</span>.<span class="hljs-number">00</span>	<span class="hljs-number">30</span><br><span class="hljs-attribute">7902</span>	FORD	ANALYST	<span class="hljs-number">7566</span>	<span class="hljs-number">1981</span>-<span class="hljs-number">12</span>-<span class="hljs-number">3</span>	<span class="hljs-number">3000</span>.<span class="hljs-number">00</span>	<span class="hljs-number">20</span><br><span class="hljs-attribute">7934</span>	MILLER	CLERK	<span class="hljs-number">7782</span>	<span class="hljs-number">1982</span>-<span class="hljs-number">1</span>-<span class="hljs-number">23</span>	<span class="hljs-number">1300</span>.<span class="hljs-number">00</span>	<span class="hljs-number">10</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>上传数据到 HDFS  </p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs gradle">hive (<span class="hljs-keyword">default</span>)&gt; dfs -mkdir /department<br>hive (<span class="hljs-keyword">default</span>)&gt; dfs -put <span class="hljs-regexp">/opt/m</span>odule<span class="hljs-regexp">/data/</span>dept.txt /department;<br>hive (<span class="hljs-keyword">default</span>)&gt; dfs -put <span class="hljs-regexp">/opt/m</span>odule<span class="hljs-regexp">/data/</span>emp.txt /department;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>建表语句， 创建外部表  </p>
+<p>创建部门表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">create</span> <span class="hljs-keyword">external</span> <span class="hljs-keyword">table</span> if <span class="hljs-keyword">not</span> <span class="hljs-keyword">exists</span> dept(<br>deptno <span class="hljs-type">int</span>,<br>dname string,<br>loc <span class="hljs-type">int</span><br>)<br><span class="hljs-type">row</span> format delimited fields terminated <span class="hljs-keyword">by</span> <span class="hljs-string">&#x27;\t&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<p>创建员工表</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">create</span> <span class="hljs-keyword">external</span> <span class="hljs-keyword">table</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">exists</span> emp(<br>empno <span class="hljs-type">int</span>,<br>ename string,<br>job string,<br>mgr string,<br>hiredate string,<br>sal <span class="hljs-type">double</span>,<br>comm <span class="hljs-type">double</span>,<br>deptno <span class="hljs-type">int</span><br>)<br><span class="hljs-keyword">row</span> <span class="hljs-keyword">format</span> delimited fields terminated <span class="hljs-keyword">by</span> <span class="hljs-string">&#x27;\t&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+</li>
+<li><p>查看创建的表  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive (<span class="hljs-keyword">default</span>)&gt;<span class="hljs-keyword">show</span> <span class="hljs-keyword">tables</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>查看表格式化数据  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">desc</span> formatted dept;<br><span class="hljs-keyword">Table</span> <span class="hljs-keyword">Type</span>: EXTERNAL_TABLE<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>删除外部表  </p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pf">hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">drop</span> <span class="hljs-built_in">table</span> dept;<br></code></pre></td></tr></table></figure>
+
+<p>外部表删除后， hdfs 中的数据还在， 但是 metadata 中 dept 的元数据已被删除</p>
+</li>
+</ol>
+<h4 id="管理表与外部表的互相转换"><a href="#管理表与外部表的互相转换" class="headerlink" title="管理表与外部表的互相转换"></a>管理表与外部表的互相转换</h4><ol>
+<li><p>查询表的类型  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">desc</span> formatted student2;<br><span class="hljs-keyword">Table</span> <span class="hljs-keyword">Type</span>: MANAGED_TABLE<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>修改内部表 student2 为外部表  </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-function">alert table student2 <span class="hljs-keyword">set</span> <span class="hljs-title">tblproperties</span>(<span class="hljs-params"><span class="hljs-string">&#x27;EXTERNAL&#x27;</span>=<span class="hljs-string">&#x27;TRUE&#x27;</span></span>)</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>查询表的类型</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">desc</span> formatted student2;<br><span class="hljs-keyword">Table</span> <span class="hljs-keyword">Type</span>: EXTERNAL_TABLE<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>修改外部表 student2 为内部表  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">alter</span> <span class="hljs-keyword">table</span> student2 <span class="hljs-keyword">set</span> tblproperties(<span class="hljs-string">&#x27;EXTERNAL&#x27;</span>=<span class="hljs-string">&#x27;FALSE&#x27;</span>);<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>查询表的类型  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">desc</span> formatted student2;<br><span class="hljs-keyword">Table</span> <span class="hljs-keyword">Type</span>: MANAGED_TABLE<br></code></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>： (‘EXTERNAL’&#x3D;’TRUE’)和(‘EXTERNAL’&#x3D;’FALSE’)为固定写法， 区分大小写！</p>
+</li>
+</ol>
+<h3 id="修改表"><a href="#修改表" class="headerlink" title="修改表"></a>修改表</h3><p><strong>重命名表</strong>  </p>
+<ol>
+<li><p>语法</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> <span class="hljs-built_in">table_name</span> <span class="hljs-keyword">RENAME</span> <span class="hljs-keyword">TO</span> new_table_name<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>实操</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive (<span class="hljs-keyword">default</span>)&gt;  alert <span class="hljs-keyword">table</span> deppt_partition2 <span class="hljs-keyword">rename</span> <span class="hljs-keyword">to</span> dept_partition3;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>增加&#x2F;修改&#x2F;替换列信息</strong>  </p>
+<ol>
+<li><p>语法</p>
+<ol>
+<li><p>更新列</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> <span class="hljs-built_in">table_name</span> CHANGE [<span class="hljs-keyword">COLUMN</span>] col_old_name col_new_name<br>column_type [<span class="hljs-keyword">COMMENT</span> col_comment] [FIRST|<span class="hljs-keyword">AFTER</span> <span class="hljs-built_in">column_name</span>]<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>增加和替换列  </p>
+<figure class="highlight sas"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sas"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> table_name <span class="hljs-keyword">ADD</span>|<span class="hljs-keyword">REPLACE</span> COLUMNS (col_name data_type [COMMENT<br>col_comment], ...)<br></code></pre></td></tr></table></figure>
+
+<p><strong>注</strong>： ADD 是代表新增一字段， 字段位置在所有列后面(partition 列前)，<br>REPLACE 则是表示替换表中所有字段。</p>
+</li>
+</ol>
+</li>
+<li><p>实操</p>
+<ol>
+<li><p>查询表结构</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf">hive&gt; desc dept<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>添加列：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">alter</span> <span class="hljs-keyword">table</span> dept <span class="hljs-keyword">add</span> <span class="hljs-keyword">columns</span>(deptdesc string);<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>查询表结构</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf">hive&gt; desc dept<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>更新列  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">hive (<span class="hljs-keyword">default</span>)<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">alter</span> <span class="hljs-keyword">table</span> dept change <span class="hljs-keyword">column</span> deptdesc <span class="hljs-keyword">desc</span> string;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>查询表结构  </p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf">hive&gt; desc dept<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>替换列</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp">hive (<span class="hljs-literal">default</span>)&gt; <span class="hljs-function">alter tabel dept replace <span class="hljs-title">column</span>(<span class="hljs-params">deptno <span class="hljs-built_in">string</span>, dname <span class="hljs-built_in">string</span>, loc <span class="hljs-built_in">string</span></span>)</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>查询表结构 </p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf">hive&gt; desc dept<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+<h2 id="DML-数据操作"><a href="#DML-数据操作" class="headerlink" title="DML 数据操作"></a>DML 数据操作</h2><h3 id="数据导入"><a href="#数据导入" class="headerlink" title="数据导入"></a>数据导入</h3><p><strong>向表中装载数据（Load）</strong>  </p>
+<ol>
+<li><p>语法</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive&gt; <span class="hljs-keyword">load</span> data [<span class="hljs-keyword">local</span>] inpath <span class="hljs-string">&#x27;数据的 path&#x27;</span> [overwrite] <span class="hljs-keyword">into</span> <span class="hljs-keyword">table</span><br>student [<span class="hljs-keyword">partition</span> (partcol1=val1,…)];<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>load data:表示加载数据  </p>
+<p>local:表示从本地加载数据到 hive 表； 否则从 HDFS 加载数据到 hive 表  </p>
+<p>inpath:表示加载数据的路径  </p>
+<p>overwrite:表示覆盖表中已有数据，<strong>否则表示追加</strong>  </p>
+<p>into table:表示加载到哪张表  </p>
+<p>student:表示具体的表  </p>
+<p>partition:表示上传到指定分区  </p>
+</blockquote>
+</li>
+<li><p>实操案例  </p>
+<ol start="0">
+<li><p>创建一张表</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">create</span> <span class="hljs-keyword">table</span> student(id string, <span class="hljs-type">name</span> string) <span class="hljs-keyword">row</span> <span class="hljs-keyword">format</span><br>delimited fields terminated <span class="hljs-keyword">by</span> <span class="hljs-string">&#x27;\t&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>加载本地文件到 hive  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">load</span> data <span class="hljs-keyword">local</span> inpath <span class="hljs-string">&#x27;/opt/module/hive/datas/student.txt&#x27;</span> <span class="hljs-keyword">into</span> <span class="hljs-keyword">table</span> defalut.student<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>加载 HDFS 文件到 hive 中  </p>
+<p>上传文件到 HDFS  </p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs gradle">hive (<span class="hljs-keyword">default</span>)&gt; dfs -put <span class="hljs-regexp">/opt/m</span>odule<span class="hljs-regexp">/hive/</span>data/student.txt<br><span class="hljs-regexp">/user/</span>albert/hive;<br></code></pre></td></tr></table></figure>
+
+<p>加载 HDFS 上数据  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">load</span> data inpath <span class="hljs-string">&#x27;/user/albert/hive/student.txt&#x27;</span> <span class="hljs-keyword">into</span><br><span class="hljs-keyword">table</span> <span class="hljs-keyword">default</span>.student;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>加载数据覆盖表中已有的数据  </p>
+<p>上传文件到 HDFS</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gradle">hive (<span class="hljs-keyword">default</span>)&gt; dfs -put <span class="hljs-regexp">/opt/m</span>odule<span class="hljs-regexp">/data/</span>student.txt <span class="hljs-regexp">/user/</span>albert/hive;  <br></code></pre></td></tr></table></figure>
+
+<p>加载数据覆盖表中已有的数据  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">load</span> data inpath <span class="hljs-string">&#x27;/user/albert/hive/student.txt&#x27;</span><br>overwrite <span class="hljs-keyword">into</span> <span class="hljs-keyword">table</span> <span class="hljs-keyword">default</span>.student;<br></code></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+<p><strong>通过查询语句向表中插入数据（Insert）</strong>  </p>
+<ol>
+<li><p>创建一张表</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">create</span> <span class="hljs-keyword">table</span> student_par(id <span class="hljs-type">int</span>, <span class="hljs-type">name</span> string) <span class="hljs-keyword">row</span> <span class="hljs-keyword">format</span><br>delimited fields terminated <span class="hljs-keyword">by</span> <span class="hljs-string">&#x27;\t&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>基本插入数据  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">hive (<span class="hljs-keyword">default</span>)<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">insert</span> <span class="hljs-keyword">into</span> <span class="hljs-keyword">table</span> student_par <span class="hljs-keyword">values</span>(<span class="hljs-number">1</span>, <span class="hljs-string">&#x27;wangwu&#x27;</span>),(<span class="hljs-number">2</span>, <span class="hljs-string">&#x27;zhangsan&#x27;</span>);<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>基本模式插入（根据单张表查询结果）  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">hive (<span class="hljs-keyword">default</span>)<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">insert</span> overwrite <span class="hljs-keyword">table</span> student_par <span class="hljs-keyword">select</span> id, name, <span class="hljs-keyword">from</span> student <span class="hljs-keyword">where</span> <span class="hljs-keyword">month</span><span class="hljs-operator">=</span><span class="hljs-string">&#x27;201709&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<p>insert into： 以追加数据的方式插入到表或分区， 原有数据不会删除  </p>
+<p>insert overwrite： 会覆盖表中已存在的数据  </p>
+<p><strong>注意</strong>： insert 不支持插入部分字段  </p>
+</li>
+<li><p>多表（多分区） 插入模式（根据多张表查询结果）  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql">hive (<span class="hljs-keyword">default</span>)<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">from</span> student<br>				<span class="hljs-keyword">insert</span> overwrite <span class="hljs-keyword">table</span> student <span class="hljs-keyword">partition</span>(<span class="hljs-keyword">month</span><span class="hljs-operator">=</span><span class="hljs-string">&#x27;201707&#x27;</span>)<br>				<span class="hljs-keyword">select</span> id, name <span class="hljs-keyword">where</span> <span class="hljs-keyword">month</span><span class="hljs-operator">=</span><span class="hljs-string">&#x27;201709&#x27;</span><br>				<span class="hljs-keyword">insert</span> overwrite <span class="hljs-keyword">table</span> student <span class="hljs-keyword">partition</span>(<span class="hljs-keyword">month</span><span class="hljs-operator">=</span><span class="hljs-string">&#x27;&#x27;</span><span class="hljs-number">201706</span>)<br>				<span class="hljs-keyword">select</span> id, name <span class="hljs-keyword">where</span> <span class="hljs-keyword">month</span><span class="hljs-operator">=</span><span class="hljs-string">&#x27;201709&#x27;</span>;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>查询语句中创建表并加载数据（As Select）</strong>  </p>
+<p>根据查询结果创建表（查询的结果会添加到新创建的表中）  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">create</span> <span class="hljs-keyword">table</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">exists</span> student3 <span class="hljs-keyword">as</span> <span class="hljs-keyword">select</span> id, <span class="hljs-type">name</span> <span class="hljs-keyword">from</span> student;<br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>创建表时通过 Location 指定加载数据路径</strong>  </p>
+<ol>
+<li><p>上传数据到 hdfs 上</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs gradle">hive (<span class="hljs-keyword">default</span>)&gt; dfs -mkdir /student;<br>hive (<span class="hljs-keyword">default</span>)&gt; dfs -put <span class="hljs-regexp">/opt/m</span>odule<span class="hljs-regexp">/datas/</span>student.txt /student;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>创建表，并指定在 hdfs 上的位置  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql">hive (<span class="hljs-keyword">default</span>)<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">create</span> <span class="hljs-keyword">external</span> <span class="hljs-keyword">table</span> if <span class="hljs-keyword">not</span> <span class="hljs-keyword">exists</span> student5(<br>				id <span class="hljs-type">int</span>, name string)<br>				<span class="hljs-type">row</span> format delimited fields terminated <span class="hljs-keyword">by</span> <span class="hljs-string">&#x27;\t&#x27;</span><br>				location <span class="hljs-string">&#x27;/student&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>查询数据</p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs axapta">hive (<span class="hljs-literal">default</span>)&gt; <span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> student5;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>Import 数据到指定 Hive 表中</strong>  </p>
+<p><strong>注意</strong>： 先用 export 导出后， 再将数据导入。  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">import</span> <span class="hljs-keyword">table</span> student2 <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;/user/hive/warehouse/export/student&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="数据导出"><a href="#数据导出" class="headerlink" title="数据导出"></a>数据导出</h3><p><strong>Insert 导出</strong>  </p>
+<ol>
+<li><p>将查询的结果导出到本地  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">insert</span> overwrite <span class="hljs-keyword">local</span> directory <span class="hljs-string">&#x27;/opt/module/hive/data/export/student&#x27;</span> <span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> student;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>将查询的结果格式化导出本地</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">insert</span> overwrite <span class="hljs-keyword">local</span> directory <span class="hljs-string">&#x27;/opt/module/hive/data/export/student1&#x27;</span> <span class="hljs-keyword">row</span> <span class="hljs-keyword">format</span> delimited fields terminated <span class="hljs-keyword">by</span> <span class="hljs-string">&#x27;\t&#x27;</span> <span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> student;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>将查询的结果导出到 HDFS 上(没有 local)  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">insert</span> overwrite directory <span class="hljs-string">&#x27;/user/albert/student2&#x27;</span><br><span class="hljs-keyword">ROW</span> <span class="hljs-keyword">FORMAT</span> DELIMITED FIELDS TERMINATED <span class="hljs-keyword">BY</span> <span class="hljs-string">&#x27;\t&#x27;</span><br><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> student;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>Hadoop 命令导出到本地</strong>  </p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs gradle">hive (<span class="hljs-keyword">default</span>)&gt; dfs -get <span class="hljs-regexp">/user/</span>hive<span class="hljs-regexp">/warehouse/</span>student/student.txt<br><span class="hljs-regexp">/opt/m</span>odule<span class="hljs-regexp">/data/</span>export/student3.txt;<br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>Hive Shell 命令导出</strong>  </p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">[test@hadoop102 hive]$ bin/hive -e <span class="hljs-string">&#x27;select * from default.student;&#x27;</span> &gt;<br><span class="hljs-regexp">/opt/m</span>odule<span class="hljs-regexp">/hive/</span>data<span class="hljs-regexp">/export/</span>student4.txt;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>Export 导出到 HDFS 上  </p>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs delphi">(defahiveult)&gt; <span class="hljs-keyword">export</span> table <span class="hljs-keyword">default</span>.student <span class="hljs-keyword">to</span> <span class="hljs-string">&#x27;/user/hive/warehouse/export/student&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<p><strong>export 和 import 主要用于两个 Hadoop 平台集群之间 Hive 表迁移。</strong>  </p>
+<p>其他大数据组件 sqoop datax 等</p>
+<p><strong>清除表中数据（Truncate）</strong>  </p>
+<p><strong>注意</strong>： Truncate 只能删除管理表， 不能删除外部表中数据  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">hive (<span class="hljs-keyword">default</span>)<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">truncate</span> <span class="hljs-keyword">table</span> student;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h3><p>查询语句语法：  </p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs n1ql"><span class="hljs-keyword">SELECT</span> [<span class="hljs-keyword">ALL</span> | <span class="hljs-keyword">DISTINCT</span>] select_expr, select_expr, ...<br>    <span class="hljs-keyword">FROM</span> table_reference<br>    [<span class="hljs-keyword">WHERE</span> where_condition]<br>    [<span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> col_list]<br>    [<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> col_list]<br>    [<span class="hljs-keyword">CLUSTER</span> <span class="hljs-keyword">BY</span> col_list<br>    	| [DISTRIBUTE <span class="hljs-keyword">BY</span> col_list] [SORT <span class="hljs-keyword">BY</span> col_list]<br>    ]<br>[<span class="hljs-keyword">LIMIT</span> <span class="hljs-keyword">number</span>]<br></code></pre></td></tr></table></figure>
+
+<h4 id="基本查询（Select…From）"><a href="#基本查询（Select…From）" class="headerlink" title="基本查询（Select…From）"></a>基本查询（Select…From）</h4><p><strong>全表和特定列查询</strong> </p>
+<p>数据准备： </p>
+<ol start="0">
+<li><p>原始数据：</p>
+<p>dept:</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">10</span>	ACCOUNTING	<span class="hljs-number">1700</span><br><span class="hljs-attribute">20</span>	RESEARCH	<span class="hljs-number">1800</span><br><span class="hljs-attribute">30</span>	SALES	<span class="hljs-number">1900</span><br><span class="hljs-attribute">40</span>	OPERATIONS	<span class="hljs-number">1700</span><br></code></pre></td></tr></table></figure>
+
+<p>emp:</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">7369</span>	SMITH	CLERK	<span class="hljs-number">7902</span>	<span class="hljs-number">1980</span>-<span class="hljs-number">12</span>-<span class="hljs-number">17</span>	<span class="hljs-number">800</span>.<span class="hljs-number">00</span>	<span class="hljs-number">20</span><br><span class="hljs-attribute">7499</span>	ALLEN	SALESMAN	<span class="hljs-number">7698</span>	<span class="hljs-number">1981</span>-<span class="hljs-number">2</span>-<span class="hljs-number">20</span>	<span class="hljs-number">1600</span>.<span class="hljs-number">00</span>	<span class="hljs-number">300</span>.<span class="hljs-number">00</span>	<span class="hljs-number">30</span><br><span class="hljs-attribute">7521</span>	WARD	SALESMAN	<span class="hljs-number">7698</span>	<span class="hljs-number">1981</span>-<span class="hljs-number">2</span>-<span class="hljs-number">22</span>	<span class="hljs-number">1250</span>.<span class="hljs-number">00</span>	<span class="hljs-number">500</span>.<span class="hljs-number">00</span>	<span class="hljs-number">30</span><br><span class="hljs-attribute">7566</span>	JONES	MANAGER	<span class="hljs-number">7839</span>	<span class="hljs-number">1981</span>-<span class="hljs-number">4</span>-<span class="hljs-number">2</span>	<span class="hljs-number">2975</span>.<span class="hljs-number">00</span>	<span class="hljs-number">20</span><br><span class="hljs-attribute">7654</span>	MARTIN	SALESMAN	<span class="hljs-number">7698</span>	<span class="hljs-number">1981</span>-<span class="hljs-number">9</span>-<span class="hljs-number">28</span>	<span class="hljs-number">1250</span>.<span class="hljs-number">00</span>	<span class="hljs-number">1400</span>.<span class="hljs-number">00</span>	<span class="hljs-number">30</span><br><span class="hljs-attribute">7698</span>	BLAKE	MANAGER	<span class="hljs-number">7839</span>	<span class="hljs-number">1981</span>-<span class="hljs-number">5</span>-<span class="hljs-number">1</span>	<span class="hljs-number">2850</span>.<span class="hljs-number">00</span>	<span class="hljs-number">30</span><br><span class="hljs-attribute">7782</span>	CLARK	MANAGER	<span class="hljs-number">7839</span>	<span class="hljs-number">1981</span>-<span class="hljs-number">6</span>-<span class="hljs-number">9</span>	<span class="hljs-number">2450</span>.<span class="hljs-number">00</span>	<span class="hljs-number">10</span><br><span class="hljs-attribute">7788</span>	SCOTT	ANALYST	<span class="hljs-number">7566</span>	<span class="hljs-number">1987</span>-<span class="hljs-number">4</span>-<span class="hljs-number">19</span>	<span class="hljs-number">3000</span>.<span class="hljs-number">00</span>	<span class="hljs-number">20</span><br><span class="hljs-attribute">7839</span>	KING	PRESIDENT	<span class="hljs-number">1981</span>-<span class="hljs-number">11</span>-<span class="hljs-number">17</span>	<span class="hljs-number">5000</span>.<span class="hljs-number">00</span>	<span class="hljs-number">10</span><br><span class="hljs-attribute">7844</span>	TURNER	SALESMAN	<span class="hljs-number">7698</span>	<span class="hljs-number">1981</span>-<span class="hljs-number">9</span>-<span class="hljs-number">8</span>	<span class="hljs-number">1500</span>.<span class="hljs-number">00</span>	<span class="hljs-number">0</span>.<span class="hljs-number">00</span>	<span class="hljs-number">30</span><br><span class="hljs-attribute">7876</span>	ADAMS	CLERK	<span class="hljs-number">7788</span>	<span class="hljs-number">1987</span>-<span class="hljs-number">5</span>-<span class="hljs-number">23</span>	<span class="hljs-number">1100</span>.<span class="hljs-number">00</span>	<span class="hljs-number">20</span><br><span class="hljs-attribute">7900</span>	JAMES	CLERK	<span class="hljs-number">7698</span>	<span class="hljs-number">1981</span>-<span class="hljs-number">12</span>-<span class="hljs-number">3</span>	<span class="hljs-number">950</span>.<span class="hljs-number">00</span>	<span class="hljs-number">30</span><br><span class="hljs-attribute">7902</span>	FORD	ANALYST	<span class="hljs-number">7566</span>	<span class="hljs-number">1981</span>-<span class="hljs-number">12</span>-<span class="hljs-number">3</span>	<span class="hljs-number">3000</span>.<span class="hljs-number">00</span>	<span class="hljs-number">20</span><br><span class="hljs-attribute">7934</span>	MILLER	CLERK	<span class="hljs-number">7782</span>	<span class="hljs-number">1982</span>-<span class="hljs-number">1</span>-<span class="hljs-number">23</span>	<span class="hljs-number">1300</span>.<span class="hljs-number">00</span>	<span class="hljs-number">10</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>创建部门表</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">create</span> <span class="hljs-keyword">table</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">exists</span> dept(<br>deptno <span class="hljs-type">int</span>,<br>dname string,<br>loc <span class="hljs-type">int</span><br>)<br><span class="hljs-keyword">row</span> <span class="hljs-keyword">format</span> delimited fields terminated <span class="hljs-keyword">by</span> <span class="hljs-string">&#x27;\t&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>创建员工表  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">create</span> <span class="hljs-keyword">table</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">exists</span> emp(<br>empno <span class="hljs-type">int</span>,<br>ename string,<br>job string,<br>mgr <span class="hljs-type">int</span>,<br>hiredate string,<br>sal <span class="hljs-type">double</span>,<br>comm <span class="hljs-type">double</span>,<br>deptno <span class="hljs-type">int</span>)<br><span class="hljs-keyword">row</span> <span class="hljs-keyword">format</span> delimited fields terminated <span class="hljs-keyword">by</span> <span class="hljs-string">&#x27;\t&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>导入数据  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">load</span> data <span class="hljs-keyword">local</span> inpath <span class="hljs-string">&#x27;/opt/module/datas/dept.txt&#x27;</span> <span class="hljs-keyword">into</span> <span class="hljs-keyword">table</span> dept;<br><span class="hljs-keyword">load</span> data <span class="hljs-keyword">local</span> inpath <span class="hljs-string">&#x27;/opt/module/datas/emp.txt&#x27;</span> <span class="hljs-keyword">into</span> <span class="hljs-keyword">table</span> emp;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>全表查询</strong>  </p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs axapta">hive (<span class="hljs-literal">default</span>)&gt; <span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> emp;<br>hive (<span class="hljs-literal">default</span>)&gt; <span class="hljs-keyword">select</span> empno,ename,job,mgr,hiredate,sal,comm,deptno <span class="hljs-keyword">from</span> emp ;<br></code></pre></td></tr></table></figure>
+
+<p><strong>选择特定列查询</strong>  </p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs axapta">hive (<span class="hljs-literal">default</span>)&gt; <span class="hljs-keyword">select</span> empno, ename <span class="hljs-keyword">from</span> emp;<br></code></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>：</p>
+<blockquote>
+<ol>
+<li>SQL 语言大小写不敏感。  </li>
+<li>SQL 可以写在一行或者多行  </li>
+<li>关键字不能被缩写也不能分行  </li>
+<li>各子句一般要分行写。  </li>
+<li>使用缩进提高语句的可读性。</li>
+</ol>
+</blockquote>
+<hr>
+<p><strong>列别名</strong>  </p>
+<ol>
+<li><p>重命名一个列  </p>
+</li>
+<li><p>便于计算  </p>
+</li>
+<li><p>紧跟列名，也可以在列名和别名之间加入关键字‘AS’  </p>
+</li>
+<li><p>案例实操  </p>
+<p>查询名称和部门  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">select</span> ename <span class="hljs-keyword">AS</span> <span class="hljs-type">name</span>, deptno dn <span class="hljs-keyword">from</span> emp;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<hr>
+<p><strong>算术运算符</strong>  </p>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A+B</td>
+<td>A 和 B 相加</td>
+</tr>
+<tr>
+<td>A-B</td>
+<td>A 减去 B</td>
+</tr>
+<tr>
+<td>A*B</td>
+<td>A 和 B 相乘</td>
+</tr>
+<tr>
+<td>A&#x2F;B</td>
+<td>A 除以 B</td>
+</tr>
+<tr>
+<td>A%B</td>
+<td>A 对 B 取余</td>
+</tr>
+<tr>
+<td>A&amp;B</td>
+<td>A 和 B 按位取与</td>
+</tr>
+<tr>
+<td>A|B</td>
+<td>A 和 B 按位取或</td>
+</tr>
+<tr>
+<td>A^B</td>
+<td>A 和 B 按位取异或</td>
+</tr>
+<tr>
+<td>~A</td>
+<td>A 按位取反</td>
+</tr>
+</tbody></table>
+<p>案例实操： 查询出所有员工的薪水后加 1 显示。  </p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs axapta">hive (<span class="hljs-literal">default</span>)&gt; <span class="hljs-keyword">select</span> sal +<span class="hljs-number">1</span> <span class="hljs-keyword">from</span> emp;<br></code></pre></td></tr></table></figure>
+
+
+
+<hr>
+<p><strong>常用函数</strong>  </p>
+<ol>
+<li><p>求总行数（count）  </p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs axapta">hive (<span class="hljs-literal">default</span>)&gt; <span class="hljs-keyword">select</span> <span class="hljs-keyword">count</span>(*) cnt <span class="hljs-keyword">from</span> emp;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>求工资的最大值（max）  </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp">hive (<span class="hljs-literal">default</span>)&gt; <span class="hljs-function"><span class="hljs-keyword">select</span> <span class="hljs-title">max</span>(<span class="hljs-params">sal</span>) max_sal <span class="hljs-keyword">from</span> emp</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>求工资的最小值（min）  </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp">hive (<span class="hljs-literal">default</span>)&gt; <span class="hljs-function"><span class="hljs-keyword">select</span> <span class="hljs-title">min</span>(<span class="hljs-params">sal</span>) min_sal <span class="hljs-keyword">from</span> emp</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>求工资的总和（sum）  </p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs axapta">hive (<span class="hljs-literal">default</span>)&gt; <span class="hljs-keyword">select</span> <span class="hljs-keyword">sum</span>(sal) sum_sal <span class="hljs-keyword">from</span> emp;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>求工资的平均值（avg）  </p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs axapta">hive (<span class="hljs-literal">default</span>)&gt; <span class="hljs-keyword">select</span> <span class="hljs-keyword">avg</span>(sal) avg_sal <span class="hljs-keyword">from</span> emp;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<hr>
+<p><strong>Limit 语句</strong>  </p>
+<p>典型的查询会返回多行数据。 LIMIT 子句用于限制返回的行数。  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">limit</span> <span class="hljs-number">5</span>;<br>hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">limit</span> <span class="hljs-number">2</span>;<br></code></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h5 id="Where-语句"><a href="#Where-语句" class="headerlink" title="Where 语句"></a>Where 语句</h5><ol>
+<li><p>使用 WHERE 子句，将不满足条件的行过滤掉  </p>
+</li>
+<li><p>WHERE 子句紧随 FROM 子句  </p>
+</li>
+<li><p>案例实操  </p>
+<p>查询出薪水大于 1000 的所有员工  </p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs axapta">hive (<span class="hljs-literal">default</span>)&gt; <span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">where</span> sal &gt;<span class="hljs-number">1000</span>;<br></code></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>： where 子句中不能使用字段别名。</p>
+</li>
+</ol>
+<hr>
+<p><strong>比较运算符（Between&#x2F;In&#x2F; Is Null）</strong>  </p>
+<ol>
+<li><p>下面表中描述了谓词操作符， 这些操作符同样可以用于 JOIN…ON 和 HAVING 语句中。  </p>
+<table>
+<thead>
+<tr>
+<th>操作符</th>
+<th>支持的数据类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A&#x3D;B</td>
+<td>基本数据类型</td>
+<td>如果 A 等于 B 则返回 TRUE，反之返回 FALSE</td>
+</tr>
+<tr>
+<td>A&lt;&#x3D;&gt;B</td>
+<td>基本数据类型</td>
+<td>如果 A 和 B 都为 NULL，则返回 TRUE， 如果一边为 NULL， 返回 False</td>
+</tr>
+<tr>
+<td>A&lt;&gt;B, A!&#x3D;B</td>
+<td>基本数据类型</td>
+<td>A 或者 B 为 NULL 则返回 NULL；如果 A 不等于 B，则返回 TRUE，反之返回 FALSE</td>
+</tr>
+<tr>
+<td>A&lt;B</td>
+<td>基本数据类型</td>
+<td>A 或者 B 为 NULL，则返回 NULL；如果 A 小于 B，则返回 TRUE，反之返回 FALSE</td>
+</tr>
+<tr>
+<td>A&lt;&#x3D;B</td>
+<td>基本数据类型</td>
+<td>A 或者 B 为 NULL，则返回 NULL；如果 A 小于等于 B，则返 回 TRUE，反之返回 FALSE</td>
+</tr>
+<tr>
+<td>A&gt;B</td>
+<td>基本数据类型</td>
+<td>A 或者 B 为 NULL，则返回 NULL；如果 A 大于 B，则返回 TRUE，反之返回 FALSE</td>
+</tr>
+<tr>
+<td>A&gt;&#x3D;B</td>
+<td>基本数据类型</td>
+<td>A 或者 B 为 NULL，则返回 NULL；如果 A 大于等于 B，则返 回 TRUE，反之返回 FALSE</td>
+</tr>
+<tr>
+<td>A [NOT] BETWEEN B AND C</td>
+<td>基本数据类型</td>
+<td>如果 A， B 或者 C 任一为 NULL，则结果为 NULL。如果 A 的 值大于等于 B 而且小于或等于 C，则结果为 TRUE，反之为 FALSE。 如果使用 NOT 关键字则可达到相反的效果。</td>
+</tr>
+<tr>
+<td>A IS NULL</td>
+<td>所有数据类型</td>
+<td>如果 A 等于 NULL，则返回 TRUE，反之返回 FALSE</td>
+</tr>
+<tr>
+<td>A IS NOT NULL</td>
+<td>所有数据类型</td>
+<td>如果 A 不等于 NULL，则返回 TRUE，反之返回 FALSE</td>
+</tr>
+<tr>
+<td>IN(数值 1, 数值 2)</td>
+<td>所有数据类型</td>
+<td>使用 IN 运算<strong>显示列表中的值</strong></td>
+</tr>
+<tr>
+<td>A [NOT] LIKE B</td>
+<td>STRING 类型</td>
+<td><strong>B 是一个 SQL 下的简单正则表达式， 也叫通配符模式</strong>， 如 果 A 与其匹配的话，则返回 TRUE；反之返回 FALSE。 B 的表达式 说明如下：‘x%’表示 A 必须以字母‘x’开头，‘%x’表示 A 必须以字母’ x’结尾，而‘%x%’表示 A 包含有字母’ x’ ,可以 位于开头，结尾或者字符串中间。如果使用 NOT 关键字则可达到 相反的效果。</td>
+</tr>
+<tr>
+<td>A RLIKE B, A REGEXP B</td>
+<td>STRING 类型</td>
+<td><strong>B 是基于 java 的正则表达式</strong>，如果 A 与其匹配，则返回 TRUE；反之返回 FALSE。匹配使用的是 JDK 中的正则表达式接口实现的，因为正则也依据其中的规则。例如，正则表达式必须和 整个字符串 A 相匹配，而不是只需与其字符串匹配。</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>案例实操  </p>
+<p>查询出薪水等于 5000 的所有员工  </p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs axapta">hive (<span class="hljs-literal">default</span>)&gt; <span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">where</span> sal =<span class="hljs-number">5000</span>;<br></code></pre></td></tr></table></figure>
+
+<p>查询工资在 <strong>500 到 1000</strong> 的员工信息  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">hive (<span class="hljs-keyword">default</span>)<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">where</span> sal <span class="hljs-keyword">between</span> <span class="hljs-number">500</span> <span class="hljs-keyword">and</span> <span class="hljs-number">1000</span>;<br></code></pre></td></tr></table></figure>
+
+<p>查询 comm 为空的所有员工信息  </p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs axapta">hive (<span class="hljs-literal">default</span>)&gt; <span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">where</span> comm <span class="hljs-keyword">is</span> <span class="hljs-literal">null</span>;<br></code></pre></td></tr></table></figure>
+
+<p>查询工资是 <strong>1500 或 5000</strong> 的员工信息  </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp">hive (<span class="hljs-literal">default</span>)&gt; <span class="hljs-keyword">select</span> * <span class="hljs-function"><span class="hljs-keyword">from</span> emp <span class="hljs-keyword">where</span> sal <span class="hljs-title">IN</span> (<span class="hljs-params"><span class="hljs-number">1500</span>, <span class="hljs-number">5000</span></span>)</span>;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<hr>
+<p><strong>Like 和 RLike</strong>  </p>
+<ol>
+<li><p>使用 LIKE 运算选择类似的值  </p>
+</li>
+<li><p>选择条件可以包含字符或数字:  </p>
+<blockquote>
+<p>% 代表零个或多个字符(任意个字符)。  </p>
+<p>_ 代表一个字符。  </p>
+</blockquote>
+</li>
+<li><p>RLIKE 子句  </p>
+<p>RLIKE 子句是 Hive 中这个功能的一个扩展，其可以通过 Java 的正则表达式这个更强大的语言来指定匹配条件。  </p>
+</li>
+<li><p>案例实操  </p>
+<ol>
+<li><p>查找名字以 A 开头的员工信息  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">hive (<span class="hljs-keyword">default</span>)<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">where</span> ename <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;A%&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>查找名字中第二个字母为 A 的员工信息  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">hive (<span class="hljs-keyword">default</span>)<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">where</span> ename <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;_A%&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>查找名字中带有 A 的员工信息  \</p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs axapta">hive (<span class="hljs-literal">default</span>)&gt; <span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">where</span> ename RLIKE <span class="hljs-string">&#x27;[A]&#x27;</span>;<br></code></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+<hr>
+<p><strong>逻辑运算符（And&#x2F;Or&#x2F;Not）</strong>  </p>
+<table>
+<thead>
+<tr>
+<th>操作符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AND</td>
+<td>逻辑并</td>
+</tr>
+<tr>
+<td>OR</td>
+<td>逻辑或</td>
+</tr>
+<tr>
+<td>NOT</td>
+<td>逻辑否</td>
+</tr>
+</tbody></table>
+<p>案例实操</p>
+<ol>
+<li><p>查询薪水大于 1000，部门是 30  </p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs axapta">hive (<span class="hljs-literal">default</span>)&gt; <span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">where</span> sal&gt;<span class="hljs-number">1000</span> and deptno=<span class="hljs-number">30</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>查询薪水大于 1000，或者部门是 30  </p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs axapta">hive (<span class="hljs-literal">default</span>)&gt; <span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">where</span> sal&gt;<span class="hljs-number">1000</span> or deptno=<span class="hljs-number">30</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>查询<strong>除了 20 部门和 30 部门</strong>以外的员工信息  </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp">hive (<span class="hljs-literal">default</span>)&gt; <span class="hljs-keyword">select</span> * <span class="hljs-function"><span class="hljs-keyword">from</span> emp <span class="hljs-keyword">where</span> deptno <span class="hljs-keyword">not</span> <span class="hljs-title">IN</span>(<span class="hljs-params"><span class="hljs-number">30</span>, <span class="hljs-number">20</span></span>)</span>;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<hr>
+<h3 id="分组"><a href="#分组" class="headerlink" title="分组"></a>分组</h3><h5 id="Group-By-语句"><a href="#Group-By-语句" class="headerlink" title="Group By 语句"></a>Group By 语句</h5><p>GROUP BY 语句通常会和聚合函数一起使用，按照一个或者多个列队结果<strong>进行分组</strong>，然后<strong>对每个组执行聚合操作</strong>。  </p>
+<p>案例实操：  </p>
+<ol>
+<li><p>计算 emp 表每个部门的平均工资  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">hive (<span class="hljs-keyword">default</span>)<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">select</span> t.deptno, <span class="hljs-built_in">avg</span>(t.sal) avg_sal <span class="hljs-keyword">from</span> emp t <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> t.deptno<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>计算 emp 每个部门中每个岗位的最高薪水  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">hive (<span class="hljs-keyword">default</span>)<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">select</span> t.deptno, t. job, <span class="hljs-built_in">max</span>(t.sal) max_sal <span class="hljs-keyword">from</span> emp t <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> t.deptno, t.job; <br></code></pre></td></tr></table></figure></li>
+</ol>
+<h5 id="Having-语句"><a href="#Having-语句" class="headerlink" title="Having 语句"></a>Having 语句</h5><ol>
+<li><p>having 与 where 不同点  </p>
+<blockquote>
+<p>where 后面不能写分组函数， 而 having 后面可以使用分组函数。  </p>
+<p>having <strong>只用于 group by</strong> 分组统计语句。  </p>
+</blockquote>
+</li>
+<li><p>案例实操  </p>
+<p>求每个部门的平均工资  </p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs axapta">hive (<span class="hljs-literal">default</span>)&gt; <span class="hljs-keyword">select</span> deptno, <span class="hljs-keyword">avg</span>(sal) <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> deptno<br></code></pre></td></tr></table></figure>
+
+<p>求每个部门的平均薪水大于 2000 的部门  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">select</span> deptno, avg(sal) avg_sal <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> deptno<br><span class="hljs-keyword">having</span> avg_sal &gt; <span class="hljs-number">2000</span>;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h5 id="Join-语句"><a href="#Join-语句" class="headerlink" title="Join 语句"></a>Join 语句</h5><p><strong>等值 Join</strong>  </p>
+<p>Hive 支持通常的 SQL JOIN 语句。  </p>
+<p>案例实操  </p>
+<p>根据员工表和部门表中的部门编号相等，查询员工编号、员工名称和部门名称；  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">hive (<span class="hljs-keyword">default</span>)<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">select</span> e.empno, e.ename, d.deptno, d.dname <span class="hljs-keyword">from</span> emp e <span class="hljs-keyword">join</span> dept d <span class="hljs-keyword">on</span> e.deptno <span class="hljs-operator">=</span> d.deptno;<br></code></pre></td></tr></table></figure>
+
+<p><strong>内连接</strong>  </p>
+<p>内连接：只有进行连接的两个表中都存在与连接条件相匹配的数据才会被保留下来。  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">hive (<span class="hljs-keyword">default</span>)<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">select</span> e.empno, e.ename, d.deptno <span class="hljs-keyword">from</span> emp e <span class="hljs-keyword">join</span> dept d <span class="hljs-keyword">on</span> e.deptno <span class="hljs-operator">=</span> d.deptno;<br></code></pre></td></tr></table></figure>
+
+<p><strong>左外连接</strong>  </p>
+<p>左外连接： JOIN 操作符左边表中符合 WHERE 子句的所有记录将会被返回。  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">hive (<span class="hljs-keyword">default</span>)<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">select</span> e.empno, e.ename, d.deptno <span class="hljs-keyword">from</span> emp e <span class="hljs-keyword">left</span> <span class="hljs-keyword">join</span> dept d <span class="hljs-keyword">on</span> e.deptno <span class="hljs-operator">=</span> d.deptno;<br></code></pre></td></tr></table></figure>
+
+<p><strong>右外连接</strong>  </p>
+<p>右外连接： JOIN 操作符右边表中符合 WHERE 子句的所有记录将会被返回。  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">hive (<span class="hljs-keyword">default</span>)<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">select</span> e.empno, e.ename, d.deptno <span class="hljs-keyword">from</span> emp e <span class="hljs-keyword">right</span> <span class="hljs-keyword">join</span> dept d <span class="hljs-keyword">on</span> e.deptno <span class="hljs-operator">=</span> d.deptno;<br></code></pre></td></tr></table></figure>
+
+<p><strong>满外连接</strong>  </p>
+<p>满外连接：将会返回所有表中符合 WHERE 语句条件的所有记录。如果任一表的指定字段没有符合条件的值的话，那么就使用 NULL 值替代。  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql">hive (<span class="hljs-keyword">default</span>)<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">select</span> e.empno, e.ename, d.deptno <span class="hljs-keyword">from</span> emp e <span class="hljs-keyword">full</span> <span class="hljs-keyword">join</span><br>dept d <span class="hljs-keyword">on</span> e.deptno <span class="hljs-operator">=</span> d.deptno;<br></code></pre></td></tr></table></figure>
+
+
+
+<hr>
+<p><strong>多表连接</strong>  </p>
+<p><strong>注意</strong>：连接 n 个表，至少需要 n-1 个连接条件。例如：连接三个表，至少需要两个连接条件。  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql">hive (<span class="hljs-keyword">default</span>)<span class="hljs-operator">&gt;</span><span class="hljs-keyword">SELECT</span> e.ename, d.dname, l.loc_name<br>                <span class="hljs-keyword">FROM</span> emp e<br>                <span class="hljs-keyword">JOIN</span> dept d<br>                <span class="hljs-keyword">ON</span> d.deptno <span class="hljs-operator">=</span> e.deptno<br>                <span class="hljs-keyword">JOIN</span> location l<br>                <span class="hljs-keyword">ON</span> d.loc <span class="hljs-operator">=</span> l.loc;<br></code></pre></td></tr></table></figure>
+
+<p>大多数情况下， Hive 会对每对 JOIN 连接对象启动一个 MapReduce 任务。本例中会首先启动一个 MapReduce job 对表 e 和表 d 进行连接操作，然后会再启动一个 MapReduce job 将第一个 MapReduce job 的输出和表 l;进行连接操作。  </p>
+<p><strong>注意</strong>：为什么不是表 d 和表 l 先进行连接操作呢？这是因为 Hive 总是按照从左到右的顺序执行的。  </p>
+<p><strong>优化</strong>： 当对 3 个或者更多表进行 join 连接时，如果每个 on 子句都使用相同的连接键的话，那么只会产生一个 MapReduce job。  </p>
+<hr>
+<p><strong>笛卡尔积</strong>  </p>
+<p>笛卡尔集会在下面条件下产生  </p>
+<ol>
+<li>省略连接条件  </li>
+<li>连接条件无效  </li>
+<li>所有表中的所有行互相连接</li>
+</ol>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs axapta">hive (<span class="hljs-literal">default</span>)&gt; <span class="hljs-keyword">select</span> empno, dname <span class="hljs-keyword">from</span> emp, dept;<br></code></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h3 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h3><h5 id="全局排序（Order-By）"><a href="#全局排序（Order-By）" class="headerlink" title="全局排序（Order By）"></a>全局排序（Order By）</h5><p>Order By： 全局排序， 只有一个 Reducer  </p>
+<ol>
+<li><p>使用 ORDER BY 子句排序  </p>
+<blockquote>
+<p>ASC（ascend） : 升序（默认）</p>
+<p>DESC（descend） : 降序  </p>
+</blockquote>
+</li>
+<li><p>ORDER BY 子句在 SELECT 语句的结尾</p>
+</li>
+</ol>
+<p>案例实操  </p>
+<ol>
+<li><p>查询员工信息按工资升序排列  </p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs axapta">hive (<span class="hljs-literal">default</span>)&gt; <span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> sal;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>查询员工信息按工资降序排列  </p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs axapta">hive (<span class="hljs-literal">default</span>)&gt; <span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> sal <span class="hljs-keyword">desc</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>按照员工薪水的 2 倍排序  （<strong>按别名</strong>）</p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs axapta">hive (<span class="hljs-literal">default</span>)&gt; <span class="hljs-keyword">select</span> ename, sal*<span class="hljs-number">2</span> twosal <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> twosal;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>多个列排序</strong>  </p>
+<p>按照部门和工资升序排序  </p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs axapta">hive (<span class="hljs-literal">default</span>)&gt; <span class="hljs-keyword">select</span> ename, deptno, sal <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> deptno, sal;<br></code></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h5 id="每个-Reduce-内部排序（Sort-By）"><a href="#每个-Reduce-内部排序（Sort-By）" class="headerlink" title="每个 Reduce 内部排序（Sort By）"></a>每个 Reduce 内部排序（Sort By）</h5><p>Sort By： 对于<strong>大规模的数据集 order by 的效率非常低</strong>。在很多情况下， 并不需要全局排序， 此时可以使用 sort by。  </p>
+<p>Sort by 为每个 reducer 产生一个排序文件。 每个 Reducer 内部进行排序， 对全局结果集来说不是排序  </p>
+<ol>
+<li><p>设置 reduce 个数  </p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">hive (default)&gt; <span class="hljs-built_in">set</span> mapreduce.job.<span class="hljs-attribute">reduces</span>=3;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>查看设置 reduce 个数  </p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs actionscript">hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">set</span> mapreduce.job.reduces;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>根据部门编号降序查看员工信息  </p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs axapta">hive (<span class="hljs-literal">default</span>)&gt; <span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> emp sort <span class="hljs-keyword">by</span> deptno <span class="hljs-keyword">desc</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>将查询结果导入到文件中（按照部门编号降序排序）  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql">hive (<span class="hljs-keyword">default</span>)<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">insert</span> overwrite <span class="hljs-keyword">local</span> directory<br>				<span class="hljs-string">&#x27;/opt/module/data/sortby-result&#x27;</span><br>				<span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> emp sort <span class="hljs-keyword">by</span> deptno <span class="hljs-keyword">desc</span>;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<hr>
+<h5 id="分区（Distribute-By）"><a href="#分区（Distribute-By）" class="headerlink" title="分区（Distribute By）"></a>分区（Distribute By）</h5><p>Distribute By： 在有些情况下， 我们需要控制某个特定行应该到哪个 reducer， 通常是为了进行后续的聚集操作。 distribute by 子句可以做这件事。 distribute by 类似 MR 中 partition（自定义分区） ，进行分区，结合 sort by 使用。</p>
+<p>对于 distribute by 进行测试，一定要分配多 reduce 进行处理，否则无法看到 distribute by 的效果。 </p>
+<p>先按照部门编号分区，再按照员工编号降序排序。  </p>
+<p>案例实操：  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">set</span> mapreduce.job.reduces=<span class="hljs-number">3</span>;<br>hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">insert</span> overwrite <span class="hljs-keyword">local</span> directory<br><span class="hljs-string">&#x27;/opt/module/data/distribute-result&#x27;</span> <span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> emp distribute <span class="hljs-keyword">by</span><br>deptno sort <span class="hljs-keyword">by</span> empno <span class="hljs-keyword">desc</span>;<br></code></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>：  </p>
+<blockquote>
+<p>distribute by 的分区规则是根据<strong>分区字段的 hash 码与 reduce 的个数进行模除</strong>后，余数相同的分到一个区。  </p>
+<p>Hive 要求 DISTRIBUTE BY 语句要写在 SORT BY 语句之前。  </p>
+</blockquote>
+<hr>
+<h5 id="Cluster-By"><a href="#Cluster-By" class="headerlink" title="Cluster By"></a>Cluster By</h5><p>当 distribute by 和 sorts by 字段相同时，可以使用 cluster by 方式。  </p>
+<p>cluster by 除了具有 distribute by 的功能外还兼具 sort by 的功能。但是<strong>排序只能是升序排序</strong>， 不能指定排序规则为 ASC 或者 DESC。  </p>
+<p>以下两种写法等价:</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> emp <span class="hljs-keyword">cluster</span> <span class="hljs-keyword">by</span> deptno;<br>hive (<span class="hljs-keyword">default</span>)&gt; <span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> emp distribute <span class="hljs-keyword">by</span> deptno sort <span class="hljs-keyword">by</span> deptno;<br></code></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>： 按照部门编号分区，不一定就是固定死的数值，可以是 <strong>20 号和 30 号部门分到一个分区里面去。</strong>  </p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/BigData/" class="category-chain-item">BigData</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Hive/">#Hive</a>
+      
+        <a href="/tags/HSQL/">#HSQL</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>MapReduce</div>
+      <div>http://example.com/2022/07/17/Hive/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Zhao Zhuoyue</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年7月17日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/07/17/Hadoop-MapReduce/" title="MapReduce">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MapReduce</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/07/17/Kafka/" title="MapReduce">
+                        <span class="hidden-mobile">MapReduce</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

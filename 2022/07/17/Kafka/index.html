@@ -1,0 +1,2040 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Zhao Zhuoyue">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="KafkaKafka 概述Kafka 定义Kafka：一个分布式的基于发布&#x2F;订阅模式的消息队列（Message Queue），主要用于大数据实时处理领域。也是一个开源分布式事件流平台（Event Streaming Platform），用于高性能数据管道、流分析、数据集成和关键任务应用。 发布&#x2F;订阅：  消息的发布者不会将消息直接发送给特定的订阅者， 而是将发布的消息分为不同的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MapReduce">
+<meta property="og:url" content="http://example.com/2022/07/17/Kafka/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="KafkaKafka 概述Kafka 定义Kafka：一个分布式的基于发布&#x2F;订阅模式的消息队列（Message Queue），主要用于大数据实时处理领域。也是一个开源分布式事件流平台（Event Streaming Platform），用于高性能数据管道、流分析、数据集成和关键任务应用。 发布&#x2F;订阅：  消息的发布者不会将消息直接发送给特定的订阅者， 而是将发布的消息分为不同的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220719103226806.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220719103424612.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220719103448821.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220719103512602.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220719111044803.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220720102623312.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220720102833704.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220720112526804.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220720145425755.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220720152541375.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220720155905524.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220720165554946.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220720165554946.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220721102712676.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220721103039002.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220721112416658.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220721140234682.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220721144904818.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220721153317187.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220721155647476.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220721164251758.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220722135756851.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220722135855563.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220722145046430.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220722152354972.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220722153753393.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220722154636913.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220722161223422.png">
+<meta property="og:image" content="http://example.com/2022/07/17/Kafka/image-20220722161303892.png">
+<meta property="article:published_time" content="2022-07-17T08:32:00.000Z">
+<meta property="article:modified_time" content="2023-02-12T16:50:22.485Z">
+<meta property="article:author" content="Zhao Zhuoyue">
+<meta property="article:tag" content="Kafka">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2022/07/17/Kafka/image-20220719103226806.png">
+  
+  
+  
+  <title>MapReduce - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="MapReduce"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-07-17 16:32" pubdate>
+          2022年7月17日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          51k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          427 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">MapReduce</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h1><h2 id="Kafka-概述"><a href="#Kafka-概述" class="headerlink" title="Kafka 概述"></a>Kafka 概述</h2><h3 id="Kafka-定义"><a href="#Kafka-定义" class="headerlink" title="Kafka 定义"></a>Kafka 定义</h3><p>Kafka：一个分布式的基于发布&#x2F;订阅模式的<code>消息队列</code>（Message Queue），主要用于大数据实时处理领域。也是一个<code>开源分布式事件流平台</code>（Event Streaming Platform），用于高性能数据管道、流分析、数据集成和关键任务应用。</p>
+<p>发布&#x2F;订阅：  消息的发布者不会将消息直接发送给特定的订阅者， 而是将发布的消息分为不同的类别， 订阅者只接收感兴趣的消息。  </p>
+<p><strong>消息队列的应用场景</strong>  </p>
+<p><strong>缓冲&#x2F;消峰</strong>    </p>
+<blockquote>
+<p>有助于控制和优化数据流经过系统的速度，解决生产消息和消费消息的处理速度不一致的情况。</p>
+</blockquote>
+<img src="/2022/07/17/Kafka/image-20220719103226806.png" srcset="/img/loading.gif" lazyload alt="image-20220719103226806" style="zoom: 50%;">
+
+
+
+<p><strong>解耦</strong></p>
+<blockquote>
+<p>允许你独立的扩展或修改两边的处理过程， 只要确保它们遵守同样的接口约束。  </p>
+</blockquote>
+<img src="/2022/07/17/Kafka/image-20220719103424612.png" srcset="/img/loading.gif" lazyload alt="image-20220719103424612" style="zoom:50%;">
+
+<p><strong>异步通信</strong>  </p>
+<blockquote>
+<p>允许用户把一个消息放入队列， 但并不立即处理它， 然后在需要的时候再去处理它们。  </p>
+</blockquote>
+<img src="/2022/07/17/Kafka/image-20220719103448821.png" srcset="/img/loading.gif" lazyload alt="image-20220719103448821" style="zoom:50%;">
+
+
+
+<p><strong>消息队列的两种模式</strong>  </p>
+<img src="/2022/07/17/Kafka/image-20220719103512602.png" srcset="/img/loading.gif" lazyload alt="image-20220719103512602" style="zoom:50%;">
+
+<p><strong>点对点模式</strong></p>
+<blockquote>
+<p>消费者主动拉取数据，消息收到后清除消息  </p>
+</blockquote>
+<p><strong>发布&#x2F;订阅模式</strong>  </p>
+<blockquote>
+<p>可以有多个topic主题（浏览、点赞、收藏、评论等）  </p>
+<p>消费者消费数据之后，不删除数据  </p>
+<p>每个消费者相互独立，都可以消费到数据  </p>
+</blockquote>
+<h2 id="Kafka-架构"><a href="#Kafka-架构" class="headerlink" title="Kafka 架构"></a>Kafka 架构</h2><h3 id="基础架构"><a href="#基础架构" class="headerlink" title="基础架构"></a>基础架构</h3><ol>
+<li>为方便扩展，并提高吞吐量，一个topic分为多个partition  </li>
+<li>配合分区的设计，提出消费者组的概念，组内每个消费者并行消费  </li>
+<li>为提高可用性，为每个partition增加若干副本，类似NameNode HA  </li>
+<li>ZK中记录谁是leader， Kafka2.8.0以后也可以配置不采用ZK</li>
+</ol>
+<img src="/2022/07/17/Kafka/image-20220719111044803.png" srcset="/img/loading.gif" lazyload alt="Kafka architecture" style="zoom:50%;">
+
+
+
+<ol>
+<li><strong>Producer</strong>： 消息生产者，就是向 Kafka broker 发消息的客户端。  </li>
+<li><strong>Consumer</strong>： 消息消费者，向 Kafka broker 取消息的客户端。  </li>
+<li><strong>Consumer Group（CG）</strong>： 消费者组，由多个 consumer 组成。 消费者组内每个消费者负责<code>消费不同分区</code>的数据，<code>一个分区只能由一个组内消费者消费</code>；消费者组之间互不影响。 所有的消费者都属于某个消费者组，即<code>消费者组是逻辑上的一个订阅者</code>。  </li>
+<li><strong>Broker</strong>： 一台 Kafka 服务器就是一个 broker。一个集群由多个 broker 组成。一个 broker 可以容纳多个 topic。  </li>
+<li><strong>Topic</strong>： 可以理解为一个队列， 生产者和消费者面向的都是一个 topic。  </li>
+<li><strong>Partition</strong>： 为了实现扩展性，一个非常大的 topic 可以分布到多个 broker（即服务器）上， 一个 topic 可以分为多个 partition（如按时间（day，hour）），每个 partition 是一个有序的队列。  </li>
+<li><strong>Replica</strong>： 副本。 <code>一个 topic 的每个分区都有若干个副本</code>，一个 Leader 和若干个 Follower。</li>
+<li><strong>Leader</strong>： 每个分区多个副本的“主”，生产者发送数据的对象，以及消费者消费数据的对象都是 Leader。    </li>
+<li><strong>Follower</strong>： 每个分区多个副本中的“从”，实时从 Leader 中同步数据，保持和Leader 数据的同步。 Leader 发生故障时，某个 Follower 会成为新的 Leader。</li>
+</ol>
+<h2 id="Kafka-快速入门"><a href="#Kafka-快速入门" class="headerlink" title="Kafka 快速入门"></a>Kafka 快速入门</h2><p><strong>集群规划</strong>  </p>
+<table>
+<thead>
+<tr>
+<th>hadoop102</th>
+<th>hadoop103</th>
+<th>hadoop104</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>zk</td>
+<td>zk</td>
+<td>zk</td>
+</tr>
+<tr>
+<td>kafka</td>
+<td>kafka</td>
+<td>kafka</td>
+</tr>
+</tbody></table>
+<p>注意： 停止 Kafka 集群时，一定要等 Kafka 所有节点进程全部停止后再停止 Zookeeper集群。因为 Zookeeper 集群当中记录着 Kafka 集群相关信息， Zookeeper 集群一旦先停止，Kafka 集群就没有办法再获取停止进程的信息，只能手动杀死 Kafka 进程了。  </p>
+<p><strong>topic命令行操作</strong>  </p>
+<p>bin&#x2F;kafka-topics.sh  + ：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>–bootstrap-server &lt;String: server toconnect to&gt;</td>
+<td>连接的 Kafka Broker 主机名称和端口号。</td>
+</tr>
+<tr>
+<td>–topic &lt;String: topic&gt;</td>
+<td>操作的 topic 名称。</td>
+</tr>
+<tr>
+<td>–create</td>
+<td>创建主题。</td>
+</tr>
+<tr>
+<td>–delete</td>
+<td>删除主题。</td>
+</tr>
+<tr>
+<td>–alter</td>
+<td>修改主题。</td>
+</tr>
+<tr>
+<td>–list</td>
+<td>查看所有主题。</td>
+</tr>
+<tr>
+<td>–describe</td>
+<td>查看主题详细描述。</td>
+</tr>
+<tr>
+<td>–partitions &lt;Integer: # of partitions&gt;</td>
+<td>设置分区数。</td>
+</tr>
+<tr>
+<td>–replication-factor&lt;Integer: replication factor&gt;</td>
+<td>设置分区副本。</td>
+</tr>
+<tr>
+<td>–config &lt;String: name&#x3D;value&gt;</td>
+<td>更新系统默认的配置。</td>
+</tr>
+</tbody></table>
+<p>创建 first topic ：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-attr">[test@hadoop102 kafka]</span>$  bin/kafka-topics<span class="hljs-selector-class">.sh</span> <span class="hljs-attr">--bootstrap-server</span> hadoop102:<span class="hljs-number">9092</span> <span class="hljs-attr">--create</span> <span class="hljs-attr">--partitions</span> <span class="hljs-number">1</span> <span class="hljs-attr">--replication-factor</span> <span class="hljs-number">3</span> <span class="hljs-attr">--topic</span> first<br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>producer 命令行操作</strong> ：</p>
+<p>bin&#x2F;kafka-console-producer.sh  + </p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>–bootstrap-server &lt;String: server toconnect to&gt;</td>
+<td>连接的 Kafka Broker 主机名称和端口号。</td>
+</tr>
+<tr>
+<td>–topic &lt;String: topic&gt;</td>
+<td>操作的 topic 名称。</td>
+</tr>
+</tbody></table>
+<p>发送消息：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-attr">[test@hadoop102 kafka]</span>$ bin/kafka-console-producer<span class="hljs-selector-class">.sh</span> <span class="hljs-attr">--bootstrap-server</span> hadoop102:<span class="hljs-number">9092</span> <span class="hljs-attr">--topic</span> first<br>&gt;hello world<br>&gt;flink spark<br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>consumer 命令行操作</strong>：</p>
+<p>bin&#x2F;kafka-console-consumer.sh  +</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>–bootstrap-server &lt;String: server toconnect to&gt;</td>
+<td>连接的 Kafka Broker 主机名称和端口号。</td>
+</tr>
+<tr>
+<td>–topic &lt;String: topic&gt;</td>
+<td>操作的 topic 名称。</td>
+</tr>
+<tr>
+<td>–from-beginning</td>
+<td>从头开始消费。</td>
+</tr>
+<tr>
+<td>–group &lt;String: consumer group id&gt;</td>
+<td>指定消费者组名称。</td>
+</tr>
+</tbody></table>
+<p>消费 first 主题中的数据：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-attr">[test@hadoop102 kafka]</span>$ bin/kafka-console-consumer<span class="hljs-selector-class">.sh</span> <span class="hljs-attr">--bootstrap-server</span> hadoop102:<span class="hljs-number">9092</span> <span class="hljs-attr">--topic</span> first<br></code></pre></td></tr></table></figure>
+
+<p>把主题中所有的数据都读取出来（包括历史数据）：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-attr">[test@hadoop102 kafka]</span>$ bin/kafka-console-consumer<span class="hljs-selector-class">.sh</span> <span class="hljs-attr">--bootstrap-server</span> hadoop102:<span class="hljs-number">9092</span> <span class="hljs-attr">--from-beginning</span> <span class="hljs-attr">--topic</span> first<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="发送原理"><a href="#发送原理" class="headerlink" title="发送原理"></a>发送原理</h3><p>在消息发送的过程中，涉及到了两个线程——main 线程和 Sender 线程。在 main 线程中创建了一个双端队列 RecordAccumulator。 main 线程将消息发送给 RecordAccumulator，Sender 线程不断从 RecordAccumulator 中拉取消息发送到 Kafka Broker。  </p>
+<p><img src="/2022/07/17/Kafka/image-20220720102623312.png" srcset="/img/loading.gif" lazyload alt="principle of sending"></p>
+<p><strong>生产者重要参数列表</strong>  </p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>bootstrap.servers</td>
+<td>生 产 者 连 接 集 群 所 需 的 broker 地 址 清 单 。 例 如hadoop102:9092,hadoop103:9092,hadoop104:9092，可以 设置 1 个或者多个，中间用逗号隔开。注意这里并非需要所有的 broker 地址，因为生产者从给定的 broker 里查找到其他 broker 信息。</td>
+</tr>
+<tr>
+<td>key.serializer 和 value.serializer</td>
+<td>指定发送消息的 key 和 value 的序列化类型。一定要写全类名。</td>
+</tr>
+<tr>
+<td>buffer.memory</td>
+<td>RecordAccumulator 缓冲区总大小， 默认 <strong>32m</strong>。</td>
+</tr>
+<tr>
+<td>batch.size</td>
+<td>缓冲区一批数据最大值， 默认 <strong>16k</strong>。适当增加该值，可 以提高吞吐量，但是如果该值设置太大，会导致数据 传输延迟增加。</td>
+</tr>
+<tr>
+<td>linger.ms</td>
+<td>如果数据迟迟未达到 batch.size， sender 等待 linger.time 之后就会发送数据。单位 ms， 默认值是 <strong>0ms</strong>，表示没 有延迟。 <strong>生产环境</strong>建议该值大小为 <strong>5-100ms</strong> 之间。</td>
+</tr>
+<tr>
+<td>acks</td>
+<td>0：生产者发送过来的数据，不需要等数据落盘应答。 1：生产者发送过来的数据， Leader 收到数据后应答。 -1（all）：生产者发送过来的数据， Leader+和 isr 队列 里面的所有节点收齐数据后应答。 <strong>默认值是-1， -1 和 all 是等价的</strong>。</td>
+</tr>
+<tr>
+<td>max.in.flight.requests.per.connection</td>
+<td>允许最多没有返回 ack 的次数， <strong>默认为 5</strong>，开启幂等性 要保证该值是 1-5 的数字。</td>
+</tr>
+<tr>
+<td>retries</td>
+<td>当消息发送出现错误的时候，系统会重发消息。 retries 表示重试次数。 <strong>默认是 int 最大值， 2147483647</strong>。 如果设置了重试，还想保证消息的有序性，需要设置 MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION&#x3D;1 否则在重试此失败消息的时候，其他的消息可能发送 成功了。</td>
+</tr>
+<tr>
+<td>retry.backoff.ms</td>
+<td>两次重试之间的时间间隔，默认是 100ms。</td>
+</tr>
+<tr>
+<td>enable.idempotence</td>
+<td>是否<strong>开启幂等性</strong>， <strong>默认 true</strong>，开启幂等性。</td>
+</tr>
+<tr>
+<td>compression.type</td>
+<td>生产者发送的所有数据的压缩方式。 <strong>默认是 none</strong>，也 就是不压缩。 <strong>支持压缩</strong>类型： <strong>none、 gzip、 snappy、 lz4 和 zstd</strong>。</td>
+</tr>
+</tbody></table>
+<p>例子 ： 带回调函数的异步发送 </p>
+<p><img src="/2022/07/17/Kafka/image-20220720102833704.png" srcset="/img/loading.gif" lazyload alt="sending with callback"></p>
+<p>回调函数会在 producer 收到 ack 时调用，为异步调用，该方法有两个参数，分别是元数据信息（RecordMetadata） 和异常信息（Exception），如果 Exception 为 null，说明消息发送成功，如果 Exception 不为 null，说明消息发送失败。  </p>
+<p>注意：消息发送失败会自动重试，不需要我们在回调函数中手动重试。  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.test.kafka.producer;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.producer.*;<br><span class="hljs-keyword">import</span> java.util.Properties;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CustomProducerCallback</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> InterruptedException &#123;<br>        <span class="hljs-comment">// 1. 创建 kafka 生产者的配置对象</span><br>        <span class="hljs-type">Properties</span> <span class="hljs-variable">properties</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Properties</span>();<br>        <span class="hljs-comment">// 2. 给 kafka 配置对象添加配置信息</span><br>        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, <span class="hljs-string">&quot;hadoop102:9092&quot;</span>);<br>        <span class="hljs-comment">// key,value 序列化（必须）： key.serializer， value.serializer</span><br>        properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());<br>        properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());<br>        <span class="hljs-comment">// 3. 创建 kafka 生产者对象</span><br>        KafkaProducer&lt;String, String&gt; kafkaProducer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">KafkaProducer</span>&lt;String, String&gt;(properties);<br>            <span class="hljs-comment">// 4. 调用 send 方法,发送消息</span><br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++) &#123;<br>                <span class="hljs-comment">// 添加回调</span><br>                kafkaProducer.send(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ProducerRecord</span>&lt;&gt;(<span class="hljs-string">&quot;first&quot;</span>, <span class="hljs-string">&quot;test &quot;</span> + i), <span class="hljs-keyword">new</span> <span class="hljs-title class_">Callback</span>() &#123;<br>                    <span class="hljs-comment">// 该方法在 Producer 收到 ack 时调用，为异步调用</span><br>                    <span class="hljs-meta">@Override</span><br>                    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onCompletion</span><span class="hljs-params">(RecordMetadata metadata, Exception exception)</span> &#123;<br>                    	<span class="hljs-keyword">if</span> (exception == <span class="hljs-literal">null</span>) &#123;<br>                    		<span class="hljs-comment">// 没有异常,输出信息到控制台</span><br>                    		System.out.println(<span class="hljs-string">&quot; 主 题 ： &quot;</span> + metadata.topic() + <span class="hljs-string">&quot;-&gt;&quot;</span> + <span class="hljs-string">&quot;分区： &quot;</span> + metadata.partition());<br>                    	&#125; <span class="hljs-keyword">else</span> &#123;<br>                    		<span class="hljs-comment">// 出现异常打印</span><br>                    		exception.printStackTrace();<br>                    	&#125;<br>                	&#125;<br>            	&#125;);<br>                <span class="hljs-comment">// 延迟一会会看到数据发往不同分区</span><br>                Thread.sleep(<span class="hljs-number">2</span>);<br>        	&#125;<br>        <span class="hljs-comment">// 5. 关闭资源</span><br>        kafkaProducer.close();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>测试：  </p>
+<p>在 hadoop102 上开启 Kafka 消费者。  </p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-attr">[test@hadoop103 kafka]</span>$ bin/kafka-console-consumer<span class="hljs-selector-class">.sh</span> <span class="hljs-attr">--bootstrap-server</span> hadoop102:<span class="hljs-number">9092</span> <span class="hljs-attr">--topic</span> first<br></code></pre></td></tr></table></figure>
+
+<p>在 IDEA 中执行代码，观察 hadoop102 控制台中是否接收到消息。</p>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs subunit"><span class="hljs-keyword">test </span>0<br><span class="hljs-keyword">test </span>1<br><span class="hljs-keyword">test </span>2<br><span class="hljs-keyword">test </span>3<br><span class="hljs-keyword">test </span>4<br></code></pre></td></tr></table></figure>
+
+<p>在 IDEA 控制台观察回调信息。  </p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs coq">主题： <span class="hljs-built_in">first</span>-&gt;分区： <span class="hljs-number">0</span><br>主题： <span class="hljs-built_in">first</span>-&gt;分区： <span class="hljs-number">0</span><br>主题： <span class="hljs-built_in">first</span>-&gt;分区： <span class="hljs-number">1</span><br>主题： <span class="hljs-built_in">first</span>-&gt;分区： <span class="hljs-number">1</span><br>主题： <span class="hljs-built_in">first</span>-&gt;分区： <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>同步发送 API</strong>  </p>
+<p>只需在异步发送的基础上，再调用一下 get()方法即可。  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 异步发送 默认</span><br>kafkaProducer.send(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ProducerRecord</span>&lt;&gt;(<span class="hljs-string">&quot;first&quot;</span>,<span class="hljs-string">&quot;kafka&quot;</span> + i));<br><span class="hljs-comment">// 同步发送</span><br>kafkaProducer.send(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ProducerRecord</span>&lt;&gt;(<span class="hljs-string">&quot;first&quot;</span>,<span class="hljs-string">&quot;kafka&quot;</span> + i)).get();<br></code></pre></td></tr></table></figure>
+
+<h3 id="生产者分区"><a href="#生产者分区" class="headerlink" title="生产者分区"></a>生产者分区</h3><p><strong>好处</strong></p>
+<ol>
+<li><p><strong>便于合理使用存储资源</strong>：</p>
+<blockquote>
+<p>每个Partition在一个Broker上存储， 可以把海量的数据按照分区切割成一块一块数据存储在多台Broker上。 合理控制分区的任务， 可以实现<strong>负载均衡</strong>的效果。 </p>
+</blockquote>
+</li>
+<li><p><strong>提高并行度</strong>：</p>
+<blockquote>
+<p>生产者可以以分区为单位发送数据；消费者可以以分区为单位进行消费数据。</p>
+</blockquote>
+</li>
+</ol>
+<h4 id="分区策略"><a href="#分区策略" class="headerlink" title="分区策略"></a>分区策略</h4><p><strong>在IDEA中全局查找（ctrl +n） ProducerRecord类， 在类中可以看到如下构造方法：</strong>  </p>
+<ol>
+<li><p>指明partition的情况下，直接将指明的值作为partition值；例如partition&#x3D;0，所有数据写入分区0：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-title function_">ProducerRecord</span><span class="hljs-params">(String topic, Integer partition, Long timestamp, K key, V value, Iterable&lt;Header&gt; headers)</span> &#123;<br>... ...<br>&#125;<br><span class="hljs-keyword">public</span> <span class="hljs-title function_">ProducerRecord</span><span class="hljs-params">(String topic, Integer partition, Long timestamp, K key, V value)</span> &#123;<br>... ...<br>&#125;<br><span class="hljs-keyword">public</span> <span class="hljs-title function_">ProducerRecord</span><span class="hljs-params">(String topic, Integer partition, K key, V value, Iterable&lt;Header&gt; headers)</span> &#123;<br>... ...<br>&#125;<br><span class="hljs-keyword">public</span> <span class="hljs-title function_">ProducerRecord</span><span class="hljs-params">(String topic, Integer partition, K key, V value)</span> &#123;<br>... ...<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>没有指明partition值但有key的情况下， 将key的hash值与topic的partition数进行取余得到partition值：</p>
+<blockquote>
+<p>例如： key1的hash值&#x3D;5， key2的hash值&#x3D;6 ， topic的partition数&#x3D;2， 那么key1 对应的value1写入1号分区， key2对应的value2写入0号分区。  </p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-title function_">ProducerRecord</span><span class="hljs-params">(String topic, K key, V value)</span> &#123;<br>... ...<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>既没有partition值又没有key值的情况下， Kafka采用Sticky Partition（黏性分区器） ， 会随机选择一个分区， 并尽可能一直使用该分区， 待该分区的batch已满或者已完成， Kafka再随机一个分区进行使用（和上一次的分区不同） 。  </p>
+<blockquote>
+<p>例如：第一次随机选择0号分区， 等0号分区当前批次满了（默认16k） 或者linger.ms设置的时间到， Kafka再随机一个分区进行使用（如果还是0会继续随机） 。  </p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-title function_">ProducerRecord</span><span class="hljs-params">(String topic, V value)</span> &#123;<br>... ...<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>自定义分区器</strong>  </p>
+<p>如果研发人员可以根据企业需求，自己重新实现分区器。  </p>
+<p>例如我们实现一个分区器实现， 发送过来的数据中如果包含 test，就发往 0 号分区，不包含 test，就发往 1 号分区。  </p>
+<p><strong>实现步骤</strong>  </p>
+<ol>
+<li><p>定义类实现 Partitioner 接口。  </p>
+</li>
+<li><p>重写 partition()方法。  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.test.kafka.producer;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.producer.Partitioner;<br><span class="hljs-keyword">import</span> org.apache.kafka.common.Cluster;<br><span class="hljs-keyword">import</span> java.util.Map;<br><span class="hljs-comment">/**</span><br><span class="hljs-comment">* 1. 实现接口 Partitioner</span><br><span class="hljs-comment">* 2. 实现 3 个方法:partition,close,configure</span><br><span class="hljs-comment">* 3. 编写 partition 方法,返回分区号</span><br><span class="hljs-comment">*/</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyPartitioner</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Partitioner</span> &#123;<br>	<span class="hljs-comment">/**</span><br><span class="hljs-comment">	* 返回信息对应的分区</span><br><span class="hljs-comment">    * <span class="hljs-doctag">@param</span> topic 主题</span><br><span class="hljs-comment">    * <span class="hljs-doctag">@param</span> key 消息的 key</span><br><span class="hljs-comment">    * <span class="hljs-doctag">@param</span> keyBytes 消息的 key 序列化后的字节数组</span><br><span class="hljs-comment">    * <span class="hljs-doctag">@param</span> value 消息的 value</span><br><span class="hljs-comment">    * <span class="hljs-doctag">@param</span> valueBytes 消息的 value 序列化后的字节数组</span><br><span class="hljs-comment">    * <span class="hljs-doctag">@param</span> cluster 集群元数据可以查看分区信息</span><br><span class="hljs-comment">    * <span class="hljs-doctag">@return</span></span><br><span class="hljs-comment">    */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">partition</span><span class="hljs-params">(String topic, Object key, <span class="hljs-type">byte</span>[] keyBytes, Object value, <span class="hljs-type">byte</span>[] valueBytes, Cluster cluster)</span> &#123;<br>        <span class="hljs-comment">// 获取消息</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">msgValue</span> <span class="hljs-operator">=</span> value.toString();<br>        <span class="hljs-comment">// 创建 partition</span><br>        <span class="hljs-type">int</span> partition;<br>        <span class="hljs-comment">// 判断消息是否包含 test</span><br>        <span class="hljs-keyword">if</span> (msgValue.contains(<span class="hljs-string">&quot;test&quot;</span>))&#123;<br>            partition = <span class="hljs-number">0</span>;<br>        &#125;<span class="hljs-keyword">else</span> &#123;<br>            partition = <span class="hljs-number">1</span>;<br>        &#125;<br>        <span class="hljs-comment">// 返回分区号</span><br>        <span class="hljs-keyword">return</span> partition;<br>    &#125;<br>    <span class="hljs-comment">// 关闭资源</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">close</span><span class="hljs-params">()</span> &#123;<br>    <br>    &#125;<br>    <span class="hljs-comment">// 配置方法</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">configure</span><span class="hljs-params">(Map&lt;String, ?&gt; configs)</span> &#123;<br>    <br>    &#125;<br>    <br>    <br><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>使用分区器的方法，在生产者的配置中添加分区器参数。  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.test.kafka.producer;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.producer.*;<br><span class="hljs-keyword">import</span> java.util.Properties;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CustomProducerCallbackPartitions</span> &#123;<br>	<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> InterruptedException &#123;<br>		<span class="hljs-type">Properties</span> <span class="hljs-variable">properties</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Properties</span>();<br>		properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, <span class="hljs-string">&quot;hadoop102:9092&quot;</span>);<br>		properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());<br>		properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());<br>		<span class="hljs-comment">// 添加自定义分区器</span><br>		properties.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, <span class="hljs-string">&quot;com.test.kafka.producer.MyPartitioner&quot;</span>);<br>		KafkaProducer&lt;String, String&gt; kafkaProducer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">KafkaProducer</span>&lt;&gt;(properties);<br>		<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++) &#123;<br>			kafkaProducer.send(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ProducerRecord</span>&lt;&gt;(<span class="hljs-string">&quot;first&quot;</span>, <span class="hljs-string">&quot;test&quot;</span> + i), <span class="hljs-keyword">new</span> <span class="hljs-title class_">Callback</span>() &#123;<br>				<span class="hljs-meta">@Override</span><br>				<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onCompletion</span><span class="hljs-params">(RecordMetadata metadata, Exception e)</span> &#123;<br>					<span class="hljs-keyword">if</span> (e == <span class="hljs-literal">null</span>)&#123;<br>						System.out.println(<span class="hljs-string">&quot; 主 题 ： &quot;</span> + metadata.topic() + <span class="hljs-string">&quot;-&gt;&quot;</span> + <span class="hljs-string">&quot;分区： &quot;</span> + metadata.partition());<br>					&#125;<span class="hljs-keyword">else</span> &#123;<br>						e.printStackTrace();<br>					&#125;<br>				&#125;<br>			&#125;);<br>		&#125;<br>		kafkaProducer.close();<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>生产者如何提高吞吐量</strong>  </p>
+<blockquote>
+<p>batch.size：批次大小，默认16k  </p>
+<p>linger.ms：等待时间，修改为5-100ms  </p>
+<p>compression.type：压缩snappy  </p>
+<p>RecordAccumulator：缓冲区大小，修改为64m  </p>
+</blockquote>
+<h4 id="数据可靠性"><a href="#数据可靠性" class="headerlink" title="数据可靠性"></a>数据可靠性</h4><p><strong>ack 应答原理</strong>  </p>
+<p><img src="/2022/07/17/Kafka/image-20220720112526804.png" srcset="/img/loading.gif" lazyload alt="ack"></p>
+<p><strong>0</strong>： 生产者发送过来的数据， 不需要等数据落盘应答  </p>
+<blockquote>
+<p><strong>数据可靠性分析</strong>：丢数</p>
+</blockquote>
+<p><strong>1</strong>： 生产者发送过来的数据， Leader收到数据后应答。  </p>
+<blockquote>
+<p><strong>数据可靠性分析</strong>：丢数  </p>
+<p>如：应答完成后，还没开始同步副本， Leader挂了  </p>
+<p>新的Leader不会收到Hello的信息，因为生产者已经认为发送成功了。  </p>
+</blockquote>
+<p><strong>-1（all）</strong> ： 生产者发送过来的数据， Leader和ISR队列里面的所有节点收齐数据后应答。  </p>
+<p><strong>思考</strong>： Leader收到数据， 所有Follower都开始同步数据，但有一个Follower， 因为某种故障， 迟迟不能与Leader进行同步， 那这个问题怎么解决呢？  </p>
+<blockquote>
+<p><strong>Leader维护了一个动态的in-sync replica set（ ISR） ， 意为和Leader保持同步的Follower+Leader集合(leader： 0， isr:0,1,2)。</strong>  </p>
+<p>如果Follower长时间未向Leader发送通信请求或同步数据，则该Follower将被踢出ISR。 该时间阈值由replica.lag.time.max.ms参数设定，默认30s。 例如2超时， (leader:0, isr:0,1)。  </p>
+<p>这样就不用等长期联系不上或者已经故障的节点。  </p>
+</blockquote>
+<p><strong>数据可靠性分析</strong>：  </p>
+<p>如果分区副本设置为1个， 或者ISR里应答的最小副本数量（ min.insync.replicas 默认为1） 设置为1， 和ack&#x3D;1的效果是一样的， 仍然有丢数的风险（leader： 0， isr:0） 。  </p>
+<p><strong>数据完全可靠条件 &#x3D; ACK级别设置为-1 + 分区副本大于等于2 + ISR里应答的最小副本数量大于等于2</strong>  </p>
+<p><strong>可靠性总结</strong>：  </p>
+<blockquote>
+<p><strong>acks&#x3D;0</strong>， 生产者发送过来数据就不管了， 可靠性差， 效率高；  </p>
+<p><strong>acks&#x3D;1</strong>， 生产者发送过来数据Leader应答， 可靠性中等， 效率中等；  </p>
+<p><strong>acks&#x3D;-1</strong>， 生产者发送过来数据Leader和ISR队列里面所有Follwer应答， 可靠性高， 效率低；  </p>
+<p>在生产环境中， acks&#x3D;0很少使用； acks&#x3D;1， 一般用于传输普通日志， 允许丢个别数据； acks&#x3D;-1， 一般用于传输和钱相关的数据，对可靠性要求比较高的场景。  </p>
+</blockquote>
+<p>代码中需要添加：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 设置 acks</span><br>properties.put(ProducerConfig.ACKS_CONFIG, <span class="hljs-string">&quot;all&quot;</span>);<br><span class="hljs-comment">// 重试次数 retries，默认是 int 最大值， 2147483647</span><br>properties.put(ProducerConfig.RETRIES_CONFIG, <span class="hljs-number">3</span>);<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="数据重复-amp-数据去重"><a href="#数据重复-amp-数据去重" class="headerlink" title="数据重复 &amp; 数据去重"></a>数据重复 &amp; 数据去重</h4><p>Leader 在生产者发送过来的数据， Leader和ISR队列里面的所有节点收齐数据（hello）后应答，在最后应答时，leader 的 ack 还没有发出就挂了，导致 Producer 认为发送失败重传，但是新的 Leader （之前的 follower） 中已经有了该数据（hello）再次发送就导致了数据重复。</p>
+<hr>
+<p><strong>数据传递语义</strong>  </p>
+<blockquote>
+<p><strong>至少一次（At Least Once）</strong> &#x3D; ACK级别设置为-1 + 分区副本大于等于2 + ISR里应答的最小副本数量大于等于2  </p>
+<p><strong>最多一次（At Most Once）</strong> &#x3D; ACK级别设置为0  </p>
+</blockquote>
+<p><strong>总结</strong>：</p>
+<blockquote>
+<p>At Least Once可以保证数据不丢失， 但是不能保证数据不重复；  </p>
+<p>At Most Once可以保证数据不重复， 但是不能保证数据不丢失。    </p>
+</blockquote>
+<p><strong>精确一次（Exactly Once）</strong> ： 对于一些非常重要的信息， 比如和钱相关的数据， 要求数据既不能重复也不丢失。<br>Kafka 0.11版本以后， 引入了一项重大特性： <strong>幂等性</strong>和<strong>事务</strong>。  </p>
+<hr>
+<p><strong>幂等性</strong></p>
+<blockquote>
+<p>指Producer不论向Broker发送多少次重复数据， Broker端都只会持久化一条， 保证了不重复。  </p>
+</blockquote>
+<p><strong>精确一次（Exactly Once） &#x3D; 幂等性 + 至少一次（ ack&#x3D;-1 + 分区副本数&gt;&#x3D;2 + ISR最小副本数量&gt;&#x3D;2） 。</strong>  </p>
+<p><strong>重复数据的判断标准</strong>：</p>
+<blockquote>
+<p>具有&lt;PID, Partition, SeqNumber&gt;相同主键的消息提交时， Broker只会持久化一条。 其中PID是Kafka每次重启都会分配一个新的； Partition 表示分区号； Sequence Number是单调自增的。  </p>
+<p>所以幂等性只能保证的是在单分区单会话内不重复。 </p>
+<p>例如：</p>
+<p>（Sequence&#x3D;0，PID&#x3D;1000，Value&#x3D;Hello  ）；（Sequence&#x3D;1，PID&#x3D;1000，Value&#x3D;world  ）；  （Sequence&#x3D;1，PID&#x3D;1000，Value&#x3D;world  ）:negative_squared_cross_mark:</p>
+</blockquote>
+<p><strong>如何使用幂等性</strong></p>
+<p>开启参数 enable.idempotence 默认为 true， false 关闭。  </p>
+<hr>
+<p><strong>生产者事务</strong></p>
+<p><strong>事务原理</strong>：</p>
+<p><strong>幂等性并不能跨多个分区运行</strong>，而事务可以弥补这个缺陷。<strong>事务可以保证对多个分区写入操作的原子性</strong>。操作的原子性是指多个操作要么全部成功，要么全部失败，不存在不一致的情况。</p>
+<p>对流式应用而言，一个典型的应用模式为“consumer-transform-produce”, 这种模式下消费和生产并存： 应用程序从某个主题中消费消息，然后经过一系列操作写入另一个主题，消费者可能再提交消费位移的过程中出现问题而导致重复消费，也有可能生产者重复生产消息。 kafka中的事务可以使应用程<strong>序将消费消息，生产消息、提交消费位移当作原子操作来处理</strong>，同时成功或者失败，即使该生产或消费跨越多个分区。</p>
+<p><img src="/2022/07/17/Kafka/image-20220720145425755.png" srcset="/img/loading.gif" lazyload alt="transaction"></p>
+<p><strong>场景</strong></p>
+<ol>
+<li>最简单的需求是producer发的多条消息组成一个事务这些消息需要对consumer同时可见或者同时不可见 。</li>
+<li>producer可能会给多个topic，多个partition发消息，这些消息也需要能放在一个事务里面，这就形成了一个典型的分布式事务</li>
+<li>kafka的应用场景经常是应用先消费一个topic，然后做处理再发到另一个topic，这个consume-transform-produce过程需要放到一个事务里面，比如在消息处理或者发送的过程中如果失败了，消费位点也不能提交。</li>
+<li>producer或者producer所在的应用可能会挂掉，新的producer启动以后需要知道怎么处理之前未完成的事务 。</li>
+<li>流式处理的拓扑可能会比较深，如果下游只有等上游消息事务提交以后才能读到，可能会导致rt非常长吞吐量也随之下降很多，所以需要实现read committed和read uncommitted两种事务隔离级别。</li>
+</ol>
+<p>transactionalId与PID一一对应，两者之间所不同的是transactionalId由用户显示设置，而PID是由kafka内部分配的。 为了保证新的生产者启动后，具有相同transactionalId的旧生产者能够立即失效，每个生产者通过transactionalId获取PID的同时，还会获取一个单调递增的producer epoch(对应下面要讲述的kafkaProducer.initTransactions()方法)。 如果使用同一个transactionalId开启两个生产者，那么前一个生产者会报提示有一个新的生产者利用同一个事务id申请了producer epoch。提示老的生产者它再broker里面已经过期了。</p>
+<p>从生产者的角度分析，通过事务，Kafka 可以保证跨生产者会话的消息幂等发送，以及跨生产者会话的事务恢复。前者表示具有相同 transactionalId 的新生产者实例被创建且工作的时候，旧的且拥有相同transactionalId的生产者实例将不再工作。后者指当某个生产者实例宕机后，新的生产者实例可以保证任何未完成的旧事务要么被提交（Commit），要么被中止（Abort），如此可以使新的生产者实例从一个正常的状态开始工作。</p>
+<p>而从消费者的角度分析，事务能保证的语义相对偏弱。出于以下原因，Kafka 并不能保证已提交的事务中的所有消息都能够被消费：</p>
+<ol>
+<li>对采用日志压缩策略的主题而言，事务中的某些消息有可能被清理（相同key的消息，后写入的消息会覆盖前面写入的消息）。</li>
+<li>事务中消息可能分布在同一个分区的多个日志分段（LogSegment）中，当老的日志分段被删除时，对应的消息可能会丢失。</li>
+<li>消费者可以通过seek（）方法访问任意offset的消息，从而可能遗漏事务中的部分消息。</li>
+<li>消费者在消费时可能没有分配到事务内的所有分区，如此它也就不能读取事务中的所有消息。</li>
+</ol>
+<p>说明：开启事务， 必须开启幂等性。  </p>
+<p>Producer 在使用事务功能前，必须先自定义一个唯一的 transactional.id。 有了 transactional.id，即使客户端挂掉了，它重启后也能继续处理未完成的事务  </p>
+<p>Kafka 的事务一共有如下 5 个 API  ：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 1 初始化事务</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">initTransactions</span><span class="hljs-params">()</span>;<br><span class="hljs-comment">// 2 开启事务</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">beginTransaction</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> ProducerFencedException;<br><span class="hljs-comment">// 3 在事务内提交已经消费的偏移量（主要用于消费者）</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">sendOffsetsToTransaction</span><span class="hljs-params">(Map&lt;TopicPartition, OffsetAndMetadata&gt; offsets, String consumerGroupId)</span> <span class="hljs-keyword">throws</span> ProducerFencedException;<br><span class="hljs-comment">// 4 提交事务</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">commitTransaction</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> ProducerFencedException;<br><span class="hljs-comment">// 5 放弃事务（类似于回滚事务的操作）</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">abortTransaction</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> ProducerFencedException;<br><br></code></pre></td></tr></table></figure>
+
+<p>单个 Producer，使用事务保证消息的仅一次发送：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.test.kafka.producer;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.producer.KafkaProducer;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.producer.ProducerRecord;<br><span class="hljs-keyword">import</span> java.util.Properties;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CustomProducerTransactions</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> InterruptedException &#123;<br>        <span class="hljs-comment">// 1. 创建 kafka 生产者的配置对象</span><br>        <span class="hljs-type">Properties</span> <span class="hljs-variable">properties</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Properties</span>();<br>        <span class="hljs-comment">// 2. 给 kafka 配置对象添加配置信息</span><br>        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,<span class="hljs-string">&quot;hadoop102:9092&quot;</span>);<br>        <span class="hljs-comment">// key,value 序列化</span><br>        properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());<br>        properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());<br>        <span class="hljs-comment">// 设置事务 id（必须），事务 id 任意起名</span><br>        properties.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, <span class="hljs-string">&quot;transaction_id_0&quot;</span>);<br>        <span class="hljs-comment">// 3. 创建 kafka 生产者对象</span><br>        KafkaProducer&lt;String, String&gt; kafkaProducer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">KafkaProducer</span>&lt;String, String&gt;(properties);<br>        <span class="hljs-comment">// 初始化事务</span><br>		kafkaProducer.initTransactions();<br>		<span class="hljs-comment">// 开启事务</span><br>		kafkaProducer.beginTransaction()<br>		<span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-comment">// 4. 调用 send 方法,发送消息</span><br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++) &#123;<br>            <span class="hljs-comment">// 发送消息</span><br>                kafkaProducer.send(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ProducerRecord</span>&lt;&gt;(<span class="hljs-string">&quot;first&quot;</span>, <span class="hljs-string">&quot;test &quot;</span> + i));<br>            &#125;<br>            <span class="hljs-comment">// 提交事务</span><br>            kafkaProducer.commitTransaction();<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>			<span class="hljs-comment">// 终止事务</span><br>			kafkaProducer.abortTransaction();<br>		&#125;<span class="hljs-keyword">finally</span> &#123;<br>            <span class="hljs-comment">// 5. 关闭资源</span><br>            kafkaProducer.close();<br>        &#125;<br>	&#125;<br>&#125;	<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="数据有序"><a href="#数据有序" class="headerlink" title="数据有序"></a>数据有序</h4><p>单分区内， 有序（有条件的） ；</p>
+<p>多分区， 分区与分区间无序；  </p>
+<hr>
+<h4 id="数据乱序"><a href="#数据乱序" class="headerlink" title="数据乱序"></a>数据乱序</h4><ol>
+<li><p>kafka在1.x版本之前保证数据单分区有序：</p>
+<blockquote>
+<p>max.in.flight.requests.per.connection&#x3D;1（ 不需要考虑是否开启幂等性） 。  </p>
+</blockquote>
+</li>
+<li><p>kafka在1.x及以后版本保证数据单分区有序：</p>
+<blockquote>
+<ol>
+<li><p>未开启幂等性</p>
+<p>max.in.flight.requests.per.connection需要设置为1。  </p>
+</li>
+<li><p>开启幂等性  </p>
+<p>max.in.flight.requests.per.connection需要设置小于等于5。  </p>
+<p>原因说明：因为在kafka1.x以后，启用幂等后， kafka服务端会缓存producer发来的最近5个request的元数据，故无论如何，都可以保证最近5个request的数据都是有序的。</p>
+</li>
+</ol>
+</blockquote>
+</li>
+</ol>
+<p><img src="/2022/07/17/Kafka/image-20220720152541375.png" srcset="/img/loading.gif" lazyload alt="数据乱序"></p>
+<h3 id="Broker"><a href="#Broker" class="headerlink" title="Broker"></a>Broker</h3><h4 id="Zookeeper-存储的-Kafka-信息"><a href="#Zookeeper-存储的-Kafka-信息" class="headerlink" title="Zookeeper 存储的 Kafka 信息"></a>Zookeeper 存储的 Kafka 信息</h4><p><img src="/2022/07/17/Kafka/image-20220720155905524.png" srcset="/img/loading.gif" lazyload alt="Kafka info in zookeeper"></p>
+<p>在zookeeper的服务端存储的Kafka相关信息：  </p>
+<blockquote>
+<ol>
+<li>&#x2F;kafka&#x2F;brokers&#x2F;ids : [0,1,2] 记录有哪些服务器  </li>
+<li>&#x2F;kafka&#x2F;brokers&#x2F;topics&#x2F;first&#x2F;partitions&#x2F;0&#x2F;state : {“leader”:1 ,”isr”:[1,0,2] } 记录谁是Leader，有哪些服务器可用  </li>
+<li>&#x2F;kafka&#x2F;controller {“brokerid” :0} 辅助选举Leader</li>
+</ol>
+</blockquote>
+<h4 id="Kafka-Broker-总体工作流程"><a href="#Kafka-Broker-总体工作流程" class="headerlink" title="Kafka Broker 总体工作流程"></a>Kafka Broker 总体工作流程</h4><p><img src="/2022/07/17/Kafka/image-20220720165554946.png" srcset="/img/loading.gif" lazyload alt="borker working procedure"></p>
+<p><strong>Broker 重要参数</strong>  </p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>replica.lag.time.max.ms</td>
+<td>ISR 中， 如果 Follower 长时间未向 Leader 发送通 信请求或同步数据，则该 Follower 将被踢出 ISR。 该时间阈值， <strong>默认 30s。</strong></td>
+</tr>
+<tr>
+<td>auto.leader.rebalance.enable</td>
+<td><strong>默认是 true</strong>。 自动 Leader Partition 平衡。</td>
+</tr>
+<tr>
+<td>leader.imbalance.per.broker.percentage</td>
+<td>**默认是 10%**。 每个 broker 允许的不平衡的 leader 的比率。如果每个 broker 超过了这个值，控制器 会触发 leader 的平衡。</td>
+</tr>
+<tr>
+<td>leader.imbalance.check.interval.seconds</td>
+<td><strong>默认值 300 秒</strong>。检查 leader 负载是否平衡的间隔时 间。</td>
+</tr>
+<tr>
+<td>log.segment.bytes</td>
+<td>Kafka 中 log 日志是分成一块块存储的，此配置是 指 log 日志划分 成块的大小， <strong>默认值 1G</strong>。</td>
+</tr>
+<tr>
+<td>log.index.interval.bytes</td>
+<td><strong>默认 4kb</strong>， kafka 里面每当写入了 4kb 大小的日志 （.log），然后就往 index 文件里面记录一个索引。</td>
+</tr>
+<tr>
+<td>log.retention.hours</td>
+<td>Kafka 中数据保存的时间， <strong>默认 7 天</strong>。</td>
+</tr>
+<tr>
+<td>log.retention.minutes</td>
+<td>Kafka 中数据保存的时间， <strong>分钟级别</strong>，默认关闭。</td>
+</tr>
+<tr>
+<td>log.retention.ms</td>
+<td>Kafka 中数据保存的时间， <strong>毫秒级别</strong>，默认关闭</td>
+</tr>
+<tr>
+<td>log.retention.check.interval.ms</td>
+<td>检查数据是否保存超时的间隔， <strong>默认是 5 分钟</strong>。</td>
+</tr>
+<tr>
+<td>log.retention.bytes</td>
+<td><strong>默认等于-1，表示无穷大</strong>。 超过设置的所有日志总大小，删除最早的 segment。</td>
+</tr>
+<tr>
+<td>log.cleanup.policy</td>
+<td><strong>默认是 delete</strong>，表示所有数据启用删除策略；如果设置值为 compact，表示所有数据启用压缩策 略。</td>
+</tr>
+<tr>
+<td>num.io.threads</td>
+<td><strong>默认是 8</strong>。 负责写磁盘的线程数。整个参数值要占 总核数的 50%。</td>
+</tr>
+<tr>
+<td>num.replica.fetchers</td>
+<td>副本拉取线程数，这个参数占总核数的 50%的 1&#x2F;3</td>
+</tr>
+<tr>
+<td>num.network.threads</td>
+<td><strong>默认是 3</strong>。 数据传输线程数，这个参数占总核数的 50%的 2&#x2F;3 。</td>
+</tr>
+<tr>
+<td>log.flush.interval.messages</td>
+<td>强制页缓存刷写到磁盘的条数，默认是 long 的最 大值， 9223372036854775807。一般不建议修改， 交给系统自己管理。</td>
+</tr>
+<tr>
+<td>log.flush.interval.ms</td>
+<td>每隔多久，刷数据到磁盘，默认是 null。一般不建 议修改，交给系统自己管理。</td>
+</tr>
+</tbody></table>
+<h4 id="节点服役和退役"><a href="#节点服役和退役" class="headerlink" title="节点服役和退役"></a>节点服役和退役</h4><p><strong>服役新节点</strong></p>
+<ol>
+<li><p>关闭 hadoop104，并右键执行克隆操作。  </p>
+</li>
+<li><p>开启 hadoop105，并修改 IP 地址。  </p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-comment">#根据你自己的 Hadoop 集群网络来配置</span><br><span class="hljs-section">[root@hadoop104 ~]</span><span class="hljs-comment"># vim /etc/sysconfig/network-scripts/ifcfgens33</span><br><span class="hljs-attr">DEVICE</span>=ens33<br><span class="hljs-attr">TYPE</span>=Ethernet<br><span class="hljs-attr">ONBOOT</span>=<span class="hljs-literal">yes</span><br><span class="hljs-attr">BOOTPROTO</span>=static<br><span class="hljs-attr">NAME</span>=<span class="hljs-string">&quot;ens33&quot;</span><br><span class="hljs-attr">IPADDR</span>=<span class="hljs-number">192.168</span>.<span class="hljs-number">10.105</span><br><span class="hljs-attr">PREFIX</span>=<span class="hljs-number">24</span><br><span class="hljs-attr">GATEWAY</span>=<span class="hljs-number">192.168</span>.<span class="hljs-number">10.2</span><br><span class="hljs-attr">DNS1</span>=<span class="hljs-number">192.168</span>.<span class="hljs-number">10.2</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>在 hadoop105 上，修改主机名称为 hadoop105。  </p>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs autoit">[root<span class="hljs-symbol">@hadoop104</span> ~]<span class="hljs-meta"># vim /etc/hostname</span><br>hadoop105<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>重新启动 hadoop104、 hadoop105。  </p>
+</li>
+<li><p>修改 haodoop105 中 kafka 的 broker.id 为 3。  </p>
+</li>
+<li><p>删除 hadoop105 中 kafka 下的 datas 和 logs。  </p>
+</li>
+<li><p>启动 hadoop102、 hadoop103、 hadoop104 上的 kafka 集群  </p>
+</li>
+<li><p>单独启动 hadoop105 中的 kafka。  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">[<span class="hljs-built_in">test</span>@hadoop105 kafka]$ bin/kafka-server-start.sh -daemon ./config/server.properties<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>执行负载均衡操作</strong>  </p>
+<ol>
+<li><p>创建一个要均衡的主题。  </p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">[</span>test@hadoop102 kafka<span class="hljs-punctuation">]</span>$ vim topics-to-move.json<br><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;topics&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>        <span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;topic&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;first&quot;</span><span class="hljs-punctuation">&#125;</span><br>    <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>生成一个负载均衡的计划。  </p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">[</span>test@hadoop102 kafka<span class="hljs-punctuation">]</span>$ bin/kafka-reassign-partitions.sh --bootstrap-server hadoop102<span class="hljs-punctuation">:</span><span class="hljs-number">9092</span> --topics-to-move-json-file topics-to-move.json --broker-list <span class="hljs-string">&quot;0,1,2,3&quot;</span> --generate<br><br>Current partition replica assignment<br><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;version&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partitions&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;topic&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;first&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partition&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">0</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;replicas&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-number">0</span><span class="hljs-punctuation">,</span><span class="hljs-number">2</span><span class="hljs-punctuation">,</span><span class="hljs-number">1</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;log_dirs&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;topic&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;first&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partition&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;replicas&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-number">2</span><span class="hljs-punctuation">,</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-number">0</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;log_dirs&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;topic&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;first&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partition&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">2</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;replicas&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-number">0</span><span class="hljs-punctuation">,</span><span class="hljs-number">2</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;log_dirs&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><br><br>Proposed partition reassignment configuration<br><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;version&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partitions&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;topic&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;first&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partition&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">0</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;replicas&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-number">2</span><span class="hljs-punctuation">,</span><span class="hljs-number">3</span><span class="hljs-punctuation">,</span><span class="hljs-number">0</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;log_dirs&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;topic&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;first&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partition&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;replicas&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-number">3</span><span class="hljs-punctuation">,</span><span class="hljs-number">0</span><span class="hljs-punctuation">,</span><span class="hljs-number">1</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;log_dirs&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;topic&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;first&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partition&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">2</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;replicas&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-number">0</span><span class="hljs-punctuation">,</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-number">2</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;log_dirs&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>创建副本存储计划（所有副本存储在 broker0、 broker1、 broker2、 broker3 中）。  </p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">[</span>test@hadoop102 kafka<span class="hljs-punctuation">]</span>$ vim increase-replication-factor.json<br><br><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;version&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partitions&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;topic&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;first&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partition&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">0</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;replicas&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-number">2</span><span class="hljs-punctuation">,</span><span class="hljs-number">3</span><span class="hljs-punctuation">,</span><span class="hljs-number">0</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;log_dirs&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;topic&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;first&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partition&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;replicas&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-number">3</span><span class="hljs-punctuation">,</span><span class="hljs-number">0</span><span class="hljs-punctuation">,</span><span class="hljs-number">1</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;log_dirs&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;topic&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;first&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partition&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">2</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;replicas&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-number">0</span><span class="hljs-punctuation">,</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-number">2</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;log_dirs&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>执行副本存储计划。  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">[test@hadoop102 kafka]$ bin/kafka-<span class="hljs-keyword">reassign</span>-partitions.sh <span class="hljs-comment">--bootstrap-server hadoop102:9092 --reassignment-json-file increase-replication-factor.json --execute</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>验证副本存储计划。</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs vim">[test@hadoop102 kafka]$ bin/kafka-reassign-partitions.<span class="hljs-keyword">sh</span> --bootstrap-server hadoop102:<span class="hljs-number">9092</span> --reassignment-json-<span class="hljs-keyword">file</span> increase-replication-factor.json --verify<br><br>Status of partition reassignment:<br>Reassignment of partition <span class="hljs-keyword">first</span>-<span class="hljs-number">0</span> <span class="hljs-keyword">is</span> <span class="hljs-built_in">complete</span>.<br>Reassignment of partition <span class="hljs-keyword">first</span>-<span class="hljs-number">1</span> <span class="hljs-keyword">is</span> <span class="hljs-built_in">complete</span>.<br>Reassignment of partition <span class="hljs-keyword">first</span>-<span class="hljs-number">2</span> <span class="hljs-keyword">is</span> <span class="hljs-built_in">complete</span>.<br><br>Clearing broker-level throttles <span class="hljs-keyword">on</span> brokers <span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span><br>Clearing topic-level throttles <span class="hljs-keyword">on</span> topic <span class="hljs-keyword">first</span><br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>退役旧节点</strong></p>
+<p>  先按照退役一台节点， <strong>生成执行计划</strong>，然后按照服役时操作流程<strong>执行负载均衡</strong>。  </p>
+<ol>
+<li><p>创建一个要均衡的主题。  </p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">[</span>test@hadoop102 kafka<span class="hljs-punctuation">]</span>$ vim topics-to-move.json<br><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;topics&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>        <span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;topic&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;first&quot;</span><span class="hljs-punctuation">&#125;</span><br>    <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>创建执行计划。  </p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">[</span>test@hadoop102 kafka<span class="hljs-punctuation">]</span>$ bin/kafka-reassign-partitions.sh --bootstrap-server hadoop102<span class="hljs-punctuation">:</span><span class="hljs-number">9092</span> --topics-to-move-json-file topics-to-move.json --broker-list <span class="hljs-string">&quot;0,1,2&quot;</span> --generate<br><br>Current partition replica assignment<br><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;version&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partitions&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;topic&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;first&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partition&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">0</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;replicas&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-number">2</span><span class="hljs-punctuation">,</span><span class="hljs-number">0</span><span class="hljs-punctuation">,</span><span class="hljs-number">1</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;log_dirs&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;topic&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;first&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partition&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;replicas&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-number">3</span><span class="hljs-punctuation">,</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-number">2</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;log_dirs&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;topic&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;first&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partition&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">2</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;replicas&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-number">0</span><span class="hljs-punctuation">,</span><span class="hljs-number">2</span><span class="hljs-punctuation">,</span><span class="hljs-number">3</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;log_dirs&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><br><br>Proposed partition reassignment configuration<br><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;version&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partitions&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;topic&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;first&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partition&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">0</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;replicas&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-number">2</span><span class="hljs-punctuation">,</span><span class="hljs-number">0</span><span class="hljs-punctuation">,</span><span class="hljs-number">1</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;log_dirs&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;topic&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;first&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partition&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;replicas&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-number">0</span><span class="hljs-punctuation">,</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-number">2</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;log_dirs&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;topic&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;first&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partition&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">2</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;replicas&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-number">2</span><span class="hljs-punctuation">,</span><span class="hljs-number">0</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;log_dirs&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>创建副本存储计划（所有副本存储在 broker0、 broker1、 broker2 中）。  </p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">[</span>test@hadoop102 kafka<span class="hljs-punctuation">]</span>$ vim increase-replication-factor.json<br><br><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;version&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partitions&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;topic&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;first&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partition&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">0</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;replicas&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-number">2</span><span class="hljs-punctuation">,</span><span class="hljs-number">0</span><span class="hljs-punctuation">,</span><span class="hljs-number">1</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;log_dirs&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;topic&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;first&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partition&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;replicas&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-number">0</span><span class="hljs-punctuation">,</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-number">2</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;log_dirs&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;topic&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;first&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partition&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">2</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;replicas&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-number">2</span><span class="hljs-punctuation">,</span><span class="hljs-number">0</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;log_dirs&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;any&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>执行副本存储计划。  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">[test@hadoop102 kafka]$ bin/kafka-<span class="hljs-keyword">reassign</span>-partitions.sh <span class="hljs-comment">--bootstrap-server hadoop102:9092 --reassignment-json-file increase-replication-factor.json --execute</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>验证副本存储计划。</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs vim">[test@hadoop102 kafka]$ bin/kafka-reassign-partitions.<span class="hljs-keyword">sh</span> --bootstrap-server hadoop102:<span class="hljs-number">9092</span> --reassignment-json-<span class="hljs-keyword">file</span> increase-replication-factor.json --verify<br><br>Status of partition reassignment:<br>Reassignment of partition <span class="hljs-keyword">first</span>-<span class="hljs-number">0</span> <span class="hljs-keyword">is</span> <span class="hljs-built_in">complete</span>.<br>Reassignment of partition <span class="hljs-keyword">first</span>-<span class="hljs-number">1</span> <span class="hljs-keyword">is</span> <span class="hljs-built_in">complete</span>.<br>Reassignment of partition <span class="hljs-keyword">first</span>-<span class="hljs-number">2</span> <span class="hljs-keyword">is</span> <span class="hljs-built_in">complete</span>.<br><br>Clearing broker-level throttles <span class="hljs-keyword">on</span> brokers <span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span><br>Clearing topic-level throttles <span class="hljs-keyword">on</span> topic <span class="hljs-keyword">first</span><br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>执行停止命令</strong>  </p>
+<p>在 hadoop105 上执行停止命令即可。  </p>
+<h3 id="Kafka-副本"><a href="#Kafka-副本" class="headerlink" title="Kafka 副本"></a>Kafka 副本</h3><h4 id="副本基本信息"><a href="#副本基本信息" class="headerlink" title="副本基本信息"></a>副本基本信息</h4><ol>
+<li><p>Kafka 副本作用：提高数据可靠性。  </p>
+</li>
+<li><p>Kafka 默认副本 1 个，生产环境一般配置为 2 个，保证数据可靠性；太多副本会增加磁盘存储空间，增加网络上数据传输，降低效率。  </p>
+</li>
+<li><p>Kafka 中副本分为： Leader 和 Follower。 Kafka 生产者只会把数据发往 Leader，然后 Follower 找 Leader 进行同步数据。  </p>
+</li>
+<li><p>Kafka 分区中的所有副本统称为 AR（Assigned Repllicas）。  </p>
+<blockquote>
+<p>AR &#x3D; ISR + OSR</p>
+<p>ISR，表示和 Leader 保持同步的 Follower 集合。 如果 Follower 长时间未向 Leader 发送通信请求或同步数据，则该 Followe 将被踢出 ISR。该时间阈值由 replica.lag.time.max.ms 参数设定，默认 30s。 Leader 发生故障之后，就会从 ISR 中选举新的 Leader。  </p>
+<p>OSR， 表示 Follower 与 Leader 副本同步时，延迟过多的副本。</p>
+</blockquote>
+</li>
+</ol>
+<h4 id="Leader-选举流程"><a href="#Leader-选举流程" class="headerlink" title="Leader 选举流程"></a>Leader 选举流程</h4><p>Kafka 集群中有一个 broker 的 Controller 会被选举为 Controller Leader，负责管理集群 broker 的上下线，所有 topic 的分区副本分配和 Leader 选举等工作。</p>
+<p>Controller 的信息同步工作是依赖于 Zookeeper 的。  </p>
+<p><img src="/2022/07/17/Kafka/image-20220720165554946.png" srcset="/img/loading.gif" lazyload alt="borker working procedure"></p>
+<h4 id="Leader-和-Follower-故障处理细节"><a href="#Leader-和-Follower-故障处理细节" class="headerlink" title="Leader 和 Follower 故障处理细节"></a>Leader 和 Follower 故障处理细节</h4><p><strong>LEO（Log End Offset）</strong>： 每个副本的最后一个offset， LEO其实就是最新的offset + 1。  </p>
+<p><strong>HW（High Watermark）</strong>： 所有副本中最小的LEO 。  </p>
+<p><img src="/2022/07/17/Kafka/image-20220721102712676.png" srcset="/img/loading.gif" lazyload alt="Follower ERROR"></p>
+<p><strong>Follower故障</strong>  </p>
+<ol>
+<li>Follower发生故障后会被临时踢出ISR  </li>
+<li>这个期间Leader和Follower继续接收数据  </li>
+<li>待该Follower恢复后， Follower会读取本地磁盘记录的上次的HW，并将log文件高于HW的部分截取掉，从HW开始向Leader进行同步  </li>
+<li>等该Follower的LEO大于等于该Partition的HW，即Follower追上Leader之后，就可以重新加入ISR了。</li>
+</ol>
+<p><img src="/2022/07/17/Kafka/image-20220721103039002.png" srcset="/img/loading.gif" lazyload alt="Leader ERROR"></p>
+<p><strong>Leader故障</strong>  </p>
+<ol>
+<li>Leader发生故障之后，会从ISR中选出一个新的Leader  </li>
+<li>为保证多个副本之间的数据一致性，其余的Follower会先将各自的log文件高于HW的部分截掉，然后从新的Leader同步数据。</li>
+</ol>
+<p><strong>注意</strong>：这只能保证副本之间的数据一致性，并不能保证数据不丢失或者不重复。  </p>
+<h4 id="手动调整分区副本存储"><a href="#手动调整分区副本存储" class="headerlink" title="手动调整分区副本存储"></a>手动调整分区副本存储</h4><p>在生产环境中， 每台服务器的配置和性能不一致， 但是Kafka只会根据自己的代码规则创建对应的分区副本， 就会导致个别服务器存储压力较大。 所有需要手动调整分区副本的存储。  </p>
+<p>副本</p>
+<table>
+<thead>
+<tr>
+<th>broker</th>
+<th>storage capacity</th>
+<th>before_replicas</th>
+<th>after_replicas</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>broker0</td>
+<td>32T</td>
+<td>1_Leader 2_Follower</td>
+<td>1_Leader 2_Leader 3_Follower 4_Follower</td>
+</tr>
+<tr>
+<td>broker1</td>
+<td>32T</td>
+<td>2_Leader 3_Follower</td>
+<td>3_Leader 4_Leader 1_Follower 2_Follower</td>
+</tr>
+<tr>
+<td>broker2</td>
+<td>4T</td>
+<td>3_Leader 4_Follower</td>
+<td></td>
+</tr>
+<tr>
+<td>broker3</td>
+<td>4T</td>
+<td>4_Leader 1_Follower</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>手动调整分区副本存储的步骤如下：  </p>
+<ol>
+<li><p>创建一个新的 topic， 名称为 three。  </p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-attr">[test@hadoop102 kafka]</span>$ bin/kafka-topics<span class="hljs-selector-class">.sh</span> <span class="hljs-attr">--bootstrap-server</span> hadoop102:<span class="hljs-number">9092</span> <span class="hljs-attr">--create</span> <span class="hljs-attr">--partitions</span> <span class="hljs-number">4</span> <span class="hljs-attr">--replication-factor</span> <span class="hljs-number">2</span> <span class="hljs-attr">--topic</span> three<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>查看分区副本存储情况。  </p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-attr">[test@hadoop102 kafka]</span>$ bin/kafka-topics<span class="hljs-selector-class">.sh</span> <span class="hljs-attr">--bootstrap-server</span> hadoop102:<span class="hljs-number">9092</span> <span class="hljs-attr">--describe</span> <span class="hljs-attr">--topic</span> three<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>创建副本存储计划（所有副本都指定存储在 broker0、 broker1 中）。  </p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">[</span>test@hadoop102 kafka<span class="hljs-punctuation">]</span>$ vim increase-replication-factor.json<br><br><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;version&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;partitions&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;topic&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;three&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partition&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">0</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;replicas&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-number">0</span><span class="hljs-punctuation">,</span><span class="hljs-number">1</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;topic&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;three&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partition&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;replicas&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-number">0</span><span class="hljs-punctuation">,</span><span class="hljs-number">1</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;topic&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;three&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partition&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">2</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;replicas&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-number">0</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;topic&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;three&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;partition&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-number">3</span><span class="hljs-punctuation">,</span><span class="hljs-attr">&quot;replicas&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span><span class="hljs-number">0</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">]</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>执行副本存储计划。  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">[test@hadoop102 kafka]$ bin/kafka-<span class="hljs-keyword">reassign</span>-partitions.sh <span class="hljs-comment">--bootstrap-server hadoop102:9092 --reassignment-json-file increase-replication-factor.json --execute</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>验证副本存储计划。  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">[test@hadoop102 kafka]$ bin/kafka-<span class="hljs-keyword">reassign</span>-partitions.sh <span class="hljs-comment">--bootstrap-server hadoop102:9092 --reassignment-json-file increase-replication-factor.json --verify</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>查看分区副本存储情况。  </p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-attr">[test@hadoop102 kafka]</span>$ bin/kafka-topics<span class="hljs-selector-class">.sh</span> <span class="hljs-attr">--bootstrap-server</span><br>hadoop102:<span class="hljs-number">9092</span> <span class="hljs-attr">--describe</span> <span class="hljs-attr">--topic</span> three<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="Leader-Partition-负载平衡"><a href="#Leader-Partition-负载平衡" class="headerlink" title="Leader Partition 负载平衡"></a>Leader Partition 负载平衡</h4><p>正常情况下， Kafka本身会自动把Leader Partition均匀分散在各个机器上， 来保证每台机器的读写吞吐量都是均匀的。 但是如果某些broker宕机， 会导致Leader Partition过于集中在其他少部分几台broker上， 这会导致少数几台broker的读写请求压力过高， 其他宕机的broker重启之后都是follower partition， 读写请求很低， 造成集群负载不均衡。  </p>
+<p><strong>配置参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>auto.leader.rebalance.enable</td>
+<td>默认是 true。 自动 Leader Partition 平衡。 生产环 境中， leader 重选举的代价比较大，可能会带来 性能影响，建议设置为 false 关闭。</td>
+</tr>
+<tr>
+<td>leader.imbalance.per.broker.percentage</td>
+<td>默认是 10%。 每个 broker 允许的不平衡的 leader 的比率。如果每个 broker 超过了这个值，控制器 会触发 leader 的平衡。</td>
+</tr>
+<tr>
+<td>leader.imbalance.check.interval.seconds</td>
+<td>默认值 300 秒。检查 leader 负载是否平衡的间隔 时间。</td>
+</tr>
+</tbody></table>
+<p>例子</p>
+<table>
+<thead>
+<tr>
+<th>broker</th>
+<th>Topic</th>
+<th>Partition</th>
+<th>Leader</th>
+<th>Replicas</th>
+<th>Isr</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2</td>
+<td>test</td>
+<td>0</td>
+<td>0</td>
+<td>3，0，2，1</td>
+<td>3，0，2，1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>test</td>
+<td>1</td>
+<td>1</td>
+<td>1，2，3，0</td>
+<td>1，2，3，0</td>
+</tr>
+<tr>
+<td>0</td>
+<td>test</td>
+<td>2</td>
+<td>2</td>
+<td>0，3，1，2</td>
+<td>0，3，1，2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>test</td>
+<td>3</td>
+<td>3</td>
+<td>2，1，0，3</td>
+<td>2，1，0，3</td>
+</tr>
+</tbody></table>
+<p>针对broker0节点，分区2的AR优先副本是0节点，但是0节点却不是Leader节点，所以不平衡数加1， AR副本总数是4  </p>
+<blockquote>
+<p>所以broker0节点不平衡率为1&#x2F;4&gt;10%，需要再平衡。  </p>
+</blockquote>
+<p>broker2和broker3节点和broker0不平衡率一样，需要再平衡。</p>
+<p>Broker1的不平衡数为0，不需要再平衡  </p>
+<h4 id="增加副本因子"><a href="#增加副本因子" class="headerlink" title="增加副本因子"></a>增加副本因子</h4><p>在生产环境当中，由于某个主题的重要等级需要提升，我们考虑增加副本。副本数的增加需要先制定计划，然后根据计划执行。  </p>
+<ol>
+<li><p>创建 topic </p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-attr">[test@hadoop102 kafka]</span>$ bin/kafka-topics<span class="hljs-selector-class">.sh</span> <span class="hljs-attr">--bootstrap-server</span> hadoop102:<span class="hljs-number">9092</span> <span class="hljs-attr">--create</span> <span class="hljs-attr">--partitions</span> <span class="hljs-number">3</span> <span class="hljs-attr">--replication-factor</span> <span class="hljs-number">1</span> -- topic four<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>手动增加副本存储  </p>
+<p>创建副本存储计划（所有副本都指定存储在 broker0、 broker1、 broker2 中）。  </p>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs prolog">[test@hadoop102 kafka]$ vim increase-replication-factor.json<br><br>&#123;<span class="hljs-string">&quot;version&quot;</span>:<span class="hljs-number">1</span>,<span class="hljs-string">&quot;partitions&quot;</span>:[&#123;<span class="hljs-string">&quot;topic&quot;</span>:<span class="hljs-string">&quot;four&quot;</span>,<span class="hljs-string">&quot;partition&quot;</span>:<span class="hljs-number">0</span>,<span class="hljs-string">&quot;replicas&quot;</span>:[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]&#125;,&#123;<span class="hljs-string">&quot;topic&quot;</span>:<span class="hljs-string">&quot;four&quot;</span>,<span class="hljs-string">&quot;partition&quot;</span>:<span class="hljs-number">1</span>,<span class="hljs-string">&quot;replicas&quot;</span>:[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]&#125;,&#123;<span class="hljs-string">&quot;topic&quot;</span>:<span class="hljs-string">&quot;four&quot;</span>,<span class="hljs-string">&quot;partition&quot;</span>:<span class="hljs-number">2</span>,<span class="hljs-string">&quot;replicas&quot;</span>:[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]&#125;]&#125;<br></code></pre></td></tr></table></figure>
+
+<p>执行副本存储计划  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">[test@hadoop102 kafka]$ bin/kafka-<span class="hljs-keyword">reassign</span>-partitions.sh <span class="hljs-comment">--bootstrap-server hadoop102:9092 --reassignment-json-file increase-replication-factor.json --execute</span><br></code></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="文件存储"><a href="#文件存储" class="headerlink" title="文件存储"></a>文件存储</h3><h4 id="文件存储机制"><a href="#文件存储机制" class="headerlink" title="文件存储机制"></a>文件存储机制</h4><p>Topic是逻辑上的概念， 而partition是物理上的概念， 每个partition对应于一个log文件， 该log文件中存储的就是Producer生产的数据。 <strong>Producer生产的数据会被不断追加到该log文件末端</strong>， 为防止log文件过大导致数据定位效率低下， Kafka采取了<strong>分片</strong>和<strong>索引机制</strong>，将每个<strong>partition分为多个segment</strong>。 每个segment包括： “.index”文件、 “.log”文件和.timeindex等文件。 这些文件位于一个文件夹下， 该文件夹的命名规则为： topic名称+分区序号， 例如： first-0。  </p>
+<p><img src="/2022/07/17/Kafka/image-20220721112416658.png" srcset="/img/loading.gif" lazyload alt="File Storage"></p>
+<p>一个topic分为多个partition  </p>
+<p>一个partition分为多个segment  </p>
+<blockquote>
+<p>每个 segment</p>
+<p>.log 日志文件<br>.index 偏移量索引文件<br>.timeindex 时间戳索引文件<br>其他文件  </p>
+</blockquote>
+<p><strong>说明</strong>： index和log文件以当前 segment 的第一条消息的offset命名。  </p>
+<p><strong>Topic 数据到底存储在什么位置？</strong>  </p>
+<ol>
+<li><p>启动生产者，并发送消息。  </p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-attr">[test@hadoop102 kafka]</span>$ bin/kafka-console-producer<span class="hljs-selector-class">.sh</span> <span class="hljs-attr">--bootstrap-server</span> hadoop102:<span class="hljs-number">9092</span> <span class="hljs-attr">--topic</span> first<br>&gt;hello world<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>查看 hadoop102（或者 hadoop103、 hadoop104）的&#x2F;opt&#x2F;module&#x2F;kafka&#x2F;datas&#x2F;first-1 （first-0、 first-2）路径上的文件。  </p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">[test@hadoop104 first<span class="hljs-number">-1</span>]$ ls<br><span class="hljs-number">00000000000000000092.</span><span class="hljs-keyword">index</span><br><span class="hljs-number">00000000000000000092.</span><span class="hljs-keyword">log</span><br><span class="hljs-number">00000000000000000092.</span><span class="hljs-keyword">snapshot</span><br><span class="hljs-number">00000000000000000092.</span>timeindex<br>leader-epoch-<span class="hljs-keyword">checkpoint</span><br><span class="hljs-keyword">partition</span>.metadata<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>通过工具查看 index 和 log 信息。  </p>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs tap">[test@hadoop104 first-1]$ kafka-run-class.sh kafka.tools.DumpLogSegments --files ./00000000000000000000.index<br><br>Dumping ./00000000000000000000.index<br>offset:<span class="hljs-number"> 3 </span>position: 152<br><br>[test@hadoop104 first-1]$ kafka-run-class.sh kafka.tools.DumpLogSegments --files ./00000000000000000000.log<br><br>Dumping datas/first-0/00000000000000000000.log<br>Starting offset: 0<br>baseOffset:<span class="hljs-number"> 0 </span>lastOffset:<span class="hljs-number"> 1 </span>count:<span class="hljs-number"> 2 </span>baseSequence: -1 lastSequence: -1 producerId: -1 producerEpoch: -1 partitionLeaderEpoch:<span class="hljs-number"> 0 </span>isTransactional: false isControl: false position:<span class="hljs-number"> 0 </span>CreateTime:<span class="hljs-number"> 1636338440962 </span>size:<span class="hljs-number"> 75 </span>magic:<span class="hljs-number"> 2 </span>compresscodec: none crc:<span class="hljs-number"> 2745337109 </span>isvalid: true<br><br>baseOffset:<span class="hljs-number"> 2 </span>lastOffset:<span class="hljs-number"> 2 </span>count:<span class="hljs-number"> 1 </span>baseSequence: -1 lastSequence: -1 producerId: -1 producerEpoch: -1 partitionLeaderEpoch:<span class="hljs-number"> 0 </span>isTransactional: false isControl: false position:<span class="hljs-number"> 75 </span>CreateTime:<span class="hljs-number"> 1636351749089 </span>size:<span class="hljs-number"> 77 </span>magic:<span class="hljs-number"> 2 </span>compresscodec: none crc:<span class="hljs-number"> 273943004 </span>isvalid: true<br><br>baseOffset:<span class="hljs-number"> 3 </span>lastOffset:<span class="hljs-number"> 3 </span>count:<span class="hljs-number"> 1 </span>baseSequence: -1 lastSequence: -1 producerId: -1 producerEpoch: -1 partitionLeaderEpoch:<span class="hljs-number"> 0 </span>isTransactional: false isControl: false position:<span class="hljs-number"> 152 </span>CreateTime:<span class="hljs-number"> 1636351749119 </span>size:<span class="hljs-number"> 77 </span>magic:<span class="hljs-number"> 2 </span>compresscodec: none crc:<span class="hljs-number"> 106207379 </span>isvalid: true<br><br>baseOffset:<span class="hljs-number"> 4 </span>lastOffset:<span class="hljs-number"> 8 </span>count:<span class="hljs-number"> 5 </span>baseSequence: -1 lastSequence: -1 producerId: -1 producerEpoch: -1 partitionLeaderEpoch:<span class="hljs-number"> 0 </span>isTransactional: false isControl: false position:<span class="hljs-number"> 229 </span>CreateTime:<span class="hljs-number"> 1636353061435 </span>size:<span class="hljs-number"> 141 </span>magic:<span class="hljs-number"> 2 </span>compresscodec: none crc:<span class="hljs-number"> 157376877 </span>isvalid: true<br><br>baseOffset:<span class="hljs-number"> 9 </span>lastOffset:<span class="hljs-number"> 13 </span>count:<span class="hljs-number"> 5 </span>baseSequence: -1 lastSequence: -1 producerId: -1 producerEpoch: -1 partitionLeaderEpoch:<span class="hljs-number"> 0 </span>isTransactional: false isControl: false position:<span class="hljs-number"> 370 </span>CreateTime:<span class="hljs-number"> 1636353204051 </span>size:<span class="hljs-number"> 146 </span>magic:<span class="hljs-number"> 2 </span>compresscodec: none crc:<span class="hljs-number"> 4058582827 </span>isvalid: true<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>index 文件和 log 文件详解</strong>  </p>
+<p><img src="/2022/07/17/Kafka/image-20220721140234682.png" srcset="/img/loading.gif" lazyload alt="index &amp; log"></p>
+<ol>
+<li>根据目标offset定位Segment文件  </li>
+<li>找到小于等于目标offset的最大offset对应的索引项  </li>
+<li>定位到log文件  </li>
+<li>向下遍历找到目标Record</li>
+</ol>
+<p><strong>注意</strong>：</p>
+<ol>
+<li>.index为稀疏索引，大约每往log文件写入4kb数据，会往index文件写入一条索引。参数log.index.interval.bytes默认4kb。  </li>
+<li>Index文件中保存的offset为相对offset，这样能确保offset的值所占空间不会过大，<br>因此能将offset的值控制在固定大小</li>
+</ol>
+<p>日志存储参数配置  </p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>log.segment.bytes</td>
+<td>Kafka 中 log 日志是分成一块块存储的，此配置是指 log 日志划分 成块的大小， <strong>默认值 1G</strong>。</td>
+</tr>
+<tr>
+<td>log.index.interval.bytes</td>
+<td><strong>默认 4kb</strong>， kafka 里面每当写入了 4kb 大小的日志（.log），然后就 往 index 文件里面记录一个索引。 稀疏索引。</td>
+</tr>
+</tbody></table>
+<h4 id="文件清理策略"><a href="#文件清理策略" class="headerlink" title="文件清理策略"></a>文件清理策略</h4><p>Kafka 中默认的日志保存时间为 7 天，可以通过调整如下参数修改保存时间:</p>
+<blockquote>
+<p>log.retention.hours， 最低优先级小时，默认 7 天。  </p>
+<p>log.retention.minutes， 分钟。  </p>
+<p>log.retention.ms， 最高优先级毫秒。  </p>
+<p>log.retention.check.interval.ms， 负责设置检查周期，默认 5 分钟。  </p>
+</blockquote>
+<p>Kafka 中提供的<strong>日志清理策略</strong>有 <strong>delete</strong> 和 <strong>compact</strong> 两种。  </p>
+<p><strong>delete 日志删除</strong>：</p>
+<p>将过期数据删除  </p>
+<blockquote>
+<p>log.cleanup.policy &#x3D; delete 所有数据启用删除策略  </p>
+<ol>
+<li>基于时间：默认打开。 以 segment 中所有记录中的最大时间戳作为该文件时间戳。  </li>
+<li>基于大小：默认关闭。超过设置的所有日志总大小，删除最早的 segment。 log.retention.bytes，默认等于-1，表示无穷大。</li>
+</ol>
+</blockquote>
+<p><strong>compact 日志压缩</strong>：  </p>
+<p>对于相同key的不同value值， 只保留最后一个版本。  </p>
+<p>log.cleanup.policy &#x3D; compact 所有数据启用压缩策略  </p>
+<p>压缩前：</p>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>key</td>
+<td>K1</td>
+<td>K2</td>
+<td>K1</td>
+<td><strong>K1</strong></td>
+<td><strong>K3</strong></td>
+<td><strong>K4</strong></td>
+<td>K5</td>
+<td><strong>K5</strong></td>
+<td><strong>K2</strong></td>
+</tr>
+<tr>
+<td>value</td>
+<td>V1</td>
+<td>V2</td>
+<td>V3</td>
+<td>V4</td>
+<td>V5</td>
+<td>V6</td>
+<td>V7</td>
+<td>V8</td>
+<td>V9</td>
+</tr>
+</tbody></table>
+<p>压缩后：</p>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>7</th>
+<th>8</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>key</td>
+<td><strong>K1</strong></td>
+<td><strong>K3</strong></td>
+<td><strong>K4</strong></td>
+<td><strong>K5</strong></td>
+<td><strong>K2</strong></td>
+</tr>
+<tr>
+<td>value</td>
+<td>V4</td>
+<td>V5</td>
+<td>V6</td>
+<td>V8</td>
+<td>V9</td>
+</tr>
+</tbody></table>
+<p>压缩后的offset可能是不连续的， 比如上图中没有6， 当从这些offset(6)消费消息时， 将会拿到比这个offset大的offset(7)对应的消息， 实际上会拿到offset为7的消息， 并从这个位置开始消费。  </p>
+<p>这种策略只适合特殊场景， 比如消息的key是用户ID， value是用户的资料， 通过这种压缩策略， 整个消息集里就保存了所有用户最新的资料。  </p>
+<h3 id="高效读写数据"><a href="#高效读写数据" class="headerlink" title="高效读写数据"></a>高效读写数据</h3><ol>
+<li>Kafka 本身是分布式集群，可以采用分区技术，并行度高  </li>
+<li>读数据采用稀疏索引， 可以快速定位要消费的数据  </li>
+<li>顺序写磁盘  (追加)</li>
+<li>页缓存 + 零拷贝技术</li>
+</ol>
+<h4 id="页缓存-零拷贝技术"><a href="#页缓存-零拷贝技术" class="headerlink" title="页缓存 + 零拷贝技术"></a>页缓存 + 零拷贝技术</h4><p>零拷贝：Kafka的数据加工处理操作交由Kafka生产者和Kafka消费者处理。 Kafka Broker应用层不关心存储的数据， 所以就不用走应用层， 传输效率高。  </p>
+<p>PageCache页缓存： Kafka重度依赖底层操作系统提供的PageCache功能。 当上层有写操作时， 操作系统只是将数据写入PageCache。 当读操作发生时， 先从PageCache中查找， 如果找不到， 再去磁盘中读取。 实际上PageCache是把尽可能多的空闲内存都当做了磁盘缓存来使用。  </p>
+<p><img src="/2022/07/17/Kafka/image-20220721144904818.png" srcset="/img/loading.gif" lazyload alt="页缓存 + 零拷贝技术"></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>log.flush.interval.messages</td>
+<td>强制页缓存刷写到磁盘的条数，默认是 long 的最大值， 9223372036854775807。 一般不建议修改，交给系统自己管 理。</td>
+</tr>
+<tr>
+<td>log.flush.interval.ms</td>
+<td>每隔多久，刷数据到磁盘，默认是 null。一般不建议修改， 交给系统自己管理。</td>
+</tr>
+</tbody></table>
+<h3 id="Kafka-消费者"><a href="#Kafka-消费者" class="headerlink" title="Kafka 消费者"></a>Kafka 消费者</h3><p>Kafka 消费方式  </p>
+<p>pull（ 拉） 模式：  </p>
+<blockquote>
+<p>consumer采用从broker中主动拉取数据。  （<strong>Kafka采用这种方式。</strong>  ）</p>
+</blockquote>
+<p>push（推）模式：  </p>
+<blockquote>
+<p>Kafka没有采用这种方式，因为由broker决定消息发送速率， 很难适应所有消费者的<br>消费速率。 例如推送的速度是50m&#x2F;s，Consumer1、 Consumer2就来不及处理消息。  </p>
+</blockquote>
+<p>pull模式不足之处是， 如果Kafka没有数据， 消费者可能会陷入循环中， 一直返回空数据。  </p>
+<h4 id="Kafka-消费者总体工作流程"><a href="#Kafka-消费者总体工作流程" class="headerlink" title="Kafka 消费者总体工作流程"></a>Kafka 消费者总体工作流程</h4><p><img src="/2022/07/17/Kafka/image-20220721153317187.png" srcset="/img/loading.gif" lazyload alt="consumer working procedure"></p>
+<h4 id="消费者组原理"><a href="#消费者组原理" class="headerlink" title="消费者组原理"></a>消费者组原理</h4><p><strong>消费者组</strong>  </p>
+<p><strong>Consumer Group（CG）</strong> ：消费者组， 由多个consumer组成。 形成一个消费者组的条件， 是所有消费者的groupid相同。  </p>
+<blockquote>
+<p>消费者<strong>组内</strong>每个消费者负责消费不同分区的数据， <strong>一个分区只能由一个组内消费者消费</strong>。  </p>
+<p>消费者组之间互不影响。 所有的消费者都属于某个消费者组， 即消费者组是逻辑上的一个订阅者。  </p>
+<p>如果向消费组中添加更多的消费者， 超过主题分区数量， 则有一部分消费者就会闲置， 不会接收任何消息。  </p>
+</blockquote>
+<p><strong>消费者组初始化流程</strong></p>
+<p><img src="/2022/07/17/Kafka/image-20220721155647476.png" srcset="/img/loading.gif" lazyload alt="consumer group initial procedure"></p>
+<ol>
+<li><p>coordinator：辅助实现消费者组的初始化和分区的分配。  </p>
+<blockquote>
+<p>coordinator节点选择 &#x3D; groupid的hashcode值 % 50（___consumer_offsets的分区数量）例如： groupid的hashcode值 &#x3D; 1， 1% 50 &#x3D; 1，那么 __consumer_offsets topic 的1号分区，哪个broker上，就选择这个节点的coordinator作为这个消费者组的老大。消费者组下的所有的消费者提交offset的时候就往这个分区去提交offset。  （每个消费者的offset由消费者提交到系统主题保存 ）</p>
+</blockquote>
+</li>
+</ol>
+<p><strong>消费者组详细消费流程</strong>  </p>
+<p><img src="/2022/07/17/Kafka/image-20220721164251758.png" srcset="/img/loading.gif" lazyload alt="consumer group consuming procedure"></p>
+<p><strong>消费者重要参数</strong>  </p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>bootstrap.servers</td>
+<td>向 Kafka 集群建立初始连接用到的 host&#x2F;port 列表。</td>
+</tr>
+<tr>
+<td>key.deserializer 和 value.deserializer</td>
+<td>指定接收消息的 key 和 value 的反序列化类型。一定要写全 类名。</td>
+</tr>
+<tr>
+<td>group.id</td>
+<td>标记消费者所属的消费者组。</td>
+</tr>
+<tr>
+<td>enable.auto.commit</td>
+<td><strong>默认值为 true</strong>，消费者会自动周期性地向服务器提交偏移 量。</td>
+</tr>
+<tr>
+<td>auto.commit.interval.ms</td>
+<td>如果设置了 enable.auto.commit 的值为 true， 则该值定义了 消费者偏移量向 Kafka 提交的频率， <strong>默认 5s</strong>。</td>
+</tr>
+<tr>
+<td>auto.offset.reset</td>
+<td>当 Kafka 中没有初始偏移量或当前偏移量在服务器中不存在 （如，数据被删除了），该如何处理？ earliest：自动重置偏 移量到最早的偏移量。 <strong>latest： 默认， 自动重置偏移量为最 新的偏移量。</strong> none：如果消费组原来的（ previous）偏移量 不存在，则向消费者抛异常。 anything：向消费者抛异常。</td>
+</tr>
+<tr>
+<td>offsets.topic.num.partitions</td>
+<td>__consumer_offsets 的分区数， <strong>默认是 50 个分区。</strong></td>
+</tr>
+<tr>
+<td>heartbeat.interval.ms</td>
+<td>Kafka 消费者和 coordinator 之间的心跳时间， <strong>默认 3s</strong>。 该条目的值必须小于 session.timeout.ms ，也不应该高于 session.timeout.ms 的 1&#x2F;3。</td>
+</tr>
+<tr>
+<td>session.timeout.ms</td>
+<td>Kafka 消费者和 coordinator 之间连接超时时间， <strong>默认 45s。</strong> 超过该值，该消费者被移除，消费者组执行再平衡。</td>
+</tr>
+<tr>
+<td>max.poll.interval.ms</td>
+<td>消费者处理消息的最大时长， <strong>默认是 5 分钟</strong>。超过该值，该 消费者被移除，消费者组执行再平衡。</td>
+</tr>
+<tr>
+<td>fetch.min.bytes</td>
+<td><strong>默认 1 个字节</strong>。消费者获取服务器端一批消息最小的字节数。</td>
+</tr>
+<tr>
+<td>fetch.max.wait.ms</td>
+<td><strong>默认 500ms</strong>。如果没有从服务器端获取到一批数据的最小字 节数。该时间到，仍然会返回数据。</td>
+</tr>
+<tr>
+<td>fetch.max.bytes</td>
+<td><strong>默认 Default: 52428800（ 50 m）</strong>。消费者获取服务器端一批消息最大的字节数。如果服务器端一批次的数据大于该值 （50m）仍然可以拉取回来这批数据，因此，这不是一个绝 对最大值。一批次的大小受 message.max.bytes （ broker config） or max.message.bytes （topic config） 影响。</td>
+</tr>
+<tr>
+<td>max.poll.records</td>
+<td>一次 poll 拉取数据返回消息的最大条数， <strong>默认是 500 条。</strong></td>
+</tr>
+</tbody></table>
+<h4 id="分区的分配以及再平衡（针对消费者组）"><a href="#分区的分配以及再平衡（针对消费者组）" class="headerlink" title="分区的分配以及再平衡（针对消费者组）"></a>分区的分配以及再平衡（针对消费者组）</h4><ol>
+<li>一个consumer group中有多个consumer组成， 一个 topic有多个partition组成， 现在的问题是， 到底由哪个consumer来消费哪个partition的数据。  </li>
+<li>Kafka有四种主流的分区分配策略： <strong>Range、 RoundRobin、 Sticky、 CooperativeSticky</strong>。可以通过配置参数partition.assignment.strategy，修改分区的分配策略。默认策略是Range + CooperativeSticky。 <strong>Kafka可以同时使用多个分区分配策略</strong>。</li>
+</ol>
+<p><strong>参数配置</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>heartbeat.interval.ms</td>
+<td>Kafka 消费者和 coordinator 之间的心跳时间， <strong>默认 3s</strong>。 该条目的值必须小于 session.timeout.ms，也不应该高于 session.timeout.ms 的 1&#x2F;3。</td>
+</tr>
+<tr>
+<td>session.timeout.ms</td>
+<td>Kafka 消费者和 coordinator 之间连接超时时间， <strong>默认 45s</strong>。超 过该值，该消费者被移除，消费者组执行再平衡。</td>
+</tr>
+<tr>
+<td>max.poll.interval.ms</td>
+<td>消费者处理消息的最大时长， <strong>默认是 5 分钟</strong>。超过该值，该 消费者被移除，消费者组执行再平衡。</td>
+</tr>
+<tr>
+<td>partition.assignment.strategy</td>
+<td>消 费 者 分 区 分 配 策 略 ， 默 认 策 略 是 Range + CooperativeSticky。 Kafka 可以同时使用多个分区分配策略。 可 以 选 择 的 策 略 包 括 ： Range 、 RoundRobin 、 Sticky 、 CooperativeSticky</td>
+</tr>
+</tbody></table>
+<h4 id="Range-以及再平衡"><a href="#Range-以及再平衡" class="headerlink" title="Range 以及再平衡"></a>Range 以及再平衡</h4><p><strong>Range 分区策略原理</strong>  </p>
+<img src="/2022/07/17/Kafka/image-20220722135756851.png" srcset="/img/loading.gif" lazyload alt="Range" style="zoom:50%;">
+
+<p><strong>Range</strong> 是对<strong>每个 topic</strong> 而言的。  </p>
+<blockquote>
+<p>首先对<strong>同一个 topic 里面的分区按照序号进行排序</strong>，并对<strong>消费者按照字母顺序进行排序</strong>。  </p>
+<p>假如现在有 7 个分区， 3 个消费者，排序后的分区将会是0,1,2,3,4,5,6；消费者排序完之后将会是C0,C1,C2。  </p>
+<p>通过 <strong>partitions数&#x2F;consumer数</strong> 来决定每个消费者应该消费几个分区。 <strong>如果除不尽，那么前面几个消费者将会多消费 1 个分区。</strong>  </p>
+<p>例如， 7&#x2F;3 &#x3D; 2 余 1 ，除不尽，那么 消费者 C0 便会多消费 1 个分区。 8&#x2F;3&#x3D;2余2，除不尽，那么C0和C1分别多消费一个。  </p>
+<p><strong>注意</strong>： 如果只是针对 1 个 topic 而言， C0消费者多消费1个分区影响不是很大。但是如果有 N 多个 topic，那么针对每个 topic，消费者 C0都将多消费 1 个分区， topic越多， C0消费的分区会比其他消费者明显多消费 N 个分区。</p>
+<p><strong>容易产生数据倾斜！</strong>  </p>
+</blockquote>
+<p><strong>Range 分区分配策略案例</strong>  </p>
+<ol>
+<li><p>修改主题 first 为 7 个分区。  <strong>注意</strong>：分区数可以增加，但是不能减少。  </p>
+</li>
+<li><p>复制 CustomConsumer 类， 创建 CustomConsumer2。这样可以由三个消费者 CustomConsumer、 CustomConsumer1、 CustomConsumer2 组成消费者组，组名都为“ test”，同时启动 3 个消费者。  </p>
+</li>
+<li><p>启动 CustomProducer 生产者，发送 500 条消息，随机发送到不同的分区。  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.test.kafka.producer;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.producer.KafkaProducer;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.producer.ProducerConfig;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.producer.ProducerRecord;<br><span class="hljs-keyword">import</span> java.util.Properties;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CustomProducer</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> InterruptedException &#123;<br>        <span class="hljs-type">Properties</span> <span class="hljs-variable">properties</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Properties</span>();<br>        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, <span class="hljs-string">&quot;hadoop102:9092&quot;</span>);<br>        properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());<br>        properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());<br>        KafkaProducer&lt;String, String&gt; kafkaProducer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">KafkaProducer</span>&lt;&gt;(properties);<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">7</span>; i++) &#123;<br>            kafkaProducer.send(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ProducerRecord</span>&lt;&gt;(<span class="hljs-string">&quot;first&quot;</span>, i, <span class="hljs-string">&quot;test&quot;</span>, <span class="hljs-string">&quot;atguigu&quot;</span>));<br>        &#125;<br>        kafkaProducer.close();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>说明</strong>： Kafka 默认的分区分配策略就是 Range + CooperativeSticky， 所以不需要修改策略。</p>
+</li>
+</ol>
+<p><strong>Range 分区分配再平衡案例</strong>  </p>
+<ol>
+<li><p>停止掉 0 号消费者， 快速重新发送消息观看结果（45s 以内，越快越好）。  </p>
+<blockquote>
+<p>1 号消费者：消费到 3、 4 号分区数据。  </p>
+<p>2 号消费者：消费到 5、 6 号分区数据。  </p>
+<p>0 号消费者的任务会整体被分配到 1 号消费者或者 2 号消费者  。</p>
+<p><strong>说明</strong>： 0 号消费者挂掉后，消费者组需要按照<strong>超时时间 45s 来判断它是否退出</strong>，所以需要等待，时间到了 45s 后，判断它真的退出就会把任务分配给其他 broker 执行。  </p>
+</blockquote>
+</li>
+<li><p>再次重新发送消息观看结果（45s 以后）。  </p>
+<blockquote>
+<p>1 号消费者：消费到 0、 1、 2、 3 号分区数据。  </p>
+<p>2 号消费者：消费到 4、 5、 6 号分区数据  </p>
+<p><strong>说明</strong>：消费者 0 已经被踢出消费者组，所以重新按照 range 方式分配。</p>
+</blockquote>
+</li>
+</ol>
+<h4 id="RoundRobin-以及再平衡"><a href="#RoundRobin-以及再平衡" class="headerlink" title="RoundRobin 以及再平衡"></a>RoundRobin 以及再平衡</h4><p><strong>RoundRobin</strong> 针对集群中<strong>所有Topic</strong>而言。  </p>
+<p>RoundRobin 轮询分区策略，是把<strong>所有的 partition</strong> 和<strong>所有的 consumer</strong>（？同一个消费者组） 都列出来，然后按照 hashcode 进行排序，最后通过轮询算法来分配 partition 给到各个消费者。  </p>
+<img src="/2022/07/17/Kafka/image-20220722135855563.png" srcset="/img/loading.gif" lazyload alt="RoundRobin" style="zoom:50%;">
+
+<p><strong>RoundRobin 分区分配策略案例</strong>  </p>
+<ol>
+<li><p>依次在 CustomConsumer、 CustomConsumer1、 CustomConsumer2 三个消费者代码中修改分区分配策略为 RoundRobin。  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 修改分区分配策略</span><br>properties.put(ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG, <span class="hljs-string">&quot;org.apache.kafka.clients.consumer.RoundRobinAssignor&quot;</span>);<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>重启 3 个消费者，重复发送消息的步骤，观看分区结果。</p>
+</li>
+</ol>
+<p><strong>RoundRobin 分区分配再平衡案例</strong>  </p>
+<ol>
+<li><p>停止掉 0 号消费者，快速重新发送消息观看结果（45s 以内，越快越好）。  </p>
+<blockquote>
+<p>1 号消费者：消费到 2、 5 号分区数据  </p>
+<p>2 号消费者：消费到 4、 1 号分区数据  </p>
+<p>0 号消费者的任务会按照 <strong>RoundRobin</strong> 的方式，把数据轮询分成 0 、 6 和 3 号分区数据，分别由 1 号消费者或者 2 号消费者消费。  </p>
+<p>说明： 0 号消费者挂掉后，消费者组需要按照超时时间 45s 来判断它是否退出，所以需<br>要等待，时间到了 45s 后，判断它真的退出就会把任务分配给其他 broker 执行。  </p>
+</blockquote>
+</li>
+<li><p>再次重新发送消息观看结果（45s 以后）。  </p>
+<blockquote>
+<p>1 号消费者：消费到 0、 2、 4、 6 号分区数据  </p>
+<p>2 号消费者：消费到 1、 3、 5 号分区数据  </p>
+<p>说明：消费者 0 已经被踢出消费者组，所以重新按照 RoundRobin 方式分配。</p>
+</blockquote>
+</li>
+</ol>
+<h4 id="Sticky-以及再平衡"><a href="#Sticky-以及再平衡" class="headerlink" title="Sticky 以及再平衡"></a>Sticky 以及再平衡</h4><p><strong>粘性分区定义</strong>： 可以理解为分配的结果带有“粘性的”。即在执行一次新的分配之前，考虑上一次分配的结果，<strong>尽量少的调整分配的变动，可以节省大量的开销</strong>。  </p>
+<p>粘性分区是 Kafka 从 0.11.x 版本开始引入这种分配策略， <strong>首先会尽量均衡的放置分区到消费者上面</strong>，在出现<strong>同一消费者组内消费者</strong>出现问题的时候，<strong>会尽量保持原有分配的分区不变化</strong>。  </p>
+<ol>
+<li><p>设置主题为 first， 7 个分区；准备 3 个消费者，采用粘性分区策略，并进行消费，观察消费分配情况。然后再停止其中一个消费者，再次观察消费分配情况。  </p>
+</li>
+<li><p>修改分区分配策略为粘性。  </p>
+<blockquote>
+<p>注意： 3 个消费者都应该注释掉，之后重启 3 个消费者，如果出现报错，全部停止等会再重启，或者修改为全新的消费者组。  </p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 修改分区分配策略</span><br>ArrayList&lt;String&gt; startegys = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>startegys.add(<span class="hljs-string">&quot;org.apache.kafka.clients.consumer.StickyAssignor&quot;</span>);<br>properties.put(ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG, startegys);<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>使用同样的生产者发送 500 条消息。  </p>
+<blockquote>
+<p>可以看到会尽量保持分区的个数近似划分分区。</p>
+</blockquote>
+</li>
+</ol>
+<p><strong>Sticky 分区分配再平衡案例</strong>  </p>
+<ol>
+<li><p>停止掉 0 号消费者，快速重新发送消息观看结果（45s 以内，越快越好）。  </p>
+<blockquote>
+<p>1 号消费者：消费到 2、 5、 3 号分区数据。  </p>
+<p>2 号消费者：消费到 4、 6 号分区数据。  </p>
+<p>0 号消费者的任务会按照粘性规则，尽可能均衡的随机分成 0 和 1 号分区数据，分别由 1 号消费者或者 2 号消费者消费。  </p>
+<p><strong>说明</strong>： 0 号消费者挂掉后，消费者组需要按照超时时间 45s 来判断它是否退出，所以需要等待，时间到了 45s 后，判断它真的退出就会把任务分配给其他 broker 执行  </p>
+</blockquote>
+</li>
+<li><p>再次重新发送消息观看结果（45s 以后）。  </p>
+<blockquote>
+<p>1 号消费者：消费到 2、 3、 5 号分区数据。  </p>
+<p>2 号消费者：消费到 0、 1、 4、 6 号分区数据。  </p>
+<p><strong>说明</strong>：消费者 0 已经被踢出消费者组，所以重新按照粘性方式分配。</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="offset-位移"><a href="#offset-位移" class="headerlink" title="offset 位移"></a>offset 位移</h3><p>Kafka0.9版本之前，consumer默认将offset保存在Zookeeper中，从0.9版本开始， <strong>consumer默认将offset保存在Kafka一个内置的topic中，该topic为__consumer_offsets</strong>。</p>
+<p><strong>__consumer_offsets 主题里面采用 key 和 value 的方式存储数据</strong>。 <strong>key 是 group.id+topic+分区号， value 就是当前 offset 的值</strong>。 <strong>每隔一段时间， kafka 内部会对这个 topic 进行 compact，也就是每个 group.id+topic+分区号就保留最新数据。</strong>  </p>
+<p><strong>消费 offset 案例</strong></p>
+<blockquote>
+<ol start="0">
+<li><p><strong>思想</strong>：__consumer_offsets 为 Kafka 中的 topic，那就可以通过消费者进行消费。  </p>
+</li>
+<li><p>在配置文件 config&#x2F;consumer.properties 中添加配置 exclude.internal.topics&#x3D;false，默认是 true，表示不能消费系统主题。为了查看该系统主题数据，所以该参数修改为 false。</p>
+</li>
+<li><p>采用命令行方式， 创建一个新的 topic。</p>
+</li>
+</ol>
+   <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-attr">[test@hadoop102 kafka]</span>$ bin/kafka-topics<span class="hljs-selector-class">.sh</span> <span class="hljs-attr">--bootstrap-server</span> hadoop102:<span class="hljs-number">9092</span> <span class="hljs-attr">--create</span> <span class="hljs-attr">--topic</span> test <span class="hljs-attr">--partitions</span> <span class="hljs-number">2</span> <span class="hljs-attr">--replication-factor</span> <span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p>启动生产者往 test 生产数据。</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stata">[<span class="hljs-keyword">test</span>@hadoop102 kafka]$ bin/kafka-console-producer.<span class="hljs-keyword">sh</span> --topic <span class="hljs-keyword">test</span> --<span class="hljs-keyword">bootstrap</span>-server hadoop102:9092<br></code></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>：指定消费者组名称，更好观察数据存储位置（key 是 group.id+<strong>topic</strong>+分区号）。  </p>
+</li>
+<li><p>查看消费者消费主题__consumer_offsets。  </p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs routeros">[test@hadoop102 kafka]$ bin/kafka-console-consumer.sh --topic __consumer_offsets --bootstrap-server hadoop102:9092 --consumer.config config/consumer.properties --formatter <span class="hljs-string">&quot;kafka.coordinator.group.GroupMetadataManager\$OffsetsMessageFormatter&quot;</span> --from-beginning<br><br>[offset,test,1]::OffsetAndMetadata(<span class="hljs-attribute">offset</span>=7,<br><span class="hljs-attribute">leaderEpoch</span>=Optional[0], <span class="hljs-attribute">metadata</span>=, <span class="hljs-attribute">commitTimestamp</span>=1622442520203,<br><span class="hljs-attribute">expireTimestamp</span>=None)<br>[offset,test,0]::OffsetAndMetadata(<span class="hljs-attribute">offset</span>=8,<br><span class="hljs-attribute">leaderEpoch</span>=Optional[0], <span class="hljs-attribute">metadata</span>=, <span class="hljs-attribute">commitTimestamp</span>=1622442520203,<br><span class="hljs-attribute">expireTimestamp</span>=None)<br></code></pre></td></tr></table></figure></li>
+</ol>
+</blockquote>
+<h4 id="自动提交-offset"><a href="#自动提交-offset" class="headerlink" title="自动提交 offset"></a>自动提交 offset</h4><p>为了使我们能够专注于自己的业务逻辑， Kafka提供了自动提交offset的功能。<br>自动提交offset的<strong>相关参数</strong>：  </p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>enable.auto.commit</td>
+<td><strong>默认值为 true</strong>，消费者会自动周期性地向服务器提交偏移量。</td>
+</tr>
+<tr>
+<td>auto.commit.interval.ms</td>
+<td>如果设置了 enable.auto.commit 的值为 true， 则该值定义了消 费者偏移量向 Kafka 提交的频率， <strong>默认 5s</strong>。</td>
+</tr>
+</tbody></table>
+<p><img src="/2022/07/17/Kafka/image-20220722145046430.png" srcset="/img/loading.gif" lazyload alt="auto-commit offsets"></p>
+<p>案例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.test.kafka.consumer;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.consumer.ConsumerConfig;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.consumer.ConsumerRecord;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.consumer.ConsumerRecords;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.consumer.KafkaConsumer;<br><span class="hljs-keyword">import</span> java.util.Arrays;<br><span class="hljs-keyword">import</span> java.util.Properties;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CustomConsumerAutoOffset</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>    <br>        <span class="hljs-comment">// 1. 创建 kafka 消费者配置类</span><br>        <span class="hljs-type">Properties</span> <span class="hljs-variable">properties</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Properties</span>();<br>    	<span class="hljs-comment">// 2. 添加配置参数</span><br>   		<span class="hljs-comment">// 添加连接</span><br>    	properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, <span class="hljs-string">&quot;hadoop102:9092&quot;</span>);<br>    	<span class="hljs-comment">// 配置序列化 必须</span><br>    	properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, <span class="hljs-string">&quot;org.apache.kafka.common.serialization.StringDeserializer&quot;</span>);<br>    	properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, <span class="hljs-string">&quot;org.apache.kafka.common.serialization.StringDeserializer&quot;</span>);<br>    	<span class="hljs-comment">// 配置消费者组</span><br>		properties.put(ConsumerConfig.GROUP_ID_CONFIG, <span class="hljs-string">&quot;test&quot;</span>);<br>		<span class="hljs-comment">// 是否自动提交 offset</span><br>		properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, <span class="hljs-literal">true</span>);<br>		<span class="hljs-comment">// 提交 offset 的时间周期 1000ms，默认 5s</span><br>		properties.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, <span class="hljs-number">1000</span>);<br>		<span class="hljs-comment">//3. 创建 kafka 消费者</span><br>		KafkaConsumer&lt;String, String&gt; consumer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">KafkaConsumer</span>&lt;&gt;(properties);<br>		<span class="hljs-comment">//4. 设置消费主题 形参是列表</span><br>		consumer.subscribe(Arrays.asList(<span class="hljs-string">&quot;first&quot;</span>));<br>		<span class="hljs-comment">//5. 消费数据</span><br>		<span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>)&#123;<br>			<span class="hljs-comment">// 读取消息</span><br>			ConsumerRecords&lt;String, String&gt; consumerRecords = consumer.poll(Duration.ofSeconds(<span class="hljs-number">1</span>));<br>			<span class="hljs-comment">// 输出消息</span><br>			<span class="hljs-keyword">for</span> (ConsumerRecord&lt;String, String&gt; consumerRecord : consumerRecords) &#123;<br>				System.out.println(consumerRecord.value());<br>			&#125;<br>		&#125;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="手动提交-offset"><a href="#手动提交-offset" class="headerlink" title="手动提交 offset"></a>手动提交 offset</h4><p>虽然自动提交offset十分简单便利， 但由于其是基于时间提交的， 开发人员难以把握offset提交的时机。 因此Kafka还提供了手动提交offset的API。</p>
+<p><img src="/2022/07/17/Kafka/image-20220722152354972.png" srcset="/img/loading.gif" lazyload alt="commit offset by hand">  </p>
+<p>手动提交offset的方法有两种：分别是<strong>commitSync（ 同步提交）</strong> 和<strong>commitAsync（ 异步提交）</strong> 。 </p>
+<blockquote>
+<p><strong>两者的相同点</strong>：都会将本次<strong>提交</strong>的<strong>一批数据最高的偏移量</strong>提交；</p>
+<p><strong>不同点</strong>： 同步提交阻塞当前线程， 一直到提交成功， 并且会自动失败重试（由不可控因素导致， 也会出现提交失败） ；而异步提交则没有失败重试机制， 故有可能提交失败。  </p>
+</blockquote>
+<p><strong>同步提交 offset</strong></p>
+<p> 由于同步提交 offset 有失败重试机制，故更加可靠， 但是由于一直等待提交结果，提交的效率比较低。 以下为同步提交 offset 的示例。  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.test.kafka.consumer;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.consumer.ConsumerConfig;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.consumer.ConsumerRecord;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.consumer.ConsumerRecords;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.consumer.KafkaConsumer;<br><span class="hljs-keyword">import</span> java.util.Arrays;<br><span class="hljs-keyword">import</span> java.util.Properties;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CustomConsumerByHandSync</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-comment">// 1. 创建 kafka 消费者配置类</span><br>        <span class="hljs-type">Properties</span> <span class="hljs-variable">properties</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Properties</span>();<br>        <span class="hljs-comment">// 2. 添加配置参数</span><br>        <span class="hljs-comment">// 添加连接</span><br>        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, <span class="hljs-string">&quot;hadoop102:9092&quot;</span>);<br>        <span class="hljs-comment">// 配置序列化 必须</span><br>        properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, <span class="hljs-string">&quot;org.apache.kafka.common.serialization.StringDeserializer&quot;</span>);<br>        properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, <span class="hljs-string">&quot;org.apache.kafka.common.serialization.StringDeserializer&quot;</span>);<br>        <span class="hljs-comment">// 配置消费者组</span><br>        properties.put(ConsumerConfig.GROUP_ID_CONFIG, <span class="hljs-string">&quot;test&quot;</span>);<br>		<span class="hljs-comment">// 是否自动提交 offset</span><br>		properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, <span class="hljs-literal">false</span>);<br>		<span class="hljs-comment">//3. 创建 kafka 消费者</span><br>		KafkaConsumer&lt;String, String&gt; consumer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">KafkaConsumer</span>&lt;&gt;(properties);<br>		<span class="hljs-comment">//4. 设置消费主题 形参是列表</span><br>		consumer.subscribe(Arrays.asList(<span class="hljs-string">&quot;first&quot;</span>));<br>		<span class="hljs-comment">//5. 消费数据</span><br>		<span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>)&#123;<br>			<span class="hljs-comment">// 读取消息</span><br>			ConsumerRecords&lt;String, String&gt; consumerRecords = consumer.poll(Duration.ofSeconds(<span class="hljs-number">1</span>));<br>			<span class="hljs-comment">// 输出消息</span><br>			<span class="hljs-keyword">for</span> (ConsumerRecord&lt;String, String&gt; consumerRecord : consumerRecords) &#123;<br>				System.out.println(consumerRecord.value());<br>			&#125;<br>			<span class="hljs-comment">// 同步提交 offset</span><br>			consumer.commitSync();<br>		&#125;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>异步提交 offset</strong>  </p>
+<p>虽然<strong>同步提交 offset 更可靠</strong>一些，但是由于其会阻塞当前线程，直到提交成功。因此<strong>吞吐量会受到很大的影响</strong>。因此更多的情况下，会选用异步提交 offset 的方式。  </p>
+<p>以下为异步提交 offset 的示例：  </p>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs haxe"><span class="hljs-keyword">package</span> com.test.kafka.consumer;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.consumer.ConsumerConfig;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.consumer.ConsumerRecord;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.consumer.ConsumerRecords;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.consumer.KafkaConsumer;<br><span class="hljs-keyword">import</span> java.util.Arrays;<br><span class="hljs-keyword">import</span> java.util.Properties;<br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CustomConsumerByHandSync</span> </span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> void main(<span class="hljs-keyword">String</span>[] args) &#123;<br>        <span class="hljs-comment">// 1. 创建 kafka 消费者配置类</span><br>        Properties properties = <span class="hljs-keyword">new</span> <span class="hljs-type">Properties</span>();<br>        <span class="hljs-comment">// 2. 添加配置参数</span><br>        <span class="hljs-comment">// 添加连接</span><br>        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, <span class="hljs-string">&quot;hadoop102:9092&quot;</span>);<br>        <span class="hljs-comment">// 配置序列化 必须</span><br>        properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, <span class="hljs-string">&quot;org.apache.kafka.common.serialization.StringDeserializer&quot;</span>);<br>        properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, <span class="hljs-string">&quot;org.apache.kafka.common.serialization.StringDeserializer&quot;</span>);<br>        <span class="hljs-comment">// 配置消费者组</span><br>        properties.put(ConsumerConfig.GROUP_ID_CONFIG, <span class="hljs-string">&quot;test&quot;</span>);<br>		<span class="hljs-comment">// 是否自动提交 offset</span><br>		properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, <span class="hljs-literal">false</span>);<br>		<span class="hljs-comment">//3. 创建 kafka 消费者</span><br>		KafkaConsumer&lt;<span class="hljs-keyword">String</span>, <span class="hljs-keyword">String</span>&gt; consumer = <span class="hljs-keyword">new</span> <span class="hljs-type">KafkaConsumer</span>&lt;&gt;(properties);<br>		<span class="hljs-comment">//4. 设置消费主题 形参是列表</span><br>		consumer.subscribe(Arrays.asList(<span class="hljs-string">&quot;first&quot;</span>));<br>		<span class="hljs-comment">//5. 消费数据</span><br>		<span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>)&#123;<br>			<span class="hljs-comment">// 读取消息</span><br>			ConsumerRecords&lt;<span class="hljs-keyword">String</span>, <span class="hljs-keyword">String</span>&gt; consumerRecords = consumer.poll(Duration.ofSeconds(<span class="hljs-number">1</span>));<br>			<span class="hljs-comment">// 输出消息</span><br>			<span class="hljs-keyword">for</span> (ConsumerRecord&lt;<span class="hljs-keyword">String</span>, <span class="hljs-keyword">String</span>&gt; consumerRecord : <span class="hljs-type">consumerRecords</span>) &#123;<br>				System.out.println(consumerRecord.value());<br>			&#125;<br>			<span class="hljs-comment">// 同步提交 offset</span><br>			consumer.commitAsync();<br>		&#125;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>指定 Offset 消费</strong>  </p>
+<p>auto.offset.reset &#x3D; earliest | latest | none 默认是 latest。  </p>
+<p>当 Kafka 中没有初始偏移量（消费者组第一次消费）或服务器上不再存在当前偏移量时（例如该数据已被删除），该怎么办？  </p>
+<blockquote>
+<ol>
+<li>earliest：自动将偏移量重置为最早的偏移量， –from-beginning。  </li>
+<li>latest（默认值）：自动将偏移量重置为最新偏移量。  </li>
+<li>none：如果未找到消费者组的先前偏移量，则向消费者抛出异常。</li>
+</ol>
+</blockquote>
+<p>任意指定 offset 位移开始消费  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.test.kafka.consumer;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.consumer.ConsumerConfig;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.consumer.ConsumerRecord;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.consumer.ConsumerRecords;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.consumer.KafkaConsumer;<br><span class="hljs-keyword">import</span> org.apache.kafka.common.TopicPartition;<br><span class="hljs-keyword">import</span> org.apache.kafka.common.serialization.StringDeserializer;<br><span class="hljs-keyword">import</span> java.time.Duration;<br><span class="hljs-keyword">import</span> java.util.ArrayList;<br><span class="hljs-keyword">import</span> java.util.HashSet;<br><span class="hljs-keyword">import</span> java.util.Properties;<br><span class="hljs-keyword">import</span> java.util.Set;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CustomConsumerSeek</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-comment">// 0 配置信息</span><br>        <span class="hljs-type">Properties</span> <span class="hljs-variable">properties</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Properties</span>();<br>        <span class="hljs-comment">// 连接</span><br>        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, <span class="hljs-string">&quot;hadoop102:9092&quot;</span>);<br>        <span class="hljs-comment">// key value 反序列化</span><br>        properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());<br>        properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());<br>        properties.put(ConsumerConfig.GROUP_ID_CONFIG, <span class="hljs-string">&quot;test2&quot;</span>);<br>        <span class="hljs-comment">// 1 创建一个消费者</span><br>        KafkaConsumer&lt;String, String&gt; kafkaConsumer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">KafkaConsumer</span>&lt;&gt;(properties);<br>        <span class="hljs-comment">// 2 订阅一个主题</span><br>        ArrayList&lt;String&gt; topics = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br> 		topics.add(<span class="hljs-string">&quot;first&quot;</span>);<br>        kafkaConsumer.subscribe(topics);<br>        Set&lt;TopicPartition&gt; assignment= <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();<br>      	<span class="hljs-keyword">while</span> (assignment.size() == <span class="hljs-number">0</span>) &#123;<br>        	kafkaConsumer.poll(Duration.ofSeconds(<span class="hljs-number">1</span>));<br>        	<span class="hljs-comment">// 获取消费者分区分配信息（有了分区分配信息才能开始消费）</span><br>        	assignment = kafkaConsumer.assignment();<br>        &#125;<br>        <span class="hljs-comment">// 遍历所有分区，并指定 offset 从 1700 的位置开始消费</span><br>        <span class="hljs-keyword">for</span> (TopicPartition tp: assignment) &#123;<br>        	kafkaConsumer.seek(tp, <span class="hljs-number">1700</span>);<br>        &#125;<br>        <span class="hljs-comment">// 3 消费该主题数据</span><br>		<span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) &#123;<br>			ConsumerRecords&lt;String, String&gt; consumerRecords = kafkaConsumer.poll(Duration.ofSeconds(<span class="hljs-number">1</span>));<br>			<span class="hljs-keyword">for</span> (ConsumerRecord&lt;String, String&gt; consumerRecord : consumerRecords) &#123;<br>				System.out.println(consumerRecord);<br>			&#125;<br>		&#125;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>：每次执行完，需要修改消费者组名；  </p>
+<p><strong>指定时间消费</strong>  </p>
+<p>需求：在生产环境中，会遇到最近消费的几个小时数据异常，想重新按照时间消费。例如要求按照时间消费前一天的数据，怎么处理？  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.test.kafka.consumer;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.consumer.ConsumerConfig;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.consumer.ConsumerRecord;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.consumer.ConsumerRecords;<br><span class="hljs-keyword">import</span> org.apache.kafka.clients.consumer.KafkaConsumer;<br><span class="hljs-keyword">import</span> org.apache.kafka.common.TopicPartition;<br><span class="hljs-keyword">import</span> org.apache.kafka.common.serialization.StringDeserializer;<br><span class="hljs-keyword">import</span> java.time.Duration;<br><span class="hljs-keyword">import</span> java.util.ArrayList;<br><span class="hljs-keyword">import</span> java.util.HashSet;<br><span class="hljs-keyword">import</span> java.util.Properties;<br><span class="hljs-keyword">import</span> java.util.Set;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CustomConsumerSeek</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-comment">// 0 配置信息</span><br>        <span class="hljs-type">Properties</span> <span class="hljs-variable">properties</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Properties</span>();<br>        <span class="hljs-comment">// 连接</span><br>        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, <span class="hljs-string">&quot;hadoop102:9092&quot;</span>);<br>        <span class="hljs-comment">// key value 反序列化</span><br>        properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());<br>        properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());<br>        properties.put(ConsumerConfig.GROUP_ID_CONFIG, <span class="hljs-string">&quot;test2&quot;</span>);<br>        <span class="hljs-comment">// 1 创建一个消费者</span><br>        KafkaConsumer&lt;String, String&gt; kafkaConsumer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">KafkaConsumer</span>&lt;&gt;(properties);<br>        <span class="hljs-comment">// 2 订阅一个主题</span><br>        ArrayList&lt;String&gt; topics = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br> 		topics.add(<span class="hljs-string">&quot;first&quot;</span>);<br>        kafkaConsumer.subscribe(topics);<br>        Set&lt;TopicPartition&gt; assignment= <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();<br>        <span class="hljs-keyword">while</span> (assignment.size() == <span class="hljs-number">0</span>) &#123;<br>            kafkaConsumer.poll(Duration.ofSeconds(<span class="hljs-number">1</span>));<br>            <span class="hljs-comment">// 获取消费者分区分配信息（有了分区分配信息才能开始消费）</span><br>            assignment = kafkaConsumer.assignment();<br>        &#125;<br>        HashMap&lt;TopicPartition, Long&gt; timestampToSearch = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();<br>            <span class="hljs-comment">// 封装集合存储，每个分区对应一天前的数据</span><br>        <span class="hljs-keyword">for</span> (TopicPartition topicPartition : assignment) &#123;<br>            timestampToSearch.put(topicPartition, System.currentTimeMillis() - <span class="hljs-number">1</span> * <span class="hljs-number">24</span> * <span class="hljs-number">3600</span> * <span class="hljs-number">1000</span>);<br>         &#125;<br>         <span class="hljs-comment">// 获取从 1 天前开始消费的每个分区的 offset</span><br>         Map&lt;TopicPartition, OffsetAndTimestamp&gt; offsets = kafkaConsumer.offsetsForTimes(timestampToSearch);<br>         <span class="hljs-comment">// 遍历每个分区，对每个分区设置消费时间。</span><br>         <span class="hljs-keyword">for</span> (TopicPartition topicPartition : assignment) &#123;<br>            <span class="hljs-type">OffsetAndTimestamp</span> <span class="hljs-variable">offsetAndTimestamp</span> <span class="hljs-operator">=</span> offsets.get(topicPartition);<br>             <span class="hljs-comment">// 根据时间指定开始消费的位置</span><br>             <span class="hljs-keyword">if</span> (offsetAndTimestamp != <span class="hljs-literal">null</span>)&#123;<br>                kafkaConsumer.seek(topicPartition, offsetAndTimestamp.offset());<br>             &#125;<br>        &#125;<br>        <span class="hljs-comment">// 3 消费该主题数据</span><br>		<span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) &#123;<br>			ConsumerRecords&lt;String, String&gt; consumerRecords = kafkaConsumer.poll(Duration.ofSeconds(<span class="hljs-number">1</span>));<br>			<span class="hljs-keyword">for</span> (ConsumerRecord&lt;String, String&gt; consumerRecord : consumerRecords) &#123;<br>				System.out.println(consumerRecord);<br>			&#125;<br>		&#125;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="漏消费和重复消费"><a href="#漏消费和重复消费" class="headerlink" title="漏消费和重复消费"></a>漏消费和重复消费</h4><p><strong>重复消费</strong>： 已经消费了数据，但是 offset 没提交。</p>
+<p><strong>漏消费</strong>： 先提交 offset 后消费，有可能会造成数据的漏消费。  </p>
+<p>场景1： 重复消费。 自动提交offset引起 （对一个消息接受的ack并未收到）。  </p>
+<p><img src="/2022/07/17/Kafka/image-20220722153753393.png" srcset="/img/loading.gif" lazyload alt="Consuming error"></p>
+<p>场景2： 漏消费。 设置offset为手动提交， 当offset被提交时， 数据还在内存中未落盘， 此时刚好消费者线程被kill掉， 那么offset已经提交， 但是数据未处理， 导致这部分内存中的数据丢失。  </p>
+<p>既不漏消费也不重复消费 ？<strong>消费者事务</strong></p>
+<h3 id="生产经验"><a href="#生产经验" class="headerlink" title="生产经验"></a>生产经验</h3><h4 id="消费者事务"><a href="#消费者事务" class="headerlink" title="消费者事务"></a>消费者事务</h4><p>如果想完成Consumer端的精准一次性消费， 那么需要Kafka消费端将消费过程和提交offset 过程做原子绑定。 此时我们需要将Kafka的offset保存到支持事务的自定义介质（ 比如 MySQL） 。  </p>
+<p><img src="/2022/07/17/Kafka/image-20220722154636913.png" srcset="/img/loading.gif" lazyload alt="consumer transaction"></p>
+<h4 id="数据积压（消费者如何提高吞吐量）"><a href="#数据积压（消费者如何提高吞吐量）" class="headerlink" title="数据积压（消费者如何提高吞吐量）"></a>数据积压（消费者如何提高吞吐量）</h4><ol>
+<li>如果是Kafka消费能力不足， 则可以<strong>考虑增加Topic的分区数</strong>， 并且同时提升消费组的消费者数量， <strong>消费者数 &#x3D; 分区数</strong>。 （两者缺一不可）</li>
+<li>如果是下游的数据处理不及时： <strong>提高每批次拉取的数量</strong>。 批次拉取数据过少（拉取数据&#x2F;处理时间 &lt; 生产速度） ，使处理的数据小于生产的数据， 也会造成数据积压。</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>fetch.max.bytes</td>
+<td>默认 Default: 52428800（50 m）。消费者获取服务器端一批 消息最大的字节数。如果服务器端一批次的数据大于该值 （50m）仍然可以拉取回来这批数据，因此，这不是一个绝 对最大值。一批次的大小受 message.max.bytes （broker config） or max.message.bytes （topic config）影响。</td>
+</tr>
+<tr>
+<td>max.poll.records</td>
+<td>一次 poll 拉取数据返回消息的最大条数， 默认是 500 条</td>
+</tr>
+</tbody></table>
+<h3 id="Kafka-Kraft-模式"><a href="#Kafka-Kraft-模式" class="headerlink" title="Kafka-Kraft 模式"></a>Kafka-Kraft 模式</h3><p><strong>Kafka 现有架构</strong>， 元数据在 zookeeper 中， 运行时动态选举 controller， 由controller 进行 Kafka 集群管理。   </p>
+<p><strong>kraft 模式架构（实验性）</strong>， 不再依赖 zookeeper 集群，而是用三台 controller 节点代替 zookeeper， 元数据保存在 controller 中， 由 controller 直接进行 Kafka 集群管理。  </p>
+<p>这样做的好处有以下几个：  </p>
+<blockquote>
+<p>Kafka 不再依赖外部框架， 而是能够独立运行；  </p>
+<p>controller 管理集群时， 不再需要从 zookeeper 中先读取数据， 集群性能上升；  </p>
+<p>由于不依赖 zookeeper， 集群扩展时不再受到 zookeeper 读写能力限制；  </p>
+<p>controller 不再动态选举， 而是由配置文件规定。 这样我们可以有针对性的加强 controller 节点的配置， 而不是像以前一样对随机 controller 节点的高负载束手无策。  </p>
+</blockquote>
+<h2 id="总结-补充"><a href="#总结-补充" class="headerlink" title="总结 补充"></a>总结 补充</h2><p><strong>副本数设定</strong></p>
+<blockquote>
+<p>一般我们设置成2个或3个，很多企业设置为2个。</p>
+<p>副本的优势：提高可靠性；副本劣势：增加了网络IO传输</p>
+</blockquote>
+<p><strong>Kafka压测</strong></p>
+<blockquote>
+<p>Kafka官方自带压力测试脚本（kafka-consumer-perf-test.sh、kafka-producer-perf-test.sh）。Kafka压测时，可以查看到哪个地方出现了瓶颈（CPU，内存，网络IO）。一般都是网络IO达到瓶颈。</p>
+</blockquote>
+<p><strong>Kafka日志保存时间</strong></p>
+<blockquote>
+<p>默认保存7天；生产环境建议3天</p>
+</blockquote>
+<p><strong>Kafka中数据量计算</strong></p>
+<blockquote>
+<p>每天总数据量100g，每天产生1亿条日志，10000万&#x2F;24&#x2F;60&#x2F;60&#x3D;1150条&#x2F;每秒钟</p>
+<p>平均每秒钟：1150条</p>
+<p>低谷每秒钟：50条</p>
+<p>高峰每秒钟：1150条 *（2-20倍）&#x3D; 2300条 - 23000条</p>
+<p>每条日志大小：0.5k - 2k（取1k）</p>
+<p>每秒多少数据量：2.0M - 20MB</p>
+</blockquote>
+<p><strong>Kafka的硬盘大小</strong></p>
+<blockquote>
+<p>每天的数据量100g * 2个副本 * 3天 &#x2F; 70%</p>
+</blockquote>
+<p><strong>Kafka监控</strong></p>
+<blockquote>
+<p>公司自己开发的监控器；</p>
+<p>开源的监控器：KafkaManager、KafkaMonitor、KafkaEagle</p>
+</blockquote>
+<p><strong>Kakfa分区数</strong></p>
+<blockquote>
+<ol>
+<li><p>创建一个只有1个分区的topic</p>
+</li>
+<li><p>测试这个topic的producer吞吐量和consumer吞吐量。</p>
+</li>
+<li><p>假设他们的值分别是Tp和Tc，单位可以是MB&#x2F;s。</p>
+</li>
+<li><p>然后假设总的目标吞吐量是Tt，那么分区数&#x3D;Tt &#x2F; min（Tp，Tc）</p>
+<p>例如：producer吞吐量 &#x3D; 20m&#x2F;s；consumer吞吐量 &#x3D; 50m&#x2F;s，期望吞吐量100m&#x2F;s；</p>
+<p>分区数 &#x3D; 100 &#x2F; 20 &#x3D; 5分区</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42641909/article/details/89294698">https://blog.csdn.net/weixin_42641909/article/details/89294698</a></p>
+<p>分区数一般设置为：3-10个</p>
+</li>
+</ol>
+</blockquote>
+<p><strong>多少个Topic</strong></p>
+<blockquote>
+<p>通常情况：多少个日志类型就多少个Topic。也有对日志类型进行合并的。</p>
+</blockquote>
+<p><strong>Kafka挂掉</strong></p>
+<blockquote>
+<ol>
+<li>Flume记录</li>
+<li>日志有记录</li>
+<li>短期没事</li>
+</ol>
+</blockquote>
+<p><strong>Kafka数据重复</strong></p>
+<blockquote>
+<p>幂等性 + ack-1 + 事务</p>
+<p>Kafka数据重复，可以再下一级：SparkStreaming、redis或者Hive中dwd层去重，去重的手段：分组、按照id开窗只取第一个值；</p>
+</blockquote>
+<h4 id="Kafka参数优化"><a href="#Kafka参数优化" class="headerlink" title="Kafka参数优化"></a>Kafka参数优化</h4><ol>
+<li><p><strong>Broker参数配置（server.properties）</strong></p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs maxima"><span class="hljs-number">1</span>、日志保留策略配置<br># 保留三天，也可以更短 （<span class="hljs-built_in">log</span>.cleaner.<span class="hljs-built_in">delete</span>.retention.ms）<br><span class="hljs-built_in">log</span>.retention.hours=<span class="hljs-number">72</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-number">2</span>、<span class="hljs-keyword">Replica</span>相关配置<br><span class="hljs-keyword">default</span>.<span class="hljs-keyword">replication</span>.factor:<span class="hljs-number">1</span> 默认副本<span class="hljs-number">1</span>个<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-number">3</span>、网络通信延时	<br><span class="hljs-keyword">replica</span>.socket.timeout.ms:<span class="hljs-number">30000</span> #当集群之间网络不稳定时,调大该参数<br><span class="hljs-keyword">replica</span>.lag.time.max.ms= <span class="hljs-number">600000</span># 如果网络不好,或者kafka集群压力较大,会出现副本丢失,然后会频繁复制副本,导致集群压力更大,此时可以调大该参数<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>Producer优化（producer.properties）</strong></p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs haskell"><span class="hljs-title">compression</span>.<span class="hljs-class"><span class="hljs-keyword">type</span>:none                 gzip  snappy  lz4  </span><br><span class="hljs-meta">#默认发送不进行压缩，推荐配置一种适合的压缩算法，可以大幅度的减缓网络压力和Broker的存储压力。</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>Kafka内存调整（</strong>kafka-server-start.sh<strong>）</strong></p>
+<p>默认内存1个G，生产环境尽量不要超过6个G。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-built_in">export</span> <span class="hljs-attribute">KAFKA_HEAP_OPTS</span>=<span class="hljs-string">&quot;-Xms4g -Xmx4g&quot;</span><br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>Kafka单条日志传输大小</strong></p>
+<p>Kafka对于消息体的大小默认为单条最大值是1M但是在我们应用场景中，常常会出现一条消息大于1M，如果不对Kafka进行配置。则会出现生产者无法将消息推送到Kafka或消费者无法去消费Kafka里面的数据，这时我们就要对Kafka进行以下配置：server.properties</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">replica</span>.<span class="hljs-keyword">fetch</span>.max.bytes: <span class="hljs-number">1048576</span>  broker可复制的消息的最大字节数, 默认为<span class="hljs-number">1</span>M<br>message.max.bytes: <span class="hljs-number">1000012</span>   kafka 会接收单个消息size的最大限制， 默认为<span class="hljs-number">1</span>M左右<br></code></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>：message.max.bytes必须小于等于replica.fetch.max.bytes，否则就会导致replica之间数据同步失败。</p>
+<p><strong>Kafka过期数据清理</strong></p>
+<p>保证数据没有被引用（没人消费他）</p>
+<p>日志清理保存的策略只有delete和compact两种</p>
+<p>log.cleanup.policy &#x3D; delete启用删除策略</p>
+<p>log.cleanup.policy &#x3D; compact启用压缩策略</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/fa6adeae8eb5">https://www.jianshu.com/p/fa6adeae8eb5</a></p>
+<p><strong>Kafka消费者角度考虑是拉取数据还是推送数据</strong></p>
+<blockquote>
+<p>拉取数据</p>
+</blockquote>
+<p><strong>Kafka中的数据是有序的吗</strong></p>
+<p>单分区内有序；多分区，分区与分区间无序；</p>
+<p><strong>扩展：</strong></p>
+<p>kafka producer发送消息的时候，可以指定key:</p>
+<img src="/2022/07/17/Kafka/image-20220722161223422.png" srcset="/img/loading.gif" lazyload alt="key" style="zoom: 100%;">
+
+<p>这个key的作用是为消息选择存储分区，key可以为空，当指定key且不为空的时候，Kafka是根据key的hash值与分区数取模来决定数据存储到那个分区。</p>
+<img src="/2022/07/17/Kafka/image-20220722161303892.png" srcset="/img/loading.gif" lazyload alt="solution" style="zoom:100%;">
+
+<p><strong>有序解决方案：同一张表的数据放到同一个分区</strong></p>
+<p>​       &#x3D;&gt; ProducerRecord里传入key，会根据key取hash算出分区号</p>
+<p>​       &#x3D;&gt; key使用表名，如果有库名，拼接上库名</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/BigData/" class="category-chain-item">BigData</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Kafka/">#Kafka</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>MapReduce</div>
+      <div>http://example.com/2022/07/17/Kafka/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Zhao Zhuoyue</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年7月17日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/07/17/Hive/" title="MapReduce">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MapReduce</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/07/14/HDFS-Hdfs/" title="Hadoop 介绍">
+                        <span class="hidden-mobile">Hadoop 介绍</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
