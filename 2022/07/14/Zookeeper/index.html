@@ -18,43 +18,45 @@
   
     <meta name="description" content="ZookeeperZookeeper 概述Zookeeper： 开源的分布式 Apache 项目， 为分布式框架提供协调服务。 zookeeper 工作机制Zookeeper从设计模式角度来理解：是一个基于观察者模式设计的分布式服务管理框架， 它负责存储和管理大家都关心的数据， 然后接受观察者的注册， 一旦这些数据的状态发生变化， Zookeeper就将负责通知已经在Zookeeper上注册的那些">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/2023/02/13/Zookeeper/index.html">
+<meta property="og:title" content="Hadoop 介绍">
+<meta property="og:url" content="http://example.com/2022/07/14/Zookeeper/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="ZookeeperZookeeper 概述Zookeeper： 开源的分布式 Apache 项目， 为分布式框架提供协调服务。 zookeeper 工作机制Zookeeper从设计模式角度来理解：是一个基于观察者模式设计的分布式服务管理框架， 它负责存储和管理大家都关心的数据， 然后接受观察者的注册， 一旦这些数据的状态发生变化， Zookeeper就将负责通知已经在Zookeeper上注册的那些">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2023/02/13/Zookeeper/image-20220718102756026.png">
-<meta property="og:image" content="http://example.com/2023/02/13/Zookeeper/image-20220718102839569.png">
-<meta property="og:image" content="http://example.com/2023/02/13/Zookeeper/image-20220718103056189-1658111586940.png">
-<meta property="og:image" content="http://example.com/2023/02/13/Zookeeper/image-20220718103512698.png">
-<meta property="og:image" content="http://example.com/2023/02/13/Zookeeper/image-20220718103822080.png">
-<meta property="og:image" content="http://example.com/2023/02/13/Zookeeper/image-20220718104235624.png">
-<meta property="og:image" content="http://example.com/2023/02/13/Zookeeper/image-20220718102756026.png">
-<meta property="og:image" content="http://example.com/2023/02/13/Zookeeper/image-20220718104414502.png">
-<meta property="og:image" content="http://example.com/2023/02/13/Zookeeper/image-20220718105704102.png">
-<meta property="og:image" content="http://example.com/2023/02/13/Zookeeper/image-20220718110610844.png">
-<meta property="og:image" content="http://example.com/2023/02/13/Zookeeper/image-20220718113044963.png">
-<meta property="og:image" content="http://example.com/2023/02/13/Zookeeper/image-20220718142031824.png">
-<meta property="og:image" content="http://example.com/2023/02/13/Zookeeper/image-20220718143418560.png">
-<meta property="og:image" content="http://example.com/2023/02/13/Zookeeper/image-20220718144438909.png">
-<meta property="og:image" content="http://example.com/2023/02/13/Zookeeper/image-20220718145906992.png">
-<meta property="og:image" content="http://example.com/2023/02/13/Zookeeper/image-20220718155437849.png">
-<meta property="og:image" content="http://example.com/2023/02/13/Zookeeper/image-20220718160624146.png">
-<meta property="og:image" content="http://example.com/2023/02/13/Zookeeper/image-20220718162217886.png">
-<meta property="og:image" content="http://example.com/2023/02/13/Zookeeper/image-20220718162450608.png">
-<meta property="og:image" content="http://example.com/2023/02/13/Zookeeper/image-20220718162450608.png">
-<meta property="og:image" content="http://example.com/2023/02/13/Zookeeper/image-20220718165406583.png">
-<meta property="og:image" content="http://example.com/2023/02/13/Zookeeper/image-20220718180101216.png">
-<meta property="og:image" content="http://example.com/2023/02/13/Zookeeper/image-20220718181102680.png">
-<meta property="article:published_time" content="2023-02-12T16:50:29.295Z">
-<meta property="article:modified_time" content="2023-02-12T16:50:29.295Z">
+<meta property="og:image" content="http://example.com/2022/07/14/Zookeeper/image-20220718102756026.png">
+<meta property="og:image" content="http://example.com/2022/07/14/Zookeeper/image-20220718102839569.png">
+<meta property="og:image" content="http://example.com/2022/07/14/Zookeeper/image-20220718103056189-1658111586940.png">
+<meta property="og:image" content="http://example.com/2022/07/14/Zookeeper/image-20220718103512698.png">
+<meta property="og:image" content="http://example.com/2022/07/14/Zookeeper/image-20220718103822080.png">
+<meta property="og:image" content="http://example.com/2022/07/14/Zookeeper/image-20220718104235624.png">
+<meta property="og:image" content="http://example.com/2022/07/14/Zookeeper/image-20220718102756026.png">
+<meta property="og:image" content="http://example.com/2022/07/14/Zookeeper/image-20220718104414502.png">
+<meta property="og:image" content="http://example.com/2022/07/14/Zookeeper/image-20220718105704102.png">
+<meta property="og:image" content="http://example.com/2022/07/14/Zookeeper/image-20220718110610844.png">
+<meta property="og:image" content="http://example.com/2022/07/14/Zookeeper/image-20220718113044963.png">
+<meta property="og:image" content="http://example.com/2022/07/14/Zookeeper/image-20220718142031824.png">
+<meta property="og:image" content="http://example.com/2022/07/14/Zookeeper/image-20220718143418560.png">
+<meta property="og:image" content="http://example.com/2022/07/14/Zookeeper/image-20220718144438909.png">
+<meta property="og:image" content="http://example.com/2022/07/14/Zookeeper/image-20220718145906992.png">
+<meta property="og:image" content="http://example.com/2022/07/14/Zookeeper/image-20220718155437849.png">
+<meta property="og:image" content="http://example.com/2022/07/14/Zookeeper/image-20220718160624146.png">
+<meta property="og:image" content="http://example.com/2022/07/14/Zookeeper/image-20220718162217886.png">
+<meta property="og:image" content="http://example.com/2022/07/14/Zookeeper/image-20220718162450608.png">
+<meta property="og:image" content="http://example.com/2022/07/14/Zookeeper/image-20220718162450608.png">
+<meta property="og:image" content="http://example.com/2022/07/14/Zookeeper/image-20220718165406583.png">
+<meta property="og:image" content="http://example.com/2022/07/14/Zookeeper/image-20220718180101216.png">
+<meta property="og:image" content="http://example.com/2022/07/14/Zookeeper/image-20220718181102680.png">
+<meta property="article:published_time" content="2022-07-14T02:45:00.000Z">
+<meta property="article:modified_time" content="2023-02-12T17:06:08.247Z">
 <meta property="article:author" content="Zhao Zhuoyue">
+<meta property="article:tag" content="Hadoop">
+<meta property="article:tag" content="HDFS">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/2023/02/13/Zookeeper/image-20220718102756026.png">
+<meta name="twitter:image" content="http://example.com/2022/07/14/Zookeeper/image-20220718102756026.png">
   
   
   
-  <title>Hexo</title>
+  <title>Hadoop 介绍 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -231,7 +233,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text=""></span>
+            <span id="subtitle" data-typed-text="Hadoop 介绍"></span>
           
         </div>
 
@@ -242,8 +244,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-02-13 00:50" pubdate>
-          2023年2月13日 凌晨
+        <time datetime="2022-07-14 10:45" pubdate>
+          2022年7月14日 上午
         </time>
       </span>
     
@@ -303,15 +305,15 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none"></h1>
+            <h1 style="display: none">Hadoop 介绍</h1>
             
             
               <div class="markdown-body">
                 
                 <h1 id="Zookeeper"><a href="#Zookeeper" class="headerlink" title="Zookeeper"></a>Zookeeper</h1><h2 id="Zookeeper-概述"><a href="#Zookeeper-概述" class="headerlink" title="Zookeeper 概述"></a>Zookeeper 概述</h2><p>Zookeeper： 开源的分布式 Apache 项目， 为分布式框架提供协调服务。</p>
 <h2 id="zookeeper-工作机制"><a href="#zookeeper-工作机制" class="headerlink" title="zookeeper 工作机制"></a>zookeeper 工作机制</h2><p>Zookeeper从设计模式角度来理解：是一个基于观察者模式设计的分布式服务管理框架， 它负责存储和管理大家都关心的数据， 然后接受观察者的注册， 一旦这些数据的状态发生变化， Zookeeper就将负责通知已经在Zookeeper上注册的那些观察者做出相应的反应。</p>
-<p><img src="/2023/02/13/Zookeeper/image-20220718102756026.png" srcset="/img/loading.gif" lazyload alt="zookeeper working mechanism"></p>
-<h3 id="Zookeeper-特点"><a href="#Zookeeper-特点" class="headerlink" title="Zookeeper 特点"></a>Zookeeper 特点</h3><p><img src="/2023/02/13/Zookeeper/image-20220718102839569.png" srcset="/img/loading.gif" lazyload alt="zookeeper features"></p>
+<p><img src="/2022/07/14/Zookeeper/image-20220718102756026.png" srcset="/img/loading.gif" lazyload alt="zookeeper working mechanism"></p>
+<h3 id="Zookeeper-特点"><a href="#Zookeeper-特点" class="headerlink" title="Zookeeper 特点"></a>Zookeeper 特点</h3><p><img src="/2022/07/14/Zookeeper/image-20220718102839569.png" srcset="/img/loading.gif" lazyload alt="zookeeper features"></p>
 <ol>
 <li>Zookeeper：一个领导者（Leader） ， 多个跟随者（Follower） 组成的集群。  </li>
 <li>集群中只要有半数以上节点存活， Zookeeper集群就能正常服务。 所以Zookeeper适合安装奇数台服务器。  </li>
@@ -321,7 +323,7 @@
 <li>实时性， 在一定时间范围内， Client能读到最新数据。</li>
 </ol>
 <h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><p>ZooKeeper 数据模型的结构与 Unix 文件系统很类似，整体上可以看作是一棵树，每个节点称做一个 ZNode。每一个 ZNode 默认能够存储 1MB 的数据，<strong>每个 ZNode 都可以通过其路径唯一标识。</strong>  </p>
-<img src="/2023/02/13/Zookeeper/image-20220718103056189-1658111586940.png" srcset="/img/loading.gif" lazyload alt="zookeeper data structure" style="zoom:67%;">
+<img src="/2022/07/14/Zookeeper/image-20220718103056189-1658111586940.png" srcset="/img/loading.gif" lazyload alt="zookeeper data structure" style="zoom:67%;">
 
 
 
@@ -330,7 +332,7 @@
 <blockquote>
 <p>在分布式环境下， 经常需要对应用&#x2F;服务进行统一命名， 便于识别。<br>例如： IP不容易记住， 而域名容易记住。  </p>
 </blockquote>
-<img src="/2023/02/13/Zookeeper/image-20220718103512698.png" srcset="/img/loading.gif" lazyload alt="统一命名服务" style="zoom:67%;">
+<img src="/2022/07/14/Zookeeper/image-20220718103512698.png" srcset="/img/loading.gif" lazyload alt="统一命名服务" style="zoom:67%;">
 
 
 
@@ -353,7 +355,7 @@
 <li>一旦Znode中的数据被修改， ZooKeeper将通知<br>各个客户端服务器。</li>
 </ol>
 </blockquote>
-<img src="/2023/02/13/Zookeeper/image-20220718103822080.png" srcset="/img/loading.gif" lazyload alt="**统一配置管理**" style="zoom: 67%;"></li>
+<img src="/2022/07/14/Zookeeper/image-20220718103822080.png" srcset="/img/loading.gif" lazyload alt="**统一配置管理**" style="zoom: 67%;"></li>
 </ol>
 <p><strong>统一集群管理</strong>  </p>
 <ol>
@@ -371,12 +373,12 @@
 </blockquote>
 </li>
 </ol>
-<img src="/2023/02/13/Zookeeper/image-20220718104235624.png" srcset="/img/loading.gif" lazyload alt="统一集群管理" style="zoom:67%;">
+<img src="/2022/07/14/Zookeeper/image-20220718104235624.png" srcset="/img/loading.gif" lazyload alt="统一集群管理" style="zoom:67%;">
 
 
 
 <p><strong>服务器动态上下线</strong>  </p>
-<img src="/2023/02/13/Zookeeper/image-20220718102756026.png" srcset="/img/loading.gif" lazyload alt="服务器动态上下线" style="zoom:67%;">
+<img src="/2022/07/14/Zookeeper/image-20220718102756026.png" srcset="/img/loading.gif" lazyload alt="服务器动态上下线" style="zoom:67%;">
 
 
 
@@ -384,7 +386,7 @@
 
 <p><strong>软负载均衡</strong>  </p>
 <p>在Zookeeper中记录每台服务器的访问数， 让访问数最少的服务器去处理最新的客户端请求  </p>
-<img src="/2023/02/13/Zookeeper/image-20220718104414502.png" srcset="/img/loading.gif" lazyload alt="软负载均衡" style="zoom:67%;">
+<img src="/2022/07/14/Zookeeper/image-20220718104414502.png" srcset="/img/loading.gif" lazyload alt="软负载均衡" style="zoom:67%;">
 
 
 
@@ -411,7 +413,7 @@
 </li>
 </ol>
 <h2 id="选举机制（重点）"><a href="#选举机制（重点）" class="headerlink" title="选举机制（重点）"></a>选举机制（重点）</h2><p><strong>Zookeeper选举机制——第一次启动</strong>  </p>
-<p><img src="/2023/02/13/Zookeeper/image-20220718105704102.png" srcset="/img/loading.gif" lazyload alt="First Time"></p>
+<p><img src="/2022/07/14/Zookeeper/image-20220718105704102.png" srcset="/img/loading.gif" lazyload alt="First Time"></p>
 <blockquote>
 <p><strong>SID</strong>： 服务器ID。 用来唯一标识一台ZooKeeper集群中的机器，每台机器不能重复， 和myid一致。  </p>
 <p><strong>ZXID</strong>：事务ID。 ZXID是一个事务ID，用来标识一次服务器状态的变更。 在某一时刻，集群中的每台机器的ZXID值不一定完全一致，这和ZooKeeper服务器对于客户端“更新请求”的处理逻辑有关。  </p>
@@ -426,7 +428,7 @@
 <li>服务器5启动， 同4一样当 FOLLOWING。</li>
 </ol>
 <p><strong>Zookeeper选举机制——非第一次启动</strong></p>
-<p><img src="/2023/02/13/Zookeeper/image-20220718110610844.png" srcset="/img/loading.gif" lazyload alt="Non-First"></p>
+<p><img src="/2022/07/14/Zookeeper/image-20220718110610844.png" srcset="/img/loading.gif" lazyload alt="Non-First"></p>
 <ol>
 <li><p>当ZooKeeper集群中的一台服务器出现以下两种情况之一时， 就会开始进入Leader选举：  </p>
 <blockquote>
@@ -545,7 +547,7 @@
 <li><p>numChildren： znode 子节点数量</p>
 </li>
 </ol>
-<h2 id="节点类型（持久-x2F-短暂-x2F-有序号-x2F-无序号）"><a href="#节点类型（持久-x2F-短暂-x2F-有序号-x2F-无序号）" class="headerlink" title="节点类型（持久&#x2F;短暂&#x2F;有序号&#x2F;无序号）"></a>节点类型（持久&#x2F;短暂&#x2F;有序号&#x2F;无序号）</h2><p><img src="/2023/02/13/Zookeeper/image-20220718113044963.png" srcset="/img/loading.gif" lazyload alt="Type of Node"></p>
+<h2 id="节点类型（持久-x2F-短暂-x2F-有序号-x2F-无序号）"><a href="#节点类型（持久-x2F-短暂-x2F-有序号-x2F-无序号）" class="headerlink" title="节点类型（持久&#x2F;短暂&#x2F;有序号&#x2F;无序号）"></a>节点类型（持久&#x2F;短暂&#x2F;有序号&#x2F;无序号）</h2><p><img src="/2022/07/14/Zookeeper/image-20220718113044963.png" srcset="/img/loading.gif" lazyload alt="Type of Node"></p>
 <p><strong>持久</strong>（Persistent） ：客户端和服务器端断开连接后， 创建的节点不删除  </p>
 <p><strong>短暂</strong>（Ephemeral） ：客户端和服务器端断开连接后， 创建的节点自己删除  </p>
 <p><strong>说明</strong>：创建 znode 时设置顺序标识， znode名称后会附加一个值， 顺序号是一个单调递增的计数器， 由父节点维护  </p>
@@ -577,7 +579,7 @@
 
 <p>如果原来没有序号节点，序号从 0 开始依次递增。 如果原节点下已有 2 个节点，则再排序时从 2 开始，以此类推。  </p>
 <h2 id="监听器原理"><a href="#监听器原理" class="headerlink" title="监听器原理"></a>监听器原理</h2><p>客户端注册监听它关心的目录节点，当目录节点发生变化（数据改变、节点删除、子目录节点增加删除）时， ZooKeeper 会通知客户端。监听机制保证 ZooKeeper 保存的任何的数据的任何改变都能快速的响应到监听了该节点的应用程序。  </p>
-<p><img src="/2023/02/13/Zookeeper/image-20220718142031824.png" srcset="/img/loading.gif" lazyload alt="Principle of Listener"></p>
+<p><img src="/2022/07/14/Zookeeper/image-20220718142031824.png" srcset="/img/loading.gif" lazyload alt="Principle of Listener"></p>
 <p><strong>监听器原理</strong></p>
 <ol>
 <li>首先要有一个main()线程  </li>
@@ -628,17 +630,17 @@
 </li>
 </ol>
 <h2 id="客户端向服务端写数据流程"><a href="#客户端向服务端写数据流程" class="headerlink" title="客户端向服务端写数据流程"></a>客户端向服务端写数据流程</h2><p><strong>写流程之写入请求直接发送给Leader节点</strong>  </p>
-<img src="/2023/02/13/Zookeeper/image-20220718143418560.png" srcset="/img/loading.gif" lazyload alt="Data to ZkLeader" style="zoom:67%;">
+<img src="/2022/07/14/Zookeeper/image-20220718143418560.png" srcset="/img/loading.gif" lazyload alt="Data to ZkLeader" style="zoom:67%;">
 
 
 
 <p><strong>写流程之写入请求发送给follower节点</strong>    </p>
-<img src="/2023/02/13/Zookeeper/image-20220718144438909.png" srcset="/img/loading.gif" lazyload alt="data to follower" style="zoom:67%;">
+<img src="/2022/07/14/Zookeeper/image-20220718144438909.png" srcset="/img/loading.gif" lazyload alt="data to follower" style="zoom:67%;">
 
 
 
 <h2 id="ZooKeeper-分布式锁案例"><a href="#ZooKeeper-分布式锁案例" class="headerlink" title="ZooKeeper 分布式锁案例"></a>ZooKeeper 分布式锁案例</h2><p><strong>什么叫做分布式锁呢？</strong><br>比如说”进程 1”在使用该资源的时候，会先去获得锁， “进程 1”获得锁以后会对该资源保持独占，这样其他进程就无法访问该资源， “进程 1”用完该资源以后就将锁释放掉，让其他进程来获得锁，那么通过这个锁机制，我们就能保证了分布式系统中多个进程能够有序的访问该临界资源。那么我们把这个分布式环境下的这个锁叫作分布式锁。  </p>
-<img src="/2023/02/13/Zookeeper/image-20220718145906992.png" srcset="/img/loading.gif" lazyload alt="distributed lock" style="zoom:67%;">
+<img src="/2022/07/14/Zookeeper/image-20220718145906992.png" srcset="/img/loading.gif" lazyload alt="distributed lock" style="zoom:67%;">
 
 <ol>
 <li>接收到请求后，在 &#x2F;locks 节点下创建一个临时的顺序节点</li>
@@ -725,7 +727,7 @@
 <p>Paxos算法解决的问题： 就是如何快速正确的在一个分布式系统中对某个数据值达成一致，并且保证不论发生任何异常（如机器宕机，网络异常（延迟，重复，丢失）），都不会破坏整个系统（节点可能分布于不同地区，机房，机架）的一致性。  </p>
 <p><strong>Paxos 算法描述</strong></p>
 <p>在一个Paxos系统中，首先将所有节点划分为 Proposer（提议者） ， Acceptor（接受者） ，和 Learner（学习者） 。（注意：每个节点都可以身兼数职）。  </p>
-<p><img src="/2023/02/13/Zookeeper/image-20220718155437849.png" srcset="/img/loading.gif" lazyload alt="Paxos"></p>
+<p><img src="/2022/07/14/Zookeeper/image-20220718155437849.png" srcset="/img/loading.gif" lazyload alt="Paxos"></p>
 <p>一个完整的Paxos算法流程分为三个阶段：  </p>
 <ol>
 <li><p>Prepare准备阶段 ：</p>
@@ -747,7 +749,7 @@
 <li><p>Learn 学习阶段： Proposer将形成的决议发送给所有Learners</p>
 </li>
 </ol>
-<p><img src="/2023/02/13/Zookeeper/image-20220718160624146.png" srcset="/img/loading.gif" lazyload alt="Paxos"></p>
+<p><img src="/2022/07/14/Zookeeper/image-20220718160624146.png" srcset="/img/loading.gif" lazyload alt="Paxos"></p>
 <p><strong>Prepare</strong>: Proposer生成全局唯一且递增的Proposal ID， 向所有Acceptor发送Propose请求， 这里无需携带提案内容， 只携带Proposal ID即可。  </p>
 <p><strong>Promise</strong>: Acceptor收到Propose请求后， 做出“两个承诺， 一个应答” 。  </p>
 <blockquote>
@@ -761,7 +763,7 @@
 <p><strong>Accept</strong>:  Acceptor 收到 Propose 请求后， 在不违背自己之前做出的承诺下， 接受并持久化当前 Proposal ID 和提案 Value。  </p>
 <p><strong>Learn</strong>: Proposer 收到多数 Acceptor 的 Accept 后， 决议形成， 将形成的决议发送给所有 Learner。  </p>
 <p><strong>情况 1</strong></p>
-<p><img src="/2023/02/13/Zookeeper/image-20220718162217886.png" srcset="/img/loading.gif" lazyload alt="Situation 1"></p>
+<p><img src="/2022/07/14/Zookeeper/image-20220718162217886.png" srcset="/img/loading.gif" lazyload alt="Situation 1"></p>
 <ol>
 <li>A1发起1号 Proposal 的 Propose，等待 Promise 承诺；  </li>
 <li>A2-A5回应Promise；  </li>
@@ -770,7 +772,7 @@
 <li>通过Proposal，税率10%。</li>
 </ol>
 <p><strong>情况 2</strong></p>
-<p><img src="/2023/02/13/Zookeeper/image-20220718162450608.png" srcset="/img/loading.gif" lazyload alt="situation 2"></p>
+<p><img src="/2022/07/14/Zookeeper/image-20220718162450608.png" srcset="/img/loading.gif" lazyload alt="situation 2"></p>
 <ol>
 <li>A1， A5同时发起Propose（序号分别为1， 2）  </li>
 <li>A2承诺A1， A4承诺A5， A3行为成为关键  </li>
@@ -781,7 +783,7 @@
 </ol>
 <p>Paxos 算法缺陷：在网络复杂的情况下，一个应用 Paxos 算法的分布式系统，可能很久无法收敛，甚至陷入活锁的情况。  </p>
 <p><strong>情况 3：</strong>  </p>
-<p><img src="/2023/02/13/Zookeeper/image-20220718162450608.png" srcset="/img/loading.gif" lazyload alt="situation 3"></p>
+<p><img src="/2022/07/14/Zookeeper/image-20220718162450608.png" srcset="/img/loading.gif" lazyload alt="situation 3"></p>
 <ol>
 <li>A1， A5同时发起Propose（序号分别为1， 2）  </li>
 <li>A2承诺A1， A4承诺A5， A3行为成为关键  </li>
@@ -794,7 +796,7 @@
 <h2 id="ZAB-协议"><a href="#ZAB-协议" class="headerlink" title="ZAB 协议"></a>ZAB 协议</h2><h4 id="ZAB-算法"><a href="#ZAB-算法" class="headerlink" title="ZAB 算法"></a>ZAB 算法</h4><p>Zab 借鉴了 Paxos 算法，是特别为 Zookeeper 设计的支持崩溃恢复的原子广播协议。基于该协议， Zookeeper 设计为只有一台客户端（Leader）负责处理外部的写事务请求，然后Leader 客户端将数据同步到其他 Follower 节点。 即 Zookeeper 只有一个 Leader 可以发起提案。  </p>
 <h4 id="Zab-协议内容"><a href="#Zab-协议内容" class="headerlink" title="Zab 协议内容"></a>Zab 协议内容</h4><p>Zab 协议包括两种基本的模式： 消息广播、 崩溃恢复。  </p>
 <p><strong>消息广播</strong>  </p>
-<p><img src="/2023/02/13/Zookeeper/image-20220718165406583.png" srcset="/img/loading.gif" lazyload alt="消息广播"></p>
+<p><img src="/2022/07/14/Zookeeper/image-20220718165406583.png" srcset="/img/loading.gif" lazyload alt="消息广播"></p>
 <ol>
 <li>客户端发起一个写操作请求。  </li>
 <li>Leader服务器将客户端的请求转化为事务Proposal 提案， 同时为每个Proposal 分配一个全局的ID， 即zxid。  </li>
@@ -821,7 +823,7 @@
 <p>怎么解决呢？ <strong>ZAB引入了崩溃恢复模式</strong>。  </p>
 <p><strong>崩溃恢复</strong>  </p>
 <p><strong>异常假设</strong>  </p>
-<p><img src="/2023/02/13/Zookeeper/image-20220718180101216.png" srcset="/img/loading.gif" lazyload alt="异常假设"></p>
+<p><img src="/2022/07/14/Zookeeper/image-20220718180101216.png" srcset="/img/loading.gif" lazyload alt="异常假设"></p>
 <p>一旦Leader服务器出现崩溃或者由于网络原因导致Leader服务器失去了与过半 Follower的联系，那么就会进入崩溃恢复模式。  </p>
 <ol>
 <li><p>假设两种服务器异常情况：  </p>
@@ -842,7 +844,7 @@
 </li>
 </ol>
 <p><strong>Leader选举</strong>  </p>
-<p><img src="/2023/02/13/Zookeeper/image-20220718181102680.png" srcset="/img/loading.gif" lazyload alt="数据恢复"></p>
+<p><img src="/2022/07/14/Zookeeper/image-20220718181102680.png" srcset="/img/loading.gif" lazyload alt="数据恢复"></p>
 <p>崩溃恢复主要包括两部分： Leader选举和数据恢复。  </p>
 <p><strong>Leader选举</strong>：   </p>
 <blockquote>
@@ -867,6 +869,36 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/BigData/" class="category-chain-item">BigData</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Hadoop/">#Hadoop</a>
+      
+        <a href="/tags/HDFS/">#HDFS</a>
+      
+    </div>
   
 </div>
 
@@ -876,8 +908,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div></div>
-      <div>http://example.com/2023/02/13/Zookeeper/</div>
+      <div>Hadoop 介绍</div>
+      <div>http://example.com/2022/07/14/Zookeeper/</div>
     </div>
     <div class="license-meta">
       
@@ -889,7 +921,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年2月13日</div>
+          <div>2022年7月14日</div>
         </div>
       
       
@@ -919,12 +951,18 @@
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/2022/07/14/HDFS-Hdfs/" title="HDFS">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">HDFS</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/07/17/Hadoop-Yarn/" title="MapReduce">
-                        <span class="hidden-mobile">MapReduce</span>
+                      <a href="/2022/07/11/Hadoop-Intro/" title="Hadoop 介绍">
+                        <span class="hidden-mobile">Hadoop 介绍</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
